@@ -12,7 +12,7 @@ firebase.initializeApp(config);
 
 // facebook auth
 var provider = new firebase.auth.FacebookAuthProvider();
-
+var photoURL = null;
 firebase.auth().onAuthStateChanged(function (user) {
     if (user) {
         $('#sign-out')[0].hidden = false;
@@ -27,11 +27,10 @@ firebase.auth().onAuthStateChanged(function (user) {
                 var token = result.credential.accessToken; // Token facebook
 															// của user
                 var user = result.user; // Thông tin của user
+                photoURL = user.photoURL;
                 $('#sign-in')[0].hidden = true;
-                console.log(user.photoURL);
                 document.getElementById("photoURL").src= user.photoURL;
-                console.log(user.displayName);
-                console.log(user.photoURL);
+                document.cookie = "photoURL=" + photoURL;
 // $('#displayName').html() = user.displayName;
             }).catch(function (error) {
                 var errorCode = error.code;
@@ -42,6 +41,7 @@ firebase.auth().onAuthStateChanged(function (user) {
         });
     }
 });
+console.log("cookie" + document.cookie);
 
 // $('#sign-out')[0].hidden = false;
 $('#sign-out').on('click',()=>{

@@ -797,7 +797,7 @@ footer .footerMenu li a {
 }
 .memberProfile:after {
 	content: "";
-	background: url(../images/bg-profile.jpg) no-repeat center center / cover;
+	background: url(../../images/bg-profile.jpg) no-repeat center center / cover;
 	position: absolute;
 	left: 0;
 	top: 0;
