@@ -8,8 +8,155 @@
 <meta
 	content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
 	name="viewport">
+<!-- <link rel="stylesheet" href="../../css/materialdesignicons.min.css"> -->
+<!-- <link rel="stylesheet"
+	href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
+	integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr"
+	crossorigin="anonymous"> -->
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/MaterialDesign-Webfont/3.5.95/css/materialdesignicons.min.css">
+<link rel="stylesheet" href="../../css/jquery.fancybox.min.css">
+<link rel="stylesheet" href="../../css/bootstrap.min.css">
+<link rel="stylesheet" href="../../css/style.css">
 </head>
 <body>
-<section class="content" layout:fragment="content"></section>
+	<div class="bgBackdrop"></div>
+	<header>
+		<nav class="navbar navbar-expand-lg align-items-center" id="cecNavbar">
+			<a class="navbar-brand" href="/"> <img src="" alt="">
+			</a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse"
+				data-target="#navbarSupportedContent"
+				aria-controls="navbarSupportedContent" aria-expanded="false"
+				aria-label="Toggle navigation">
+				<i class="mdi mdi-menu"></i>
+			</button>
+			<div class="collapse navbar-collapse transition"
+				id="navbarSupportedContent">
+				<ul class="navbar-nav ml-auto align-items-center">
+					<li class="nav-item d-block d-xl-none d-lg-none"><a href="/">
+							<img class="logo" src="/images/logo.png" alt="">
+					</a></li>
+					<li class="nav-item"><a class="nav-link" href="#intro">Intro
+							<span class="sr-only">(current)</span>
+					</a></li>
+					<li class="nav-item"><a class="nav-link" href="#events">Events</a>
+					</li>
+					<li class="nav-item"><a class="nav-link" href="#cecGames">Games</a>
+					</li>
+					<li class="nav-item"><a class="nav-link" href="#members">Members</a>
+					</li>
+					<li class="nav-item"><a class="nav-link" href="#latestNews">News</a>
+					</li>
+					<li class="nav-item"><a class="nav-link" href="/gallery">Gallery</a>
+					</li>
+
+					<li class="nav-item"><a hidden id="sign-in"
+						class="btn btn-primary my-2 my-sm-0 ml-4 login">Join Now</a></li>
+					<li class="nav-item" hidden id="sign-out">
+						<div class="dropdown userDropdown">
+							<button class="dropdown-toggle" type="button"
+								data-toggle="dropdown" aria-haspopup="true"
+								aria-expanded="false">
+								<a href="/profile"><img id="photoURL" width="50" class="avatar"></a>
+								<span class="d-inline d-xl-none d-lg-none" id="displayName"></span>
+							</button>
+							<div class="dropdown-menu dropdown-menu-right"
+								aria-labelledby="dropdownMenuButton">
+								<a class="dropdown-item" href="http://user.cec.net.vn">Thông
+									tin cá nhân</a> <a class="dropdown-item" href="#">Yêu cầu chữa
+									bài</a>
+								<div class="dropdown-divider"></div>
+								<a class="dropdown-item" id="logout">Logout</a>
+							</div>
+						</div>
+					</li>
+
+
+				</ul>
+			</div>
+		</nav>
+	</header>
+
+
+	<section class="content" layout:fragment="content"></section>
+
+	<!-- footer -->
+	<footer id="footer">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-3">
+					<p>
+						<a href="/"><img class="logo" src="/images/logo.png" alt=""
+							width="110"></a>
+					</p>
+				</div>
+				<div class="col-md-9">
+					<div class="row">
+						<div class="col-xl-3 col-lg-3 col-md-3 col-6">
+							<h4 class="title">Products</h4>
+							<ul class="footerMenu list-unstyled">
+								<li><a href="https://speech.cec.net.vn/" target="_blank">Speech</a></li>
+								<li><a href="https://media.cec.net.vn" target="_blank">Record</a></li>
+								<li><a href="https://talk.cec.net.vn" target="_blank">Talk</a></li>
+							</ul>
+						</div>
+						<div class="col-xl-3 col-lg-3 col-md-3 col-6">
+							<h4 class="title">CEC</h4>
+							<ul class="footerMenu list-unstyled">
+								<li><a href="/about">About CEC</a></li>
+								<li><a href="#">Contact Us</a></li>
+								<li><a href="#">Members</a></li>
+								<li><a href="/gallery/gallery-1">Gallery</a></li>
+							</ul>
+						</div>
+						<div class="col-xl-3 col-lg-3 col-md-3 col-6">
+							<h4 class="title">Support</h4>
+							<ul class="footerMenu list-unstyled">
+								<li><a href="/volunteer">Volunteer at CEC</a></li>
+								<li><a href="/support">How to help us</a></li>
+							</ul>
+						</div>
+						<div class="col-xl-3 col-lg-3 col-md-3 col-6">
+							<h4 class="title">Follow Us</h4>
+							<ul class="footerMenu list-unstyled">
+								<li><a href="#">Facebook</a></li>
+								<li><a href="#">Youtube</a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</footer>
+	<script src="../../js/jquery-3.2.1.min.js"></script>
+	<!-- <div id="fb-root" class=" fb_reset">
+		<div
+			style="position: absolute; top: -10000px; width: 0px; height: 0px;">
+			<div>
+				<iframe name="fb_xdm_frame_https" frameborder="0"
+					allowtransparency="true" allowfullscreen="true" scrolling="no"
+					allow="encrypted-media" id="fb_xdm_frame_https" aria-hidden="true"
+					title="Facebook Cross Domain Communication Frame" tabindex="-1"
+					src="https://staticxx.facebook.com/connect/xd_arbiter/r/vy-MhgbfL4v.js?version=44#channel=f2165c7b9aaf6d8&amp;origin=https%3A%2F%2Fcec.net.vn"
+					style="border: none;"></iframe>
+			</div>
+			<div></div>
+		</div>
+	</div> -->
+	<script src="../../js/popper.min.js"></script>
+	<script src="../../js/bootstrap.min.js"></script>
+	<script src="../../js/parallaxed.js"></script>
+	<script src="../../js/masonry.pkgd.min.js"></script>
+	<script src="../../js/imagesloaded.pkgd.min.js"></script>
+	<script src="../../js/jquery.fancybox.min.js"></script>
+	<script src="../../js/timeago.min.js"></script>
+
+	<script src="https://www.gstatic.com/firebasejs/5.8.6/firebase-app.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/5.8.6/firebase-auth.js"></script>
+	<script
+		src="https://www.gstatic.com/firebasejs/5.8.6/firebase-firestore.js"></script>
+
+	<script src="../../js/main.js"></script>
 </body>
 </html>

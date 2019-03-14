@@ -7,16 +7,526 @@
 </head>
 <body>
 	<div layout:fragment="content">
-		<!-- <div class="list-lesson">
-			<table>
-				<tr>
-					<th>NAME</th>
-				</tr>
-				<tr th:each="lesson : ${lessons}">
-					<td th:text="${lesson.name}"></td>
-				</tr>
-			</table>
-		</div> -->
+		<section id="intro">
+			<div class="d-flex justify-content-between wrap">
+				<div class="floatingMain img-holder" data-parallaxed-speed=".3">
+					<h1 class="heading">crazy english community</h1>
+					<p class="text">
+						CEC is a nongovernmental and nonprofit organization and is
+						activated at Oct 30, 2014 <br class="d-none d-xl-block d-lg-block">
+						that trains real English by using Crazy English method, orients
+						and introduces jobs <br class="d-none d-xl-block d-lg-block">
+						for Vietnamese student generation.
+					</p>
+					<p class="imageIntro">
+						<img src="../../images/cec-events/11.jpg" alt="" width="780">
+					</p>
+					<a href="/about" class="btn btn-primary btn-lg">Về chúng tôi</a>
+				</div>
+				<div
+					class="floatingContainer floatingLeft parallax d-xl-block d-none"
+					data-parallaxed-speed=".2"
+					style="transform: translate(0px, -60px);">
+					<div class="item leftItem-1">
+						<img src="../../images/cec-events/1.jpg" alt="" width="300"
+							class="box-shadow-medium">
+					</div>
+					<div class="item leftItem-2">
+						<img src="../../images/cec-events/2.jpg" alt="" width="300"
+							class="box-shadow-large parallax border-white-3"
+							data-parallaxed-speed=".4"
+							style="transform: translate(0px, -80px);">
+					</div>
+					<div class="item leftItem-3">
+						<img src="../../images/cec-events/3.jpg" alt="" width="390"
+							class="floating-box-shadow parallax border-white-3"
+							data-parallaxed-speed=".4"
+							style="transform: translate(0px, -102.4px);">
+					</div>
+					<div class="item leftItem-4">
+						<img src="../../images/cec-events/4.jpg" alt="" width="340"
+							class="box-shadow-xlarge parallax" data-parallaxed-speed=".4"
+							style="transform: translate(0px, -90px);">
+					</div>
+					<div class="item leftItem-5">
+						<img src="../../images/cec-events/5.jpg" alt="" width="330"
+							class="box-shadow-xlarge parallax border-white-3"
+							data-parallaxed-speed=".4"
+							style="transform: translate(0px, -85.6px);">
+					</div>
+				</div>
+				<div
+					class="floatingContainer floatingRight parallax d-xl-block d-none"
+					data-parallaxed-speed=".2"
+					style="transform: translate(0px, -60px);">
+					<div class="item rightItem-1">
+						<img src="../../images/cec-events/6.jpg" alt="" width="310"
+							class="box-shadow-xlarge parallax border-white-3"
+							data-parallaxed-speed=".4"
+							style="transform: translate(0px, -82.4px);">
+					</div>
+					<div class="item rightItem-2">
+						<img src="../../images/cec-events/7.jpg" alt="" width="200"
+							class="box-shadow-large">
+					</div>
+					<div class="item rightItem-3">
+						<img src="../../images/cec-events/8.jpg" alt="" width="290"
+							class="box-shadow-large parallax border-white-3"
+							data-parallaxed-speed=".4"
+							style="transform: translate(0px, -74px);">
+					</div>
+					<div class="item rightItem-4">
+						<img src="../../images/cec-events/9.jpg" alt="" width="310"
+							class="box-shadow-large">
+					</div>
+					<div class="item rightItem-5">
+						<img src="../../images/cec-events/10.jpg" alt="" width="380"
+							class="floating-box-shadow parallax" data-parallaxed-speed=".4"
+							style="transform: translate(0px, -95.6px);">
+					</div>
+					<div class="item rightItem-6">
+						<img src="../../images/cec-events/12.jpg" alt="" width="420"
+							class="floating-box-shadow parallax border-white-3"
+							data-parallaxed-speed=".4"
+							style="transform: translate(0px, -110.4px);">
+					</div>
+				</div>
+			</div>
+		</section>
+		<section id="events">
+			<div class="container">
+				<h2 class="headingSecondary text-center">Các hoạt động chính
+					của CEC</h2>
+				<p class="textLead text-center mb-5">We have many training
+					programs that include</p>
+				<div class="row">
+					<div class="col-xl-4 col-lg-6 col-md-6 eventItem">
+						<div class="inner">
+							<i class="mdi mdi-diamond icon c-1"></i>
+							<h3 class="title">Ai là triệu phú</h3>
+							<p>Hàng tuần vào thứ 3 và thứ 6 sẽ gửi cho các bạn một email
+								chứa tài liệu học. Tài liệu gồm: 1 file PDF bài học, 1 file MP3
+								bài học và 1 video hướng dẫn ...</p>
+							<a href="/events/altp" class="btn btn-primary">Chi tiết</a>
+						</div>
+					</div>
+					<div class="col-xl-4 col-lg-6 col-md-6 eventItem">
+						<div class="inner">
+							<i class="mdi mdi-text-to-speech icon c-2"></i>
+							<h3 class="title">Luyện phát âm</h3>
+							<p>CEC- Speak là phần mềm luyện phát âm Tiếng Anh nằm trong
+								hệ thống chương trình giúp tiếng anh của bạn tiến bộ hằng ngày,
+								được xây dựng bởi công nghệ đặc biệt ...</p>
+							<a href="#" class="btn btn-primary">Chi tiết</a>
+						</div>
+					</div>
+					<div class="col-xl-4 col-lg-6 col-md-6 eventItem">
+						<div class="inner">
+							<i class="mdi mdi-video-account icon c-3"></i>
+							<h3 class="title">Học qua livestream thầy Mike Fitch</h3>
+							<p>CEC là một tổ chức phi chính phủ và phi lợi nhuận chuyên
+								đào tạo Tiếng Anh Thực Tế theo phương pháp Crazy English. CEC
+								hướng tới những người cần một ...</p>
+							<a href="#" class="btn btn-primary">Chi tiết</a>
+						</div>
+					</div>
+					<div class="col-xl-4 col-lg-6 col-md-6 eventItem">
+						<div class="inner">
+							<i class="mdi mdi-account-group icon c-4"></i>
+							<h3 class="title">Học OFFLINE tại 7 quận ở Hà Nội</h3>
+							<p>Song song với hoạt động học online trên group Crazy
+								English Community, CEC có tổ chức học offline tại 7 quận trên
+								khắp thành phố Hà Nội: Bắc Từ Liêm ...</p>
+							<a href="#" class="btn btn-primary">Chi tiết</a>
+						</div>
+					</div>
+					<div class="col-xl-4 col-lg-6 col-md-6 eventItem">
+						<div class="inner">
+							<i class="mdi mdi-calendar-check icon c-5"></i>
+							<h3 class="title">Hành trình chiến binh 90 ngày</h3>
+							<p>Hành trình này sẽ giúp các bạn hình thành thói quen học
+								Tiếng Anh mỗi ngày, rèn luyện cơ miệng, thay đổi ngữ âm, ngữ
+								điệu nhanh chóng, trau dồi và tích lũy ý tưởng ...</p>
+							<a href="#" class="btn btn-primary">Chi tiết</a>
+						</div>
+					</div>
+					<div class="col-xl-4 col-lg-6 col-md-6 eventItem">
+						<div class="inner">
+							<i class="mdi mdi-desktop-mac-dashboard icon c-6"></i>
+							<h3 class="title">Học từ vựng qua ứng dụng Online</h3>
+							<p>CEC-Speech là ứng dụng học từ vựng online của CEC. Giờ
+								đây,việc học từ vựng sẽ không còn nhàm chán khi có sự kết hợp
+								của hình ảnh và âm thanh ...</p>
+							<a href="#" class="btn btn-primary">Chi tiết</a>
+						</div>
+					</div>
+					<div class="col-xl-4 col-lg-6 col-md-6 eventItem">
+						<div class="inner">
+							<i class="mdi mdi-bullseye-arrow icon c-7"></i>
+							<h3 class="title">Thực hành tiếng anh thực tế</h3>
+							<p>Áp dụng đúng nguyên lý "Học đi đôi với hành", hằng tuần
+								vào chủ nhật, CEC đều có những buổi thực hành tiếng anh thực tế
+								với người nước ngoài tại các địa điểm ...</p>
+							<a href="#" class="btn btn-primary">Chi tiết</a>
+						</div>
+					</div>
+					<div class="col-xl-4 col-lg-6 col-md-6 eventItem">
+						<div class="inner">
+							<i class="mdi mdi-star icon c-8"></i>
+							<h3 class="title">Bài viết tốt nhất trong ngày</h3>
+							<p>Mỗi ngày, các thành viên sẽ có bài viết trên group Crazy
+								English Community và bài viết được yêu thích nhất trong ngày sẽ
+								nhận được các phần thưởng từ CEC ...</p>
+							<a href="#" class="btn btn-primary">Chi tiết</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+		<section class="joinUs">
+			<div class="container">
+				<div class="row align-items-center">
+					<div class="col-md col-sm-12">
+						<h2 class="headingSecondary text-white">Tham gia cộng đồng
+							CEC</h2>
+						<div>CEC is a nongovernmental and nonprofit organization and
+							is activated at Oct 30, 2014.</div>
+					</div>
+					<div class="col-md-auto col-sm-12 ml-auto">
+						<a href="https://www.facebook.com/groups/cec.edu.vn/"
+							target="_blank" class="btn btn-primary btn-lg">Tham Gia</a>
+					</div>
+				</div>
+			</div>
+		</section>
+		<section id="helpUs">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-6">
+						<div class="box">
+							<h2 class="h2">How to help us</h2>
+							<p>We need your help to make sure that Vietnamese students
+								will be trained and supported to maximize their potential. There
+								are many ways to join the CEC whether you are an individual, an
+								organization, or a company. We need your help for our students.</p>
+							<a href="/support" class="btn btn-light">Xem thêm</a>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="box">
+							<h2 class="h2">Volunteer at CEC</h2>
+							<p>Chúng tôi hoan nghênh các tình nguyện viên tại CEC (Crazy
+								English Club) để giúp học viên và tổ chức của chúng tôi. Chúng
+								tôi cần các tình nguyện viên giúp đỡ. Nếu bạn sống ở Hà Nội, Đà
+								Nẵng, TP Hồ Chí Minh và muốn biết làm thế nào để giúp đỡ CEC,
+								hãy gọi cho chúng tôi hoặc gửi cho chúng tôi CV của bạn tới địa
+								chỉ contact@cec.net.vn</p>
+							<a href="/volunteer" class="btn btn-light">Xem thêm</a>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</section>
+		<section id="topMembers">
+			<div class="container">
+				<h2 class="headingSecondary text-center">CEC Top Rich Members</h2>
+				<p class="textLead text-center mb-5">We have many training
+					programs that include</p>
+				<div class="row">
+
+					<div class="col-md-6 item">
+						<div class="member d-flex align-items-center">
+							<div class="number">01</div>
+							<div class="avatar">
+								<img
+									src="//graph.facebook.com/1387418254664896/picture?type=square"
+									width="50" alt="">
+							</div>
+							<div class="info">
+								<span class="name"> <a rel="Quốc Anh profile"
+									href="/m/100001902030775">Quốc Anh</a>
+
+
+								</span>
+							</div>
+							<div class="social">
+
+
+								<a class="mdi mdi-facebook"
+									href="//facebook.com/profile.php?id=100001902030775"
+									target="_blank"></a> <a class="mdi mdi-facebook-messenger"
+									href="//m.me/100001902030775" target="_blank"></a>
+
+
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-6 item">
+						<div class="member d-flex align-items-center">
+							<div class="number">02</div>
+							<div class="avatar">
+								<img
+									src="//graph.facebook.com/1995681550713696/picture?type=square"
+									width="50" alt="">
+							</div>
+							<div class="info">
+								<span class="name"> <a rel="Anh Ngọc profile"
+									href="/m/100008156115528">Anh Ngọc</a>
+
+
+								</span>
+							</div>
+							<div class="social">
+
+
+								<a class="mdi mdi-facebook"
+									href="//facebook.com/profile.php?id=100008156115528"
+									target="_blank"></a> <a class="mdi mdi-facebook-messenger"
+									href="//m.me/100008156115528" target="_blank"></a>
+
+
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-6 item">
+						<div class="member d-flex align-items-center">
+							<div class="number">03</div>
+							<div class="avatar">
+								<img
+									src="//graph.facebook.com/295688224193742/picture?type=square"
+									width="50" alt="">
+							</div>
+							<div class="info">
+								<span class="name"> <a rel="Hà Nguyễn profile"
+									href="/m/100012576995887">Hà Nguyễn</a>
+
+
+								</span>
+							</div>
+							<div class="social">
+
+
+								<a class="mdi mdi-facebook"
+									href="//facebook.com/profile.php?id=100012576995887"
+									target="_blank"></a> <a class="mdi mdi-facebook-messenger"
+									href="//m.me/100012576995887" target="_blank"></a>
+
+
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-6 item">
+						<div class="member d-flex align-items-center">
+							<div class="number">04</div>
+							<div class="avatar">
+								<img
+									src="//graph.facebook.com/1893125310965633/picture?type=square"
+									width="50" alt="">
+							</div>
+							<div class="info">
+								<span class="name"> <a rel="Trang Trần profile"
+									href="/m/100008045468893">Trang Trần</a>
+
+
+								</span>
+							</div>
+							<div class="social">
+
+
+								<a class="mdi mdi-facebook"
+									href="//facebook.com/profile.php?id=100008045468893"
+									target="_blank"></a> <a class="mdi mdi-facebook-messenger"
+									href="//m.me/100008045468893" target="_blank"></a>
+
+
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-6 item">
+						<div class="member d-flex align-items-center">
+							<div class="number">05</div>
+							<div class="avatar">
+								<img
+									src="//graph.facebook.com/2036318846397857/picture?type=square"
+									width="50" alt="">
+							</div>
+							<div class="info">
+								<span class="name"> Giovanni Tungod </span>
+							</div>
+							<div class="social"></div>
+						</div>
+					</div>
+
+					<div class="col-md-6 item">
+						<div class="member d-flex align-items-center">
+							<div class="number">06</div>
+							<div class="avatar">
+								<img
+									src="//graph.facebook.com/1839478163039596/picture?type=square"
+									width="50" alt="">
+							</div>
+							<div class="info">
+								<span class="name"> Nhật Lệ </span>
+							</div>
+							<div class="social"></div>
+						</div>
+					</div>
+
+					<div class="col-md-6 item">
+						<div class="member d-flex align-items-center">
+							<div class="number">07</div>
+							<div class="avatar">
+								<img
+									src="//graph.facebook.com/102844197409026/picture?type=square"
+									width="50" alt="">
+							</div>
+							<div class="info">
+								<span class="name"> <a rel="Trần Trang profile"
+									href="/m/100030503377174">Trần Trang</a>
+
+
+								</span>
+							</div>
+							<div class="social">
+
+
+								<a class="mdi mdi-facebook"
+									href="//facebook.com/profile.php?id=100030503377174"
+									target="_blank"></a> <a class="mdi mdi-facebook-messenger"
+									href="//m.me/100030503377174" target="_blank"></a>
+
+
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-6 item">
+						<div class="member d-flex align-items-center">
+							<div class="number">08</div>
+							<div class="avatar">
+								<img
+									src="//graph.facebook.com/163520074371101/picture?type=square"
+									width="50" alt="">
+							</div>
+							<div class="info">
+								<span class="name"> Nguyen Thi Nhu Quynh </span>
+							</div>
+							<div class="social"></div>
+						</div>
+					</div>
+
+					<div class="col-md-6 item">
+						<div class="member d-flex align-items-center">
+							<div class="number">09</div>
+							<div class="avatar">
+								<img
+									src="//graph.facebook.com/294014774336535/picture?type=square"
+									width="50" alt="">
+							</div>
+							<div class="info">
+								<span class="name"> VuTrong Khang </span>
+							</div>
+							<div class="social"></div>
+						</div>
+					</div>
+
+					<div class="col-md-6 item">
+						<div class="member d-flex align-items-center">
+							<div class="number">10</div>
+							<div class="avatar">
+								<img
+									src="//graph.facebook.com/316376322114259/picture?type=square"
+									width="50" alt="">
+							</div>
+							<div class="info">
+								<span class="name"> Yến Nguyễn </span>
+							</div>
+							<div class="social"></div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</section>
+		<section id="gallery">
+			<div class="container text-center">
+				<h2 class="headingSecondary text-center">CEC's Gallery</h2>
+				<p class="textLead text-center mb-5">We have many training
+					programs that include</p>
+				<div class="gridMasonry userBoxInfo"
+					style="position: relative; height: 947.202px;">
+					<div class="grid-item"
+						style="position: absolute; left: 0px; top: 0px;">
+						<div class="inner">
+							<img src="../../images/cec-events/1.jpg" alt="">
+						</div>
+					</div>
+					<div class="grid-item"
+						style="position: absolute; left: 456.203px; top: 0px;">
+						<div class="inner">
+							<img src="../../images/cec-events/2.jpg" alt="">
+						</div>
+					</div>
+					<div class="grid-item"
+						style="position: absolute; left: 912.406px; top: 0px;">
+						<div class="inner">
+							<img src="../../images/cec-events/3.jpg" alt="">
+						</div>
+					</div>
+					<div class="grid-item"
+						style="position: absolute; left: 0px; top: 315.734px;">
+						<div class="inner">
+							<img src="../../images/cec-events/4.jpg" alt="">
+						</div>
+					</div>
+					<div class="grid-item"
+						style="position: absolute; left: 456.203px; top: 315.734px;">
+						<div class="inner">
+							<img src="../../images/cec-events/5.jpg" alt="">
+						</div>
+					</div>
+					<div class="grid-item"
+						style="position: absolute; left: 912.406px; top: 315.734px;">
+						<div class="inner">
+							<img src="../../images/cec-events/6.jpg" alt="">
+						</div>
+					</div>
+					<div class="grid-item"
+						style="position: absolute; left: 0px; top: 631.468px;">
+						<div class="inner">
+							<img src="../../images/cec-events/7.jpg" alt="">
+						</div>
+					</div>
+					<div class="grid-item"
+						style="position: absolute; left: 456.203px; top: 631.468px;">
+						<div class="inner">
+							<img src="../../images/cec-events/8.jpg" alt="">
+						</div>
+					</div>
+					<div class="grid-item"
+						style="position: absolute; left: 912.406px; top: 631.468px;">
+						<div class="inner">
+							<img src="../../images/cec-events/9.jpg" alt="">
+						</div>
+					</div>
+				</div>
+				<a href="/gallery" class="btn btn-primary btn-lg mt-5">Xem thêm</a>
+			</div>
+		</section>
+		<section class="joinUs">
+			<div class="container text-center">
+				<h2 class="headingSecondary text-white text-center mb-5">
+					<span>71,000+</span> <br> Members in Crazy English Community.
+				</h2>
+				<a href="https://www.facebook.com/groups/cec.edu.vn/"
+					target="_blank" class="btn btn-primary btn-lg">Tham Gia</a>
+			</div>
+		</section>
 	</div>
 </body>
 </html>
