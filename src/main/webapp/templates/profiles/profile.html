@@ -10,20 +10,19 @@
 		<div id="content">
 			<section class="memberProfile">
 				<div class="container">
-					<div class="generalInfo">
-						<img alt="Trần Thị Bích Hạnh"
-							src="//graph.facebook.com/100000664412038/picture?type=large&amp;width=110&amp;height=110"
+					<div class="generalInfo" th:each="obj : ${member}">
+						<img alt=""
+							th:src="@{'//graph.facebook.com/' + ${member.id} + '/picture?type=large&amp;width=110&amp;height=110'}"
 							class="avatar">
 						<h3 class="h5 mb-0">
 							<a target="_blank"
-								href="//facebook.com/profile.php?id=100000664412038"
-								class="name">Trần Thị Bích Hạnh</a>
+								th:href="@{//facebook.com/profile.php(id=${member.id})}"
+								class="name" th:text="${member.name}"></a>
 						</h3>
 
 						<a
-							href="/verify?fbid=100000664412038&amp;fbname=Trần Thị Bích Hạnh">Đây
+							th:href="@{'/verify?fbid=' + ${member.id} + '&amp;fbname=' + ${member.name}}">Đây
 							là tôi</a>
-
 
 						<div class="mb-4"></div>
 
@@ -45,39 +44,41 @@
 
 							</div>
 						</div>
+
 						<div class="tab-content">
 							<div class="tab-pane fade show active" id="profileContent-1">
 								<div class="gridMasonry"
 									style="position: relative; height: 430px;">
 
-									<div class="grid-item userBoxInfo"
+									<div class="grid-item userBoxInfo" th:each="post : ${posts}"
 										style="position: absolute; left: 0px; top: 0px;">
-										<div class="inner">
+										<div class="inner" th:each="video : ${videos}">
 											<div class="info">
-												<div class="meta">
+												<div class="meta" th:each="obj : ${member}">
 													<div class="d-flex">
 														<a target="_blank"
-															href="//facebook.com/profile.php?id=100000664412038"
-															class="avatar mr-2"> <img alt="Trần Thị Bích Hạnh"
-															src="//graph.facebook.com/100000664412038/picture?type=large&amp;width=40&amp;height=40"
+															th:href="@{//facebook.com/profile.php(id=${member.id})}"
+															class="avatar mr-2"> <img th:alt="@{${member.name}}"
+															th:src="@{'//graph.facebook.com/' + ${member.id} + '/picture?type=large&amp;width=40&amp;height=40'}"
 															class="rounded-circle" width="40" height="40">
 														</a>
 														<div>
 															<a target="_blank"
-																href="//facebook.com/profile.php?id=100000664412038"
-																class="name">Trần Thị Bích Hạnh</a> <a
-																href="https://www.facebook.com/groups/cec.edu.vn/permalink/2160982757508102"
+																th:href="@{//facebook.com/profile.php(id=${member.id})}"
+																class="name" th:text="${member.name}"></a> <a
+																th:href="@{'https://www.facebook.com/groups/cec.edu.vn/permalink/' + ${video.id}}"
 																target="_blank" class="date">5 tháng trước</a>
 														</div>
 													</div>
-													<a href="/p/2160982757508102" class="fb"> <i
+													<a th:href="@{'/p/' + ${video.id}}" class="fb"> <i
 														class="mdi mdi-open-in-new"></i>
 													</a>
 												</div>
 												<div class="desc">
 													<pre>LET'S CONQUER ENGLISH TOGETHER - HÃY CÙNG NHAU CHINH PHỤC TIẾNG ANH.#LESON7CEC vì tớ đang ốm ko tiện quay mặt nên các bạn thông cảm nha. Love all! 
 ❤️</pre>
-													<a href="/p/2160982757508102" class="more">Xem Thêm</a>
+													<a th:href="@{'/p/' + ${video.id}}" class="more">Xem
+														Thêm</a>
 												</div>
 												<div class="coverImage">
 													<div class="videoWrap">
@@ -89,14 +90,15 @@
 															fb-iframe-plugin-query="app_id=&amp;container_width=290&amp;href=https%3A%2F%2Fwww.facebook.com%2Fcaphe.nong.1%2Fvideos%2F2128837993814994%2F&amp;locale=en_US&amp;sdk=joey&amp;show_text=false&amp;width=800">
 															<span
 																style="vertical-align: bottom; width: 800px; height: 518px;"><iframe
-																	name="f442cd19f0824" width="800px" height="1000px"
+																	name="f1ed17869d75fd" width="800px" height="1000px"
 																	frameborder="0" allowtransparency="true"
 																	allowfullscreen="true" scrolling="no"
 																	allow="encrypted-media"
 																	title="fb:video Facebook Social Plugin"
-																	src="https://www.facebook.com/v2.6/plugins/video.php?app_id=&amp;channel=https%3A%2F%2Fstaticxx.facebook.com%2Fconnect%2Fxd_arbiter%2Fr%2Fm5nTkygCewO.js%3Fversion%3D44%23cb%3Df1bd38d2a7a1c2%26domain%3Dcec.net.vn%26origin%3Dhttps%253A%252F%252Fcec.net.vn%252Ff2aa2df1dd5c4b8%26relation%3Dparent.parent&amp;container_width=290&amp;href=https%3A%2F%2Fwww.facebook.com%2Fcaphe.nong.1%2Fvideos%2F2128837993814994%2F&amp;locale=en_US&amp;sdk=joey&amp;show_text=false&amp;width=800"
+																	src="https://www.facebook.com/v2.6/plugins/video.php?app_id=&amp;channel=https%3A%2F%2Fstaticxx.facebook.com%2Fconnect%2Fxd_arbiter%2Fr%2Fd_vbiawPdxB.js%3Fversion%3D44%23cb%3Df1ecbf6b7f37978%26domain%3Dcec.net.vn%26origin%3Dhttps%253A%252F%252Fcec.net.vn%252Ff3bee89829262d%26relation%3Dparent.parent&amp;container_width=290&amp;href=https%3A%2F%2Fwww.facebook.com%2Fcaphe.nong.1%2Fvideos%2F2128837993814994%2F&amp;locale=en_US&amp;sdk=joey&amp;show_text=false&amp;width=800"
 																	style="border: none; visibility: visible; width: 800px; height: 518px;"
-																	class=""></iframe></span>
+																	class="">
+																</iframe></span>
 														</div>
 													</div>
 													<img
@@ -115,6 +117,7 @@
 								<h5 class="text-center p-4">Đang cập nhật...</h5>
 							</div>
 						</div>
+
 					</div>
 				</div>
 			</section>
