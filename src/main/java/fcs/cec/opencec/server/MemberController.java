@@ -27,14 +27,6 @@ public class MemberController {
 		Firestore db = FirestoreOptions.getDefaultInstance().getService();
 		ApiFuture<QuerySnapshot> query = db.collection("Member").limit(100).get();
 		List<Member> members = query.get().toObjects(Member.class);
-//		List<HashMap<String, String>> listMap = new ArrayList<>();
-//		for (Member member : members) {
-//			HashMap<String, String> hashMap = new HashMap();
-//			hashMap.put("id", member.getId());
-//			hashMap.put("avatar", member.getAvatar());
-//			hashMap.put("name", member.getName());
-//			listMap.add(hashMap);
-//		}
 		model.addAttribute("listMap", members);
 		return "member/member-list";
 	}
