@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/home}" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>CEC Members</title>
+</head>
+<body>
+	<div layout:fragment="content">
+		<section id="topMembers">
+			<div class="container">
+				<h2 class="headingSecondary text-center">CEC Top Rich Members</h2>
+				<p class="textLead text-center mb-5">We have many training
+					programs that include</p>
+				<div class="row">
+
+					<div class="col-md-6 item" th:each="list : ${listMap}">
+						<div class="member d-flex align-items-left">
+							<!-- <div class="number" th:text="{list.i}"></div> -->
+							<div class="avatar">
+								<img
+									th:src="@{'//graph.facebook.com/' + ${list.id} + '/picture?type=square'}"
+									width="50" alt="">
+							</div>
+							<div class="info">
+								<span class="name"> <a
+									th:rel="@{${list.name} + ' profile'}"
+									th:href="@{'/m/' + ${list.id}}" th:text="${list.name}">
+								</a>
+								</span>
+							</div>
+							<div class="social">
+								<a class="mdi mdi-facebook"
+									th:href="@{//facebook.com/profile.php(id=${list.id})}"
+									target="_blank"></a> <a class="mdi mdi-facebook-messenger"
+									th:href="@{'//m.me/' + ${list.id}}" target="_blank"></a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+	</div>
+</body>
+</html>
