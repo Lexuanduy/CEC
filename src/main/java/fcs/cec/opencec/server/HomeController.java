@@ -18,14 +18,20 @@ import fcs.cec.opencec.entity.Lesson;
 
 @Controller
 public class HomeController {
-	private static final Logger LOGGER = LoggerFactory.getLogger(HomeController.class); 
+	private static final Logger LOGGER = LoggerFactory.getLogger(HomeController.class);
 
 	@GetMapping(value = "/")
 	public String welcome(Model model) throws InterruptedException, ExecutionException {
-		/*Firestore db = FirestoreOptions.getDefaultInstance().getService();
-		ApiFuture<QuerySnapshot> query = db.collection("lessons").get();
-		List<Lesson> lessons = query.get().toObjects(Lesson.class);
-		model.addAttribute("lessons", lessons);*/
 		return "views/dashboard";
+	}
+
+	@GetMapping(value = "/support")
+	public String support(Model model) throws InterruptedException, ExecutionException {
+		return "support/support";
+	}
+
+	@GetMapping(value = "/volunteer")
+	public String volunteer(Model model) throws InterruptedException, ExecutionException {
+		return "volunteer/volunteer";
 	}
 }
