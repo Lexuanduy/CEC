@@ -46,11 +46,10 @@ public class ProfileController {
 		// get Video by posterId
 		ApiFuture<QuerySnapshot> queryVideo = db.collection("Video").whereEqualTo("posterId", id).get();
 		List<Video> videos = queryVideo.get().toObjects(Video.class);
-
+		
 		model.addAttribute("member", member);
 		model.addAttribute("posts", posts);
 		model.addAttribute("videos", videos);
-
 		return "profiles/profile";
 	}
 
