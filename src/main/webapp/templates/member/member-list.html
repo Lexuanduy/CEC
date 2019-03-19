@@ -13,7 +13,6 @@
 				<p class="textLead text-center mb-5">We have many training
 					programs that include</p>
 				<div class="row">
-
 					<div class="col-md-6 item" th:each="list : ${listMap}">
 						<div class="member d-flex align-items-left">
 							<!-- <div class="number" th:text="{list.i}"></div> -->
@@ -25,8 +24,7 @@
 							<div class="info">
 								<span class="name"> <a
 									th:rel="@{${list.name} + ' profile'}"
-									th:href="@{'/m/' + ${list.id}}" th:text="${list.name}">
-								</a>
+									th:href="@{'/m/' + ${list.id}}" th:text="${list.name}"> </a>
 								</span>
 							</div>
 							<div class="social">
@@ -38,6 +36,12 @@
 						</div>
 					</div>
 				</div>
+
+				<div th:if="${totalPages > 0}" class="pagination">
+					<a th:each="pageNumber : ${pageNumbers}"
+						th:href="@{/members(page=${pageNumber})}" th:text=${pageNumber} style="margin-right:8px;"></a>
+				</div>
+
 			</div>
 		</section>
 	</div>
