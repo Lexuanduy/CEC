@@ -1,7 +1,14 @@
 package fcs.cec.opencec.entity;
 
 public class Lesson {
-	
+//	public Lesson(String name, String audioURL, String videoURL, String imageURL1, String imageURL2) {
+//		super();
+//		this.name = name;
+//		this.audioURL = audioURL;
+//		this.videoURL = videoURL;
+//		this.imageURL1 = imageURL1;
+//		this.imageURL2 = imageURL2;
+//	}
 	public String getName() {
 		return name;
 	}

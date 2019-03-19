@@ -16,9 +16,6 @@
 			</section>
 			<section class="lessonInfo">
 				<div class="container" th:each="obj : ${lesson}">
-
-
-
 					<div class="row">
 						<div class="col-md-3">
 							<h3 class="text-left">
@@ -78,8 +75,25 @@
 							</p>
 						</div>
 					</div>
-
-
+					<div class="row">
+						<div class="col-md-6 offset-md-3">
+							<div class="btn-group" style="float: right; margin-top: 20px;">
+								<button id="nextLesson" class="btn btn-primary">Next >></button>
+							</div>
+						</div>
+						<div class="col-md-6 offset-md-3">
+							<div class="form-group" style="margin-top: 15px; display: none;"
+								id="urlLesson">
+								<label for="usr" style="color: blue;">Previous lesson
+									video link:</label> <input type="text" class="form-control"
+									id="lastLesson" style="border-color: black;">
+							</div>
+							<div class="btn-group" style="float: right; margin-top: 20px;">
+								<button id="sendVideo" class="btn btn-success"
+									style="display: none;">Submit</button>
+							</div>
+						</div>
+					</div>
 				</div>
 			</section>
 		</div>
