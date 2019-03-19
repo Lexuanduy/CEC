@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/home}" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>CEC Lesson</title>
+</head>
+<body>
+	<div layout:fragment="content">
+		<div class="lesson">
+			<section class="pageIntro">
+				<div class="container text-center" th:each="obj : ${lesson}">
+					<h1 class="headingSecondary text-white text-center"
+						th:text="${lesson.name}"></h1>
+				</div>
+			</section>
+			<section class="lessonInfo">
+				<div class="container" th:each="obj : ${lesson}">
+
+
+
+					<div class="row">
+						<div class="col-md-3">
+							<h3 class="text-left">
+								<a href="">Guide</a>
+							</h3>
+							<p>- To learn this lesson best, learn the topic of this
+								lesson in two images below the video of the CEC lecturer.</p>
+							<p>- Pay attention to what the teacher says in the audio.</p>
+							<p>- Once you understand what the teacher said in the audio,
+								pay attention to watch, listen and follow the lectures of the
+								CEC lecturer in the video.</p>
+							<p>- Combined with the vocabulary and pronunciation in the
+								two images below the video to contact the lecture directly, it
+								will help you achieve the best results after this lesson.</p>
+						</div>
+						<div class="col-md-6">
+							<h3>Audio</h3>
+							<audio controls="" class="mb-5">
+								<source th:src="@{${lesson.audioURL}}" type="audio/mpeg">
+							</audio>
+							<h3>Video Instruction</h3>
+							<video width="320" height="240" controls="">
+								<source th:src="@{${lesson.videoURL}}" type="video/mp4">
+							</video>
+						</div>
+						<div class="col-md-3">
+							<h3 class="text-left">
+								<a href="">Mission</a>
+							</h3>
+							<h4>Ask yourself these questions:</h4>
+							<p>- What skills will I gain after this lesson?</p>
+							<p>- After this lesson I will learn more new words and how to
+								pronounce them?</p>
+							<p>- And the most important thing is how to acquire the
+								lesson in the fastest way? To be able to perform the next task.</p>
+							<p>- After can follow the instructions and instructions on
+								how to do it. Create yourself a video, in that video, repeat
+								what you have learned in English and paste your video url into
+								CEC here so we can censor that you have completed this lesson or
+								not.</p>
+							<p>- Only after completing this lesson can you learn the next
+								lessons on the CEC.</p>
+							<h5 style="color: green;">Wish you success, learn useful and
+								fun things !!!</h5>
+						</div>
+					</div>
+					<hr class="mb-5 mt-5">
+					<div class="row">
+						<div class="col-md-6">
+							<p>
+								<img alt="requester review" th:src="@{${lesson.imageURL1}}">
+							</p>
+						</div>
+						<div class="col-md-6">
+							<p>
+								<img alt="requester review" th:src="@{${lesson.imageURL2}}">
+							</p>
+						</div>
+					</div>
+
+
+				</div>
+			</section>
+		</div>
+	</div>
+</body>
+</html>
