@@ -13,6 +13,7 @@ firebase.initializeApp(config);
 // facebook auth
 var provider = new firebase.auth.FacebookAuthProvider();
 var photoURL = null;
+var uid = null;
 firebase.auth().onAuthStateChanged(function (user) {
     if (user) {
         $('#sign-out')[0].hidden = false;
@@ -28,9 +29,12 @@ firebase.auth().onAuthStateChanged(function (user) {
 															// của user
                 var user = result.user; // Thông tin của user
                 photoURL = user.photoURL;
+                uid = user.uid;
                 $('#sign-in')[0].hidden = true;
                 document.getElementById("photoURL").src= user.photoURL;
-                document.cookie = "photoURL=" + photoURL;
+                // create cookie
+				 document.cookie = 'photoURL=' + photoURL;
+				 document.cookie = 'uid=' + user.uid;
 // $('#displayName').html() = user.displayName;
             }).catch(function (error) {
                 var errorCode = error.code;
@@ -41,12 +45,28 @@ firebase.auth().onAuthStateChanged(function (user) {
         });
     }
 });
-console.log("cookie" + document.cookie);
+
+// get cookie
+function getCookie(key) {
+	  const regexp = new RegExp(`.*${key}=([^;]*)`);
+	  const result = regexp.exec(document.cookie);
+	  if(result) {
+	    return result [1];
+	  }
+	}
+console.log('photoURL: ' + getCookie('photoURL'));
+console.log('uid: ' + getCookie('uid'));
+
+// set avatar from photoURL in cookie
+document.getElementById("photoURL").src= getCookie('photoURL');
 
 // $('#sign-out')[0].hidden = false;
 $('#sign-out').on('click',()=>{
 	$('#logout').on('click',()=>{
 		 firebase.auth().signOut().then(function () {
+			 // delete cookie when logout
+			 document.cookie = 'photoURL' + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+			 document.cookie = 'uid' + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
 		 console.log("Logout thành công");
 		 $('#sign-out')[0].hidden = true;
 		 }).catch(function (error) {
