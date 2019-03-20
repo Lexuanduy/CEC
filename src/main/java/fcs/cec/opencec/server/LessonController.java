@@ -76,12 +76,25 @@ public class LessonController {
 
 	@RequestMapping(value = "checkVideo", method = RequestMethod.POST)
 	public void profile(Model model, ServletRequest request, ServletResponse response) throws IOException {
+
 		HttpServletRequest req = (HttpServletRequest) request;
 		HttpServletResponse res = (HttpServletResponse) response;
+		
+		// get parameters
 		String url = req.getParameter("url");
 		LOGGER.info("url: " + url);
-		Document doc = Jsoup.connect(url).timeout(20000).get();
+		String displayName = req.getParameter("displayName");
+		LOGGER.info("displayName: " + displayName);
+		// jsoup parse
+		Document doc = Jsoup.connect(url).timeout(10000).get(); 
+
 		String nameUser = doc.select("meta[property=\"og:title\"]").attr("content");
 		LOGGER.info("nameUser: " + nameUser);
+		if(!nameUser.equals(displayName)) {
+			
+		}
+		
+		res.getWriter().println(nameUser);
+		res.setStatus(200);
 	}
 }
