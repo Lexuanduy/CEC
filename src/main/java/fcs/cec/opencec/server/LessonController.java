@@ -4,6 +4,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -14,6 +19,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import fcs.cec.opencec.entity.Lesson;
 
@@ -60,10 +67,21 @@ public class LessonController {
 	@GetMapping(value = "lesson/{id}")
 	public String profile(Model model, @PathVariable("id") String id) throws InterruptedException, ExecutionException {
 		for (Lesson lesson : lessonList) {
-			if(lesson.getName().equals(id)) {
+			if (lesson.getName().equals(id)) {
 				model.addAttribute("lesson", lesson);
 			}
 		}
 		return "lesson/lesson";
+	}
+
+	@RequestMapping(value = "checkVideo", method = RequestMethod.POST)
+	public void profile(Model model, ServletRequest request, ServletResponse response) throws IOException {
+		HttpServletRequest req = (HttpServletRequest) request;
+		HttpServletResponse res = (HttpServletResponse) response;
+		String url = req.getParameter("url");
+		LOGGER.info("url: " + url);
+		Document doc = Jsoup.connect(url).timeout(20000).get();
+		String nameUser = doc.select("meta[property=\"og:title\"]").attr("content");
+		LOGGER.info("nameUser: " + nameUser);
 	}
 }
