@@ -1,5 +1,6 @@
+var uid = null;
 $('#nextLesson').click(function() {
-	var uid = getCookie('uid');
+	uid = getCookie('uid');
 	console.log("uid: " + uid);
 	if (uid === undefined) {
 		Swal({
@@ -24,16 +25,13 @@ $('#sendVideo').click(function() {
 		return;
 	}
 	console.log("urlVideo: " + urlVideo);
-	var displayName = getCookie('displayName');
-	console.log("displayName: " + displayName);
+	uid = getCookie('uid');
+	console.log("uid: " + uid);
 	$.ajax({
-		url : "/checkVideo?url=" + urlVideo + "&displayName=" + displayName,
+		url : "/checkVideo?url=" + urlVideo + "&uid=" + uid,
 		type : 'POST',
 		success : function(data) {
-			console.log('username: ' + data);
-			if (data.status == 200) {
-				console.log('ok');
-			}
+			window.location.href = data;
 		},
 		error : function(jqXHR, textStatus, errorThrown) {
 			if (jqXHR.status == 404) {

@@ -38,8 +38,8 @@ public class OpencecApplication {
 	public FilterRegistrationBean<RequestResponseLoggingFilter> loggingFilter() {
 		FilterRegistrationBean<RequestResponseLoggingFilter> registrationBean = new FilterRegistrationBean<>();
 		registrationBean.setFilter(new RequestResponseLoggingFilter());
-//		registrationBean.addUrlPatterns("/lesson/*");
-//		registrationBean.addUrlPatterns("/checkVideo");
+		registrationBean.addUrlPatterns("/lesson/*"); 
+		registrationBean.addUrlPatterns("/checkVideo");
 		return registrationBean;
 	}
 }

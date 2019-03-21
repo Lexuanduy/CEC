@@ -20,7 +20,7 @@ public class RequestResponseLoggingFilter implements Filter {
 		// TODO Auto-generated method stub
 		HttpServletRequest req = (HttpServletRequest) request;
 		HttpServletResponse res = (HttpServletResponse) response;
-
+		
 		chain.doFilter(request, response);
 	}
 }
