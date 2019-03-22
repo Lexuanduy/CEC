@@ -9,7 +9,7 @@ var config = {
 	messagingSenderId : "1003263080371",
 };
 firebase.initializeApp(config);
-
+const db = firebase.firestore();
 // facebook auth
 var provider = new firebase.auth.FacebookAuthProvider();
 var photoURL = null;
@@ -25,7 +25,8 @@ firebase.auth().onAuthStateChanged(function (user) {
                 'display': 'popup' // Login dưới dạng popup
             });
             firebase.auth().signInWithPopup(provider).then(function (result) {
-                var token = result.credential.accessToken; // Token facebook của user
+                var token = result.credential.accessToken; // Token facebook
+															// của user
                 var user = result.user; // Thông tin của user
                 photoURL = user.photoURL;
                 uid = user.uid;
@@ -75,5 +76,6 @@ $('#sign-out').on('click',()=>{
 		 });
 	});
 });
+
 
 

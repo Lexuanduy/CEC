@@ -101,19 +101,22 @@ public class LessonController {
 		Firestore db = FirestoreOptions.getDefaultInstance().getService();
 
 		// get lesson check lesson learned
-		ApiFuture<QuerySnapshot> futurePost = db.collection("accounts").whereEqualTo("uid", uid).get();
+		ApiFuture<QuerySnapshot> futurePost = db.collection("Account").whereEqualTo("uid", uid).get();
 		List<QueryDocumentSnapshot> documents = futurePost.get().getDocuments();
 		Account account = null;
 		for (DocumentSnapshot documentPost : documents) {
 			account = documentPost.toObject(Account.class);
 		}
-		int lessonLerned = account.getNumLesson().size();
-		LOGGER.info("lessonLerned: " + lessonLerned);
 		int idLesson = Integer.parseInt(id);
 		LOGGER.info("id lesson: " + idLesson);
-		if ((lessonLerned > 1) && (lessonLerned < idLesson)) {
-			LOGGER.info("fail next lesson");
-			return "error/403";
+		
+		if(idLesson != 1) {
+			int lessonLerned = account.getNumLesson().size();
+			LOGGER.info("lessonLerned: " + lessonLerned);
+			if ((lessonLerned > 1) && (lessonLerned < idLesson)) {
+				LOGGER.info("fail next lesson");
+				return "error/403";
+			}
 		}
 
 		// get lesson by lesson number
@@ -124,7 +127,7 @@ public class LessonController {
 		}
 
 		// add lesson learned, update account
-		DocumentReference docRef = db.collection("accounts").document(uid);
+		DocumentReference docRef = db.collection("Account").document(uid);
 		Map<String, Object> data = new HashMap<>();
 		for (int i = 1; i < idLesson + 1; i++) {
 			String nameLesson = "Lesson " + String.valueOf(i);
@@ -149,7 +152,7 @@ public class LessonController {
 		Character numLesson = title.charAt(7);
 		LOGGER.info("num lesson: " + numLesson);
 		Firestore db = FirestoreOptions.getDefaultInstance().getService();
-		ApiFuture<QuerySnapshot> future = db.collection("accounts").whereEqualTo("uid", uid).get();
+		ApiFuture<QuerySnapshot> future = db.collection("Account").whereEqualTo("uid", uid).get();
 		List<QueryDocumentSnapshot> documents = future.get().getDocuments();
 		Account account = null;
 		for (DocumentSnapshot documentPost : documents) {
@@ -162,7 +165,7 @@ public class LessonController {
 //		int lessonCheckNow = 4;
 		if (lessonLerned == lessonCheckNow) {
 			LOGGER.info("next lesson");
-			DocumentReference docRef = db.collection("accounts").document(uid);
+			DocumentReference docRef = db.collection("Account").document(uid);
 			Map<String, Object> data = new HashMap<>();
 			for (int i = 1; i < lessonLerned + 2; i++) {
 				String nameLesson = "Lesson " + String.valueOf(i);
