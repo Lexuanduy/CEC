@@ -10,6 +10,7 @@ var config = {
 };
 firebase.initializeApp(config);
 const db = firebase.firestore();
+
 // facebook auth
 var provider = new firebase.auth.FacebookAuthProvider();
 var photoURL = null;
