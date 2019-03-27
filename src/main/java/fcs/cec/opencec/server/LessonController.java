@@ -156,7 +156,7 @@ public class LessonController {
 		String uri = "lesson/";
 		LessonMember lessonMember = null;
 		LOGGER.info("lessonNumber: " + lessonNumber);
-//		lessonCheckNow = 1;
+		lessonCheckNow = 1;
 		if (Integer.parseInt(lessonNumber) == lessonCheckNow) {
 			ApiFuture<QuerySnapshot> futureLesson = db.collection("LessonMember").whereEqualTo("uid", uid)
 					.whereEqualTo("lesson", lessonCheckNow).get();
@@ -180,10 +180,8 @@ public class LessonController {
 			}
 
 			// map member in account
-//			DocumentReference docRef = db.collection("Account").document(uid);
-//			ApiFuture<WriteResult> future = docRef.update("memberId", memberId);
-//			WriteResult result = future.get();
-//			System.out.println("Write result: " + result);
+			DocumentReference docRef = db.collection("Account").document(uid);
+			ApiFuture<WriteResult> future = docRef.update("memberId", memberId);
 			// end map
 			lessonCheckNow = lessonCheckNow + 1;
 			String uriReturn = "/lesson/" + String.valueOf(lessonCheckNow);
