@@ -18,6 +18,7 @@ var uid = null;
 firebase.auth().onAuthStateChanged(function (user) {
     if (user) {
         $('#sign-out')[0].hidden = false;
+        
     } else {
         $('#sign-in')[0].hidden = false;
         $('#sign-in').on('click', () => {
@@ -56,9 +57,9 @@ function getCookie(key) {
 	    return result [1];
 	  }
 	}
-console.log('photoURL: ' + getCookie('photoURL'));
-console.log('uid: ' + getCookie('uid'));
-console.log('displayName: ' + getCookie('displayName'));
+// console.log('photoURL: ' + getCookie('photoURL'));
+// console.log('uid: ' + getCookie('uid'));
+// console.log('displayName: ' + getCookie('displayName'));
 
 // set avatar from photoURL in cookie
 document.getElementById("photoURL").src= getCookie('photoURL');
@@ -70,6 +71,7 @@ $('#sign-out').on('click',()=>{
 			 document.cookie = 'photoURL' + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
 			 document.cookie = 'uid' + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
 			 document.cookie = 'displayName' + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+			 document.cookie = 'numLesson' + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
 		 console.log("Logout thành công");
 		 $('#sign-out')[0].hidden = true;
 		 }).catch(function (error) {
