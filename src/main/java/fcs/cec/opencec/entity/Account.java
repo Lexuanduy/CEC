@@ -44,18 +44,9 @@ public class Account {
 		this.photoURL = photoURL;
 	}
 
-	public Map<String, Object> getNumLesson() {
-		return numLesson;
-	}
-
-	public void setNumLesson(Map<String, Object> numLesson) {
-		this.numLesson = numLesson;
-	}
-
 	private String uid;
 	private String displayName;
 	private String email;
 	private boolean emailVerified;
 	private String photoURL;
-	private Map<String, Object> numLesson;
 }
