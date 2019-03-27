@@ -2,13 +2,11 @@ package fcs.cec.opencec.server;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
@@ -29,6 +27,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.DocumentReference;
 import com.google.cloud.firestore.DocumentSnapshot;
@@ -38,9 +37,8 @@ import com.google.cloud.firestore.QueryDocumentSnapshot;
 import com.google.cloud.firestore.QuerySnapshot;
 import com.google.cloud.firestore.WriteResult;
 
-import fcs.cec.opencec.entity.Account;
 import fcs.cec.opencec.entity.Lesson;
-import fcs.cec.opencec.entity.MemberPost;
+import fcs.cec.opencec.entity.LessonMember;
 
 @Controller
 public class LessonController {
@@ -88,7 +86,6 @@ public class LessonController {
 		HttpServletRequest req = (HttpServletRequest) request;
 		HttpServletResponse res = (HttpServletResponse) response;
 
-		// get cookie
 		String uid = null;
 		Cookie[] cookies = req.getCookies();
 		if (cookies != null) {
@@ -98,42 +95,36 @@ public class LessonController {
 				}
 			}
 		}
-		Firestore db = FirestoreOptions.getDefaultInstance().getService();
-
-		// get lesson check lesson learned
-		ApiFuture<QuerySnapshot> futurePost = db.collection("Account").whereEqualTo("uid", uid).get();
-		List<QueryDocumentSnapshot> documents = futurePost.get().getDocuments();
-		Account account = null;
-		for (DocumentSnapshot documentPost : documents) {
-			account = documentPost.toObject(Account.class);
-		}
 		int idLesson = Integer.parseInt(id);
 		LOGGER.info("id lesson: " + idLesson);
-		
-		if(idLesson != 1) {
-			int lessonLerned = account.getNumLesson().size();
-			LOGGER.info("lessonLerned: " + lessonLerned);
-			if ((lessonLerned > 1) && (lessonLerned < idLesson)) {
+		Firestore db = FirestoreOptions.getDefaultInstance().getService();
+
+		if (idLesson > 1) {
+			// get lessonmember check lesson learned
+			int lessonOld = idLesson - 1;
+			ApiFuture<QuerySnapshot> futurePost = db.collection("LessonMember").whereEqualTo("uid", uid)
+					.whereEqualTo("lesson", lessonOld).get();
+			List<QueryDocumentSnapshot> documents = futurePost.get().getDocuments();
+			LessonMember lessonMember = null;
+			for (DocumentSnapshot documentPost : documents) {
+				lessonMember = documentPost.toObject(LessonMember.class);
+			}
+			int status = lessonMember.getStatus();
+			if (status == 0) {
 				LOGGER.info("fail next lesson");
 				return "error/403";
 			}
 		}
-
+		// set cookie
+		res.addCookie(new Cookie("numLesson", id));
+		LOGGER.info("id: " + id);
+		// get cookie
 		// get lesson by lesson number
 		for (Lesson lesson : lessonList) {
 			if (lesson.getName().equals(id)) {
 				model.addAttribute("lesson", lesson);
 			}
 		}
-
-		// add lesson learned, update account
-		DocumentReference docRef = db.collection("Account").document(uid);
-		Map<String, Object> data = new HashMap<>();
-		for (int i = 1; i < idLesson + 1; i++) {
-			String nameLesson = "Lesson " + String.valueOf(i);
-			data.put(nameLesson, String.valueOf(i));
-		}
-		ApiFuture<WriteResult> future = docRef.update("numLesson", data);
 
 		return "lesson/lesson";
 	}
@@ -143,38 +134,63 @@ public class LessonController {
 			throws IOException, InterruptedException, ExecutionException, ServletException {
 		HttpServletRequest req = (HttpServletRequest) request;
 		HttpServletResponse res = (HttpServletResponse) response;
-
+		Firestore db = FirestoreOptions.getDefaultInstance().getService();
+		String lessonNumber = req.getParameter("lessonNumber");
 		String url = req.getParameter("url");
 		String uid = req.getParameter("uid");
-		LOGGER.info("uid user: " + uid);
 		Document doc = Jsoup.connect(url).get();
-		String title = doc.select("title").text();
-		Character numLesson = title.charAt(7);
-		LOGGER.info("num lesson: " + numLesson);
-		Firestore db = FirestoreOptions.getDefaultInstance().getService();
-		ApiFuture<QuerySnapshot> future = db.collection("Account").whereEqualTo("uid", uid).get();
-		List<QueryDocumentSnapshot> documents = future.get().getDocuments();
-		Account account = null;
-		for (DocumentSnapshot documentPost : documents) {
-			account = documentPost.toObject(Account.class);
-		}
-		int lessonLerned = account.getNumLesson().size();
-		LOGGER.info("size: " + lessonLerned);
-		int lessonCheckNow = Character.getNumericValue(numLesson);
-		LOGGER.info("lesson check now: " + lessonCheckNow);
-//		int lessonCheckNow = 4;
-		if (lessonLerned == lessonCheckNow) {
-			LOGGER.info("next lesson");
-			DocumentReference docRef = db.collection("Account").document(uid);
-			Map<String, Object> data = new HashMap<>();
-			for (int i = 1; i < lessonLerned + 2; i++) {
-				String nameLesson = "Lesson " + String.valueOf(i);
-				data.put(nameLesson, String.valueOf(i));
+		String lessonHashtag = doc.select(".bo .bt").text();
+		LOGGER.info("lessonHashtag: " + lessonHashtag);
+		Character numLessonVideo = lessonHashtag.charAt(6);
+		int lessonCheckNow = Character.getNumericValue(numLessonVideo);
+		LOGGER.info("num lesson video: " + lessonCheckNow);
+		String object = doc.select("#m_story_permalink_view .bb").attr("data-ft");
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String, Object> map = mapper.readValue(object, Map.class);
+		String postId = (String) map.get("top_level_post_id");
+		LOGGER.info("postId: " + postId);
+		String memberId = (String) map.get("content_owner_id_new");
+		LOGGER.info("memberId: " + memberId);
+		String memberName = doc.select("meta[property=\"og:title\"]").attr("content");
+		LOGGER.info("memberName: " + memberName);
+		String uri = "lesson/";
+		LessonMember lessonMember = null;
+		LOGGER.info("lessonNumber: " + lessonNumber);
+//		lessonCheckNow = 1;
+		if (Integer.parseInt(lessonNumber) == lessonCheckNow) {
+			ApiFuture<QuerySnapshot> futureLesson = db.collection("LessonMember").whereEqualTo("uid", uid)
+					.whereEqualTo("lesson", lessonCheckNow).get();
+			// future.get() blocks on response
+			List<QueryDocumentSnapshot> lessonDocuments = futureLesson.get().getDocuments();
+			String docId;
+			for (DocumentSnapshot document : lessonDocuments) {
+				lessonMember = document.toObject(LessonMember.class);
+				LOGGER.info("doc id lessonmember: " + document.getId());
+				docId = document.getId();
+				// Update an existing document
+				DocumentReference docRef = db.collection("LessonMember").document(docId);
+				// (async) Update one field
+				Map<String, Object> updates = new HashMap<>();
+				updates.put("memberId", memberId);
+				updates.put("memberName", memberName);
+				updates.put("postId", postId);
+				updates.put("status", 1);
+				updates.put("url", url);
+				ApiFuture<WriteResult> futureLessonMember = docRef.update(updates);
 			}
-			ApiFuture<WriteResult> futureAccount = docRef.update("numLesson", data);
-			int num = lessonLerned + 1;
-			String urlreturn = "/lesson/" + num;
-			res.getWriter().print(urlreturn);
+
+			// map member in account
+//			DocumentReference docRef = db.collection("Account").document(uid);
+//			ApiFuture<WriteResult> future = docRef.update("memberId", memberId);
+//			WriteResult result = future.get();
+//			System.out.println("Write result: " + result);
+			// end map
+			lessonCheckNow = lessonCheckNow + 1;
+			String uriReturn = "/lesson/" + String.valueOf(lessonCheckNow);
+			res.getWriter().print(String.valueOf(uriReturn));
+			res.setStatus(200);
+		} else {
+			res.setStatus(404);
 		}
 	}
 }
