@@ -1,3 +1,4 @@
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -9,18 +10,25 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
 import com.google.api.client.json.Json;
 import com.google.api.core.ApiFuture;
+import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.firestore.DocumentReference;
 import com.google.cloud.firestore.Firestore;
 import com.google.cloud.firestore.FirestoreOptions;
 import com.google.cloud.firestore.WriteResult;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.FirebaseOptions;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthException;
+import com.google.firebase.auth.FirebaseToken;
 
 import fcs.cec.opencec.entity.Lesson;
 
 public class Main {
 
-	public static void main(String[] args) throws IOException, InterruptedException, ExecutionException {
+	public static void main(String[] args) throws IOException, InterruptedException, ExecutionException, FirebaseAuthException {
 		// story_body_container
 //		https://www.facebook.com/hashtag/lesson8cec?source=feed_text&epa=HASHTAG
 //		https://m.facebook.com/groups/cec.edu.vn/permalink/2259370051002705/
@@ -58,6 +66,17 @@ public class Main {
 //		data.put("Lesson 2", "2");
 //		// (async) Update one field
 //		ApiFuture<WriteResult> future = docRef.update("numLesson", data);
+		
+	
+		
+		
+
+		
+//		FirebaseApp.initializeApp();
+//		FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken("EAAS2fFjpbzABAOu2ksDiZCm5lqE4gwTCN3vZBhyfU9b6fedApeDZCwnutRIlDtwEZCbBrFJhjZApN9hZC0RDpnZCLAyqYfrqQbyBA3LFEJDnYtpeZAT1bVd1t3Jc7DpLdogS6s0fIXsXoVEoZAYNsOTxFZCeVap9eYmYOY0WWTbVAWlgZDZD");
+//		String uid = decodedToken.getUid();
+//		
+//		System.out.println(decodedToken.getName());
 
 	}
 
