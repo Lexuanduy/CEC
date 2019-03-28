@@ -125,7 +125,7 @@ public class LessonController {
 			int status = lessonMember.getStatus();
 			if (status == 0) {
 				LOGGER.info("fail next lesson");
-				return "error/403";
+				return "error/404";
 			}
 		}
 
