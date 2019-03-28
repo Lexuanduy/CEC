@@ -44,7 +44,16 @@ public class Account {
 		this.photoURL = photoURL;
 	}
 
+	public String getMemberId() {
+		return memberId;
+	}
+
+	public void setMemberId(String memberId) {
+		this.memberId = memberId;
+	}
+
 	private String uid;
+	private String memberId;
 	private String displayName;
 	private String email;
 	private boolean emailVerified;
