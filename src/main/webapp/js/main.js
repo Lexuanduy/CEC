@@ -29,7 +29,7 @@ firebase.auth().onAuthStateChanged(function (user) {
                 'display': 'popup' // Login dưới dạng popup
             });
             firebase.auth().signInWithPopup(provider).then( function (result) {
-//            	console.log(result);
+// console.log(result);
                 var token = result.credential.accessToken; // Token facebook
                 console.log("token: " + token);
 				var obj = JSON.parse(JSON.stringify(result));
@@ -110,29 +110,13 @@ $('#nextLesson')
 						});
 						return;
 					}
-					Swal({
-						title : 'Paste your video link below.'
-					});
-					Swal({
-						position : 'center',
-						title : 'Vui lòng nhập link video của bạn về bài học này!',
-						showConfirmButton : false,
-						timer : 2000,
-					});
-					$('#sendVideo').show();
-					$('#urlLesson').show();
-					$('#nextLesson').hide();
-				});
-
-$('#sendVideo')
-		.click(
-				function() {
 					console.log("click send video check");
 					db.collection("LessonMember").where("lesson", "==", numLesson).where("uid", "==", uid)
 				    .get()
 				    .then(function(querySnapshot) {
 				        querySnapshot.forEach(function(doc) {
-				            // doc.data() is never undefined for query doc snapshots
+				            // doc.data() is never undefined for query doc
+							// snapshots
 				            
 				            if(doc.data().status == 1){
 				            	console.log("status: " + doc.data().status);
@@ -141,58 +125,78 @@ $('#sendVideo')
 				            	window.location.href = nextVideoUrl;
 				            }
 				            else {
-				            	console.log("status: 0");
-				            	var urlVideo = $('#lastLesson').val();
-								if (urlVideo == "") {
-									Swal({
-										position : 'center',
-										title : 'Vui lòng nhập video bài học của bạn trước khi chuyển sang bài học tiếp theo!',
-										showConfirmButton : false,
-										timer : 2000,
-									});
-									return;
-								}
-								var strUrlCut = urlVideo.slice(8, (urlVideo
-										.indexOf("facebook") - 1));
-								var strUrlLast = urlVideo.slice((urlVideo
-										.indexOf("facebook") - 1));
-								var strHTTP = "https://m";
-								var URL = strHTTP + strUrlLast;
-								console.log("URL: " + URL);
-								$.ajax({
-											url : "/checkVideo?url=" + URL + "&numLesson="
-													+ numLesson,
-											type : 'POST',
-											success : function(data) {
-												console.log('data: ' + data);
-												window.location.href = data;
-											},
-											error : function(jqXHR, textStatus, errorThrown) {
-												if (jqXHR.status == 404) {
-													Swal({
-														position : 'center',
-														type : 'error',
-														title : 'Link video không đúng .Vui lòng nhập lại link video bài học của bạn!',
-														showConfirmButton : false,
-														timer : 2000,
-													});
-												}
-												if (jqXHR.status == 403) {
-													alert("error 403");
-												}
-												if (jqXHR.status == 405) {
-													alert("error 405");
-												}
-												if (jqXHR.status == 401) {
-													Swal({
-														position : 'center',
-														title : 'Phiên bản đã hết hạn, vui lòng đăng nhập lại!',
-														showConfirmButton : false,
-														timer : 3000,
-													});
-												}
-											}
-										});
+								$('#sendVideo').show();
+								$('#urlLesson').show();
+								$('#nextLesson').hide();
+								Swal({
+									title : 'Paste your video link below.'
+								});
+								Swal({
+									position : 'center',
+									title : 'Vui lòng nhập link video của bạn về bài học này!',
+									showConfirmButton : false,
+									timer : 2000,
+								});
+				            	$('#sendVideo')
+				        		.click(
+				        				function() {
+				        				            // doc.data() is never
+													// undefined for query doc
+													// snapshots
+				        				            
+				        				            	console.log("status: 0");
+				        				            	var urlVideo = $('#lastLesson').val();
+				        								if (urlVideo == "") {
+				        									Swal({
+				        										position : 'center',
+				        										title : 'Vui lòng nhập video bài học của bạn trước khi chuyển sang bài học tiếp theo!',
+				        										showConfirmButton : false,
+				        										timer : 2000,
+				        									});
+				        									return;
+				        								}
+				        								var strUrlCut = urlVideo.slice(8, (urlVideo
+				        										.indexOf("facebook") - 1));
+				        								var strUrlLast = urlVideo.slice((urlVideo
+				        										.indexOf("facebook") - 1));
+				        								var strHTTP = "https://m";
+				        								var URL = strHTTP + strUrlLast;
+				        								console.log("URL: " + URL);
+				        								$.ajax({
+				        											url : "/checkVideo?url=" + URL + "&numLesson="
+				        													+ numLesson,
+				        											type : 'POST',
+				        											success : function(data) {
+				        												console.log('data: ' + data);
+				        												window.location.href = data;
+				        											},
+				        											error : function(jqXHR, textStatus, errorThrown) {
+				        												if (jqXHR.status == 404) {
+				        													Swal({
+				        														position : 'center',
+				        														type : 'error',
+				        														title : 'Link video không đúng .Vui lòng nhập lại link video bài học của bạn!',
+				        														showConfirmButton : false,
+				        														timer : 2000,
+				        													});
+				        												}
+				        												if (jqXHR.status == 403) {
+				        													alert("error 403");
+				        												}
+				        												if (jqXHR.status == 405) {
+				        													alert("error 405");
+				        												}
+				        												if (jqXHR.status == 401) {
+				        													Swal({
+				        														position : 'center',
+				        														title : 'Phiên bản đã hết hạn, vui lòng đăng nhập lại!',
+				        														showConfirmButton : false,
+				        														timer : 3000,
+				        													});
+				        												}
+				        											}
+				        										});
+				        				});
 				            }
 				        });
 				    })
@@ -200,5 +204,7 @@ $('#sendVideo')
 				        console.log("Error getting documents: ", error);
 				    });
 				});
+
+
 
 
