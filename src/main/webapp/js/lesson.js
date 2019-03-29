@@ -1,7 +1,6 @@
 var uid = null;
 var uri = window.location.pathname;
 var numLesson = uri.slice(8);
-
 $('#nextLesson')
 		.click(
 				function() {
@@ -33,6 +32,29 @@ $('#nextLesson')
 $('#sendVideo')
 		.click(
 				function() {
+					console.log("click send video check");
+					// db.collection("LessonMember").where("uid", "==",
+					// uid).where("lesson", "==", numLesson)
+					// .get()
+					// .then(function(querySnapshot) {
+					// querySnapshot.forEach(function(doc) {
+					// console.log(doc.id, " => ", doc.data());
+					// if(doc.data().status == 1){
+					// console.log("status: " + status);
+					// var nextLesson = numLesson + 1;
+					// var urlNextLesson = "/lesson/" + nextLesson;
+					// window.location.href = urlNextLesson;
+					// return;
+					// }
+					// else {
+					//					            	
+					// }
+					// });
+					// })
+					// .catch(function(error) {
+					// console.log("Error getting documents: ", error);
+					// });
+					console.log("status = 0");
 					var urlVideo = $('#lastLesson').val();
 					if (urlVideo == "") {
 						Swal({
@@ -43,12 +65,15 @@ $('#sendVideo')
 						});
 						return;
 					}
-					var strUrlCut = urlVideo.slice(8,(urlVideo.indexOf("facebook") - 1));
-					var strUrlLast = urlVideo.slice((urlVideo.indexOf("facebook") - 1));
+					var strUrlCut = urlVideo.slice(8, (urlVideo
+							.indexOf("facebook") - 1));
+					var strUrlLast = urlVideo.slice((urlVideo
+							.indexOf("facebook") - 1));
 					var strHTTP = "https://m";
 					var URL = strHTTP + strUrlLast;
 					console.log("URL: " + URL);
-					$.ajax({
+					$
+							.ajax({
 								url : "/checkVideo?url=" + URL + "&numLesson="
 										+ numLesson,
 								type : 'POST',
@@ -71,6 +96,14 @@ $('#sendVideo')
 									}
 									if (jqXHR.status == 405) {
 										alert("error 405");
+									}
+									if (jqXHR.status == 401) {
+										Swal({
+											position : 'center',
+											title : 'Phiên bản đã hết hạn, vui lòng đăng nhập lại!',
+											showConfirmButton : false,
+											timer : 3000,
+										});
 									}
 								}
 							});

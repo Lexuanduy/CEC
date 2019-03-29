@@ -9,7 +9,7 @@ var config = {
 	messagingSenderId : "1003263080371",
 };
 firebase.initializeApp(config);
-const db = firebase.firestore();
+var db = firebase.firestore();
 var facebookId;
 var uid;
 var displayName;
@@ -29,23 +29,19 @@ firebase.auth().onAuthStateChanged(function (user) {
                 'display': 'popup' // Login dưới dạng popup
             });
             firebase.auth().signInWithPopup(provider).then( function (result) {
+            	console.log(result);
                 var token = result.credential.accessToken; // Token facebook
 				var obj = JSON.parse(JSON.stringify(result));
 				facebookId = obj.additionalUserInfo.profile.id;
-				console.log("facebookId: " + facebookId);
 				uid = obj.user.uid;
-				console.log("uid: " + uid);
 				displayName = obj.user.displayName;
-				console.log("displayName: " + displayName);
 				photoURL = obj.user.photoURL;
-				console.log("photoURL: " + photoURL);
 				accessToken = obj.user.stsTokenManager.accessToken;
-				console.log("accessToken: " + accessToken);
 				
                 $('#sign-in')[0].hidden = true;
                 document.getElementById("photoURL").src= photoURL;
                 // create cookie
-                document.cookie = 'facebookId=' + facebookId;
+                 document.cookie = 'facebookId=' + facebookId;
 				 document.cookie = 'photoURL=' + photoURL;
 				 document.cookie = 'uid=' + uid;
 				 document.cookie = 'displayName=' + displayName;
