@@ -109,14 +109,18 @@ public class LessonController {
 
 	@RequestMapping(value = "lesson/{id}", method = RequestMethod.GET)
 	public String lesson(Model model, @PathVariable("id") String id, @CookieValue("idToken") String idToken,
-			HttpServletResponse response)
+			@CookieValue("facebookId") String facebookId, HttpServletResponse response)
 			throws InterruptedException, ExecutionException, FirebaseAuthException, IOException {
 		LOGGER.info("idToken: " + idToken);
+		LOGGER.info("facebookId: " + facebookId);
 		int idLesson = Integer.parseInt(id);
 		Firestore db = FirestoreOptions.getDefaultInstance().getService();
+		String uid = null;
+		FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
+		uid = decodedToken.getUid();
 		if (idLesson > 1) {
-			FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
-			String uid = decodedToken.getUid();
+//			FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
+//			uid = decodedToken.getUid();
 			// get lessonmember check lesson learned
 			int lessonOld = idLesson - 1;
 			ApiFuture<QuerySnapshot> futurePost = db.collection("LessonMember").whereEqualTo("uid", uid)
@@ -128,12 +132,35 @@ public class LessonController {
 				return "error/404";
 			}
 		}
+//		ApiFuture<DocumentReference> addedDocRef = db.collection("LessonMember").add(data);
 
 		// get lesson by lesson number
 		for (Lesson lesson : lessonList) {
 			if (lesson.getName().equals(id)) {
 				model.addAttribute("lesson", lesson);
 			}
+		}
+		// create new next lesson
+		Map<String, Object> data = new HashMap<>();
+		idLesson = idLesson + 1;
+		data.put("lesson", idLesson);
+		data.put("memberId", facebookId);
+		data.put("memberName", "");
+		data.put("postId", "");
+		data.put("status", 0);
+		data.put("url", "");
+		data.put("uid", uid);
+		data.put("accountId", facebookId);
+		data.put("createdAt", System.currentTimeMillis() / 1000);
+		data.put("updatedAt", System.currentTimeMillis() / 1000);
+		String docId = String.valueOf(idLesson) + facebookId;
+		DocumentReference docRef = db.collection("LessonMember").document(docId);
+		ApiFuture<DocumentSnapshot> future = docRef.get();
+		DocumentSnapshot document = future.get();
+		if (document.exists()) {
+			LOGGER.info("document LessonMember eixst!");
+		} else {
+			ApiFuture<WriteResult> addedDocRef = db.collection("LessonMember").document(docId).set(data);
 		}
 
 		return "lesson/lesson";
@@ -158,14 +185,20 @@ public class LessonController {
 		String memberId = (String) map.get("content_owner_id_new");
 		String memberName = doc.select("meta[property=\"og:title\"]").attr("content");
 		LOGGER.info("lessonNumber :" + numLesson);
-//		lessonCheckNow = 1; 
+//		lessonCheckNow = 2;
 		String docId = null;
+		LOGGER.info("uid: " + uid);
 		if (Integer.parseInt(numLesson) == lessonCheckNow) {
 			ApiFuture<QuerySnapshot> futureLesson = db.collection("LessonMember").whereEqualTo("uid", uid)
 					.whereEqualTo("lesson", lessonCheckNow).get();
 			List<QueryDocumentSnapshot> lessonDocuments = futureLesson.get().getDocuments();
 			for (DocumentSnapshot document : lessonDocuments) {
 				docId = document.getId();
+			}
+			LOGGER.info("docId: " + docId);
+			if (docId == null) {
+				response.setStatus(401);
+				return;
 			}
 			DocumentReference docRefLesson = db.collection("LessonMember").document(docId);
 			Map<String, Object> updates = new HashMap<>();
@@ -174,9 +207,13 @@ public class LessonController {
 			updates.put("postId", postId);
 			updates.put("status", 1);
 			updates.put("url", url);
+			updates.put("updatedAt", System.currentTimeMillis() / 1000);
 			ApiFuture<WriteResult> futureLessonMember = docRefLesson.update(updates);
 			// map member in account
-			DocumentReference docRef = db.collection("Account").document(uid);
+			ApiFuture<QuerySnapshot> futureAccount = db.collection("Account").whereEqualTo("uid", uid).get();
+			Account account = futureAccount.get().getDocuments().get(0).toObject(Account.class);
+			String id = account.getId();
+			DocumentReference docRef = db.collection("Account").document(id);
 			ApiFuture<WriteResult> future = docRef.update("memberId", memberId);
 			// end map
 			lessonCheckNow = lessonCheckNow + 1;
