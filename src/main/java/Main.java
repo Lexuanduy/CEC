@@ -72,11 +72,11 @@ public class Main {
 		
 
 		
-//		FirebaseApp.initializeApp();
-//		FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken("EAAS2fFjpbzABAOu2ksDiZCm5lqE4gwTCN3vZBhyfU9b6fedApeDZCwnutRIlDtwEZCbBrFJhjZApN9hZC0RDpnZCLAyqYfrqQbyBA3LFEJDnYtpeZAT1bVd1t3Jc7DpLdogS6s0fIXsXoVEoZAYNsOTxFZCeVap9eYmYOY0WWTbVAWlgZDZD");
-//		String uid = decodedToken.getUid();
-//		
-//		System.out.println(decodedToken.getName());
+		FirebaseApp.initializeApp();
+		FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken("EAAS2fFjpbzABAD3Sy4mrb0VmexhUSwXjnk1IPOW0TDtxFYdvTjYlOVNkRNRjs58iGYSru6CfZBEe4uIqVc8VgH59zptkRQAj0kkIp16BX7cNsZCt55K9U0kcs0NFKyoUl1W4uF4BBF2JbBxZBY6QzQ9KwEXd6gr71hJ1RRsggZDZD");
+		String uid = decodedToken.getUid();
+		
+		System.out.println(uid);
 
 	}
 

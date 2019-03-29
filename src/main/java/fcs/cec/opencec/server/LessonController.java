@@ -59,19 +59,6 @@ public class LessonController {
 	static ArrayList<Lesson> lessonList = new ArrayList<Lesson>();
 
 	static {
-		try {
-			FileInputStream serviceAccount = new FileInputStream(
-					"D:\\opencec\\opencec-firebase-adminsdk-ccqab-9f50c0997b.json");
-			FirebaseOptions options = new FirebaseOptions.Builder()
-					.setCredentials(GoogleCredentials.fromStream(serviceAccount))
-					.setDatabaseUrl("https://opencec.firebaseio.com/").build();
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		FirebaseApp.initializeApp();
 		Document doc = null;
 		String url = "https://script.googleusercontent.com/macros/echo?user_content_key=LEy1GAo9wjoLRZc9iC7Foj2_FlhoI-giInrErm2cV4u5x9ofZTKeL6S-8j3gm3s6KeWjkqEuwzhS-z8jFYAGLHj4X4Uv50wjm5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnCT0QRJ7P_-LtV3tAd8_b_dUnbO1rEvbeLLB2eAoIGhp1hENMaacOI9TktsviLkDHJlUq1JAmpDs&lib=MmSKrXssQcdpiSXxZX7nm1QZVzjmXS3D2";
@@ -108,16 +95,16 @@ public class LessonController {
 	}
 
 	@RequestMapping(value = "lesson/{id}", method = RequestMethod.GET)
-	public String lesson(Model model, @PathVariable("id") String id, @CookieValue("idToken") String idToken,
+	public String lesson(Model model, @PathVariable("id") String id, @CookieValue("uid") String uid,
 			@CookieValue("facebookId") String facebookId, HttpServletResponse response)
 			throws InterruptedException, ExecutionException, FirebaseAuthException, IOException {
-		LOGGER.info("idToken: " + idToken);
+		LOGGER.info("uid: " + uid);
 		LOGGER.info("facebookId: " + facebookId);
 		int idLesson = Integer.parseInt(id);
 		Firestore db = FirestoreOptions.getDefaultInstance().getService();
-		String uid = null;
-		FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
-		uid = decodedToken.getUid();
+//		String uid = null;
+//		FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
+//		uid = decodedToken.getUid();
 		if (idLesson > 1) {
 //			FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
 //			uid = decodedToken.getUid();
@@ -185,9 +172,9 @@ public class LessonController {
 		String memberId = (String) map.get("content_owner_id_new");
 		String memberName = doc.select("meta[property=\"og:title\"]").attr("content");
 		LOGGER.info("lessonNumber :" + numLesson);
-//		lessonCheckNow = 2;
+//		lessonCheckNow = 3;
 		String docId = null;
-		LOGGER.info("uid: " + uid);
+//		LOGGER.info("uid: " + uid);
 		if (Integer.parseInt(numLesson) == lessonCheckNow) {
 			ApiFuture<QuerySnapshot> futureLesson = db.collection("LessonMember").whereEqualTo("uid", uid)
 					.whereEqualTo("lesson", lessonCheckNow).get();
