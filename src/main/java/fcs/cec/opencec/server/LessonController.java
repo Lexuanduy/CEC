@@ -1,20 +1,13 @@
 package fcs.cec.opencec.server;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.jsoup.Jsoup;
@@ -26,16 +19,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
 import com.google.api.core.ApiFuture;
-import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.firestore.DocumentReference;
 import com.google.cloud.firestore.DocumentSnapshot;
 import com.google.cloud.firestore.Firestore;
@@ -44,7 +34,6 @@ import com.google.cloud.firestore.QueryDocumentSnapshot;
 import com.google.cloud.firestore.QuerySnapshot;
 import com.google.cloud.firestore.WriteResult;
 import com.google.firebase.FirebaseApp;
-import com.google.firebase.FirebaseOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseToken;
@@ -103,8 +92,6 @@ public class LessonController {
 		int idLesson = Integer.parseInt(id);
 		Firestore db = FirestoreOptions.getDefaultInstance().getService();
 //		String uid = null;
-//		FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
-//		uid = decodedToken.getUid();
 		if (idLesson > 1) {
 //			FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
 //			uid = decodedToken.getUid();
@@ -119,8 +106,6 @@ public class LessonController {
 				return "error/404";
 			}
 		}
-//		ApiFuture<DocumentReference> addedDocRef = db.collection("LessonMember").add(data);
-
 		// get lesson by lesson number
 		for (Lesson lesson : lessonList) {
 			if (lesson.getName().equals(id)) {

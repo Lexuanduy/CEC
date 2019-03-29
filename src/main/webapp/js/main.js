@@ -1,5 +1,3 @@
-// Initialize Firebase
-// TODO: Replace with your project's customized code snippet
 
 firebase.initializeApp({
 	apiKey : "AIzaSyB1VOLrgajZr5o879ijK2fWcvui394jNC4",
@@ -115,9 +113,6 @@ $('#nextLesson')
 				    .get()
 				    .then(function(querySnapshot) {
 				        querySnapshot.forEach(function(doc) {
-				            // doc.data() is never undefined for query doc
-							// snapshots
-				            
 				            if(doc.data().status == 1){
 				            	console.log("status: " + doc.data().status);
 				            	numLesson = numLesson + 1;
@@ -140,10 +135,6 @@ $('#nextLesson')
 				            	$('#sendVideo')
 				        		.click(
 				        				function() {
-				        				            // doc.data() is never
-													// undefined for query doc
-													// snapshots
-				        				            
 				        				            	console.log("status: 0");
 				        				            	var urlVideo = $('#lastLesson').val();
 				        								if (urlVideo == "") {

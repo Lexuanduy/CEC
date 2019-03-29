@@ -1,8 +1,5 @@
 package fcs.cec.opencec.entity;
 
-import java.util.ArrayList;
-import java.util.Map;
-
 public class Account {
 	public String getId() {
 		return id;
