@@ -4,6 +4,14 @@ import java.util.ArrayList;
 import java.util.Map;
 
 public class Account {
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
 	public String getUid() {
 		return uid;
 	}
@@ -51,7 +59,7 @@ public class Account {
 	public void setMemberId(String memberId) {
 		this.memberId = memberId;
 	}
-
+	private String id;
 	private String uid;
 	private String memberId;
 	private String displayName;
