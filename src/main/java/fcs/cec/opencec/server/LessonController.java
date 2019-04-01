@@ -54,7 +54,6 @@ public class LessonController {
 		try {
 			doc = Jsoup.connect(url).timeout(30000).get();
 		} catch (IOException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		Elements elements = doc.select("lesson");
@@ -84,14 +83,15 @@ public class LessonController {
 	}
 
 	@RequestMapping(value = "lesson/{id}", method = RequestMethod.GET)
-	public String lesson(Model model, @PathVariable("id") String id, @CookieValue("uid") String uid,
+	public String lesson(Model model, @PathVariable("id") String id, @CookieValue("idToken") String idToken,
 			@CookieValue("facebookId") String facebookId, HttpServletResponse response)
 			throws InterruptedException, ExecutionException, FirebaseAuthException, IOException {
-		LOGGER.info("uid: " + uid);
+		LOGGER.info("idToken: " + idToken);
 		LOGGER.info("facebookId: " + facebookId);
 		int idLesson = Integer.parseInt(id);
 		Firestore db = FirestoreOptions.getDefaultInstance().getService();
-//		String uid = null;
+		FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
+		String uid = decodedToken.getUid();
 		if (idLesson > 1) {
 //			FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
 //			uid = decodedToken.getUid();

@@ -8,6 +8,8 @@ import java.util.concurrent.ExecutionException;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
@@ -24,6 +26,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseToken;
 
+import ch.qos.logback.classic.Logger;
+import fcs.cec.opencec.entity.Journey;
 import fcs.cec.opencec.entity.Lesson;
 
 public class Main {
@@ -32,6 +36,7 @@ public class Main {
 		// story_body_container
 //		https://www.facebook.com/hashtag/lesson8cec?source=feed_text&epa=HASHTAG
 //		https://m.facebook.com/groups/cec.edu.vn/permalink/2259370051002705/
+//		https://m.facebook.com/groups/cec.edu.vn/permalink/2264646963808347/
 //		String url = "https://m.facebook.com/groups/cec.edu.vn/permalink/2262271487379228/";
 //		Document doc = Jsoup.connect(url).get();
 //		System.out.println(doc.html());
@@ -78,6 +83,31 @@ public class Main {
 //		
 //		System.out.println(uid);
 
+		
+//		Document doc = null;
+//		String url = "https://script.googleusercontent.com/macros/echo?user_content_key=AH8p3WxEhxDFhaufV3L3moVwYAykzqrPyDsk6W5Nlh3M7uaqUwZuxSghoqQyW3kPOAnJS04oyJHl2F0LjZzr8dbUbiwZjhHem5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnCT0QRJ7P_-LtV3tAd8_b_dUnbO1rEvbeLLB2eAoIGhp1hENMaacOI9TktsviLkDHJlUq1JAmpDs&lib=MmSKrXssQcdpiSXxZX7nm1QZVzjmXS3D2";
+//		try {
+//			doc = Jsoup.connect(url).timeout(30000).get();
+//		} catch (IOException e1) {
+//			e1.printStackTrace();
+//		}
+//		Elements elements = doc.select("day");
+//		Element ePdf = null;
+//		Element videoMp4 = null;
+//		String name = null;
+//		String pdf = null;
+//		String video = null;
+//		Journey journey = null;
+//		for (Element element : elements) {
+//			name = element.attr("name");
+//			ePdf = element.child(0);
+//			pdf = ePdf.text();
+//			videoMp4 = element.child(1);
+//			video = videoMp4.text();
+//			System.out.println("name: " + name);
+//			System.out.println("pdf: " + pdf);
+//			System.out.println("video: " + video);
+//		}
 	}
 
 }

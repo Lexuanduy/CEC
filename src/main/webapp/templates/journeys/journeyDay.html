@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/home}" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>CEC Journeys</title>
+</head>
+<body>
+	<div layout:fragment="content">
+		<div class="lesson">
+			<section class="pageIntro">
+				<div class="container text-center" th:each="obj : ${journey}">
+					<h1 class="headingSecondary text-white text-center"
+						th:text="${journey.name}"></h1>
+				</div>
+			</section>
+			<section class="lessonInfo">
+				<div class="container" th:each="obj : ${journey}">
+					<div class="row">
+						<div class="col-md-3">
+							<!-- <h3 class="text-left">
+								<a href="">Hướng dẫn</a>
+							</h3>
+							<p>- Để học tốt bài học này, hãy tìm hiểu chủ đề của bài học
+								này trong hai hình ảnh bên dưới video của giảng viên CEC.</p>
+							<p>- Chú ý theo dõi, lắng nghe và làm theo các bài giảng của
+								Giảng viên CEC trong video.</p>
+							<p>- Kết hợp với từ vựng và cách phát âm các từ trong hai
+								hình ảnh bên dưới video để có thể liên hệ trực tiếp với bài
+								giảng, nó sẽ giúp bạn đạt được kết quả tốt nhất sau bài học này.</p> -->
+						</div>
+						<div class="col-md-6">
+							<h3>
+							<!-- <audio controls="" class="mb-5">
+								<source th:src="@{${lesson.audioURL}}" type="audio/mpeg">
+							</audio> -->
+							<a th:href="@{${journey.pdfUrl}}">Link file PDF</a></h3>
+							<h3>Video hành trình</h3>
+							<video width="320" height="240" controls="">
+								<source th:src="@{${journey.videoURL}}" type="video/mp4">
+							</video>
+						</div>
+						<div class="col-md-3">
+							<!-- <h3 class="text-left">
+								<a href="">Nhiệm vụ</a>
+							</h3>
+							<h4>Tự đặt ra những câu hỏi cho bản thân:</h4>
+							<p>- Những kỹ năng nào tôi sẽ đạt được sau bài học này?</p>
+							<p>- Sau bài học này tôi sẽ học thêm từ mới và cách phát âm
+								chúng?</p>
+							<p>- Và điều quan trọng nhất là làm thế nào để có tiếp thu
+								bài học một cách nhanh nhất? Để có thể thực hiện nhiệm vụ tiếp
+								theo.</p>
+							<p>- Sau khi kết thúc bài học, bạn hãy tạo cho mình một
+								video, trong video đó nói lại những gì bạn đã học được bằng
+								tiếng Anh và dán url video của bạn vào CEC ở phần chuyển bài học
+								bên dưới để chúng tôi có thể kiểm duyệt rằng bạn đã hoàn thành
+								bài học này hay chưa?</p>
+							<p>- Chỉ sau khi hoàn thành bài học này, bạn mới có thể học
+								tiếp bài học tiếp theo trên CEC.</p>
+							<h5 style="color: green;">Chúc bạn thành công, học được
+								những điều bổ ích và luôn có những phút giây vui vẻ khi học cùng
+								CEC !!!</h5> -->
+						</div>
+					</div>
+					<hr class="mb-5 mt-5">
+					<div class="row">
+						<!-- <div class="col-md-6">
+							<p>
+								<img alt="requester review" th:src="@{${lesson.imageURL1}}">
+							</p>
+						</div>
+						<div class="col-md-6">
+							<p>
+								<img alt="requester review" th:src="@{${lesson.imageURL2}}">
+							</p>
+						</div> -->
+					</div>
+					<div class="row">
+						<!-- <div class="col-md-6 offset-md-3">
+							<div class="btn-group" style="float: right; margin-top: 20px;">
+								<button id="nextDay" class="btn btn-primary">Ngày
+									tiếp theo >></button>
+							</div>
+						</div>
+						<div class="col-md-6 offset-md-3">
+							<div class="form-group" style="margin-top: 15px; display: none;"
+								id="urlLesson">
+								<label for="usr" style="color: blue;">Link video về bài
+									học này của bạn:</label> <input type="text" class="form-control"
+									id="lastLesson" style="border-color: black;">
+							</div>
+							<div class="btn-group" style="float: right; margin-top: 20px;">
+								<button id="sendVideo" class="btn btn-success"
+									style="display: none;">Gửi lên CEC</button>
+							</div>
+						</div> -->
+					</div>
+				</div>
+			</section>
+		</div>
+	</div>
+</body>
+</html>
