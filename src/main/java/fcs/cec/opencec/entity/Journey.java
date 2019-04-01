@@ -8,7 +8,7 @@ public class Journey {
 		this.videoURL = videoURL;
 	}
 	public String getName() {
-		return name;
+		return name; 
 	}
 	public void setName(String name) {
 		this.name = name;
