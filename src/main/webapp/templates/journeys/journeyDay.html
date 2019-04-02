@@ -11,7 +11,7 @@
 			<section class="pageIntro">
 				<div class="container text-center" th:each="obj : ${journey}">
 					<h1 class="headingSecondary text-white text-center"
-						th:text="${journey.name}"></h1>
+						th:text="${journey.day}"></h1>
 				</div>
 			</section>
 			<section class="lessonInfo">
@@ -31,10 +31,11 @@
 						</div>
 						<div class="col-md-6">
 							<h3>
-							<!-- <audio controls="" class="mb-5">
+								<!-- <audio controls="" class="mb-5">
 								<source th:src="@{${lesson.audioURL}}" type="audio/mpeg">
 							</audio> -->
-							<a th:href="@{${journey.pdfUrl}}">Link file PDF</a></h3>
+								<a th:href="@{${journey.pdfUrl}}">Link file PDF</a>
+							</h3>
 							<h3>Video hành trình</h3>
 							<video width="320" height="240" controls="">
 								<source th:src="@{${journey.videoURL}}" type="video/mp4">
@@ -77,24 +78,31 @@
 						</div> -->
 					</div>
 					<div class="row">
-						<!-- <div class="col-md-6 offset-md-3">
+						<div class="col-md-6 offset-md-3">
 							<div class="btn-group" style="float: right; margin-top: 20px;">
-								<button id="nextDay" class="btn btn-primary">Ngày
-									tiếp theo >></button>
+								<!-- <button id="nextLesson" class="btn btn-primary">Bài
+									tiếp theo >></button> -->
+								<button id="nextDay" class="btn btn-primary">Ngày tiếp
+									theo >></button>
 							</div>
 						</div>
 						<div class="col-md-6 offset-md-3">
+							<!-- <div class="form-group" style="margin-top: 15px; display: none;"
+								id="urlLesson"> -->
 							<div class="form-group" style="margin-top: 15px; display: none;"
-								id="urlLesson">
-								<label for="usr" style="color: blue;">Link video về bài
+								id="urlDay">
+								<!-- <label for="usr" style="color: blue;">Link video về bài
 									học này của bạn:</label> <input type="text" class="form-control"
-									id="lastLesson" style="border-color: black;">
+									id="lastLesson" style="border-color: black;"> -->
+								<label for="usr" style="color: blue;">Link video ngày
+									tương ứng với hành trình này của bạn:</label> <input type="text"
+									class="form-control" id="lastDay" style="border-color: black;">
 							</div>
 							<div class="btn-group" style="float: right; margin-top: 20px;">
-								<button id="sendVideo" class="btn btn-success"
+								<button id="sendVideoDay" class="btn btn-success"
 									style="display: none;">Gửi lên CEC</button>
 							</div>
-						</div> -->
+						</div>
 					</div>
 				</div>
 			</section>

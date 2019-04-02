@@ -5,6 +5,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -18,7 +22,9 @@ import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.DocumentReference;
 import com.google.cloud.firestore.DocumentSnapshot;
@@ -812,5 +818,53 @@ public class JourneyController {
 		}
 
 		return "journeys/journeyDay";
+	}
+
+	@RequestMapping(value = "checkJourneyDay", method = RequestMethod.POST)
+	public void checkJourneyDay(Model model, @RequestParam String url, @CookieValue("idToken") String idToken,
+			@RequestParam String journey, @RequestParam String numDay, HttpServletResponse response)
+			throws IOException, FirebaseAuthException {
+		FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
+		String uid = decodedToken.getUid();
+		Firestore db = FirestoreOptions.getDefaultInstance().getService();
+		Document doc = Jsoup.connect(url).get();
+		String object = doc.select("#m_story_permalink_view .bb").attr("data-ft");
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String, Object> map = mapper.readValue(object, Map.class);
+		String postId = (String) map.get("top_level_post_id");
+		String memberId = (String) map.get("content_owner_id_new");
+		String memberName = doc.select("meta[property=\"og:title\"]").attr("content");
+		String _journeyDay = doc.select(".bo p").text();
+		Pattern p = Pattern.compile("(\\d+)(/|\\.)(\\d+)"); 
+		Matcher m = p.matcher(_journeyDay.toLowerCase());
+		String journeyDay = null;
+		String journeyName = null;
+		String day = null;
+		if (m.find()) {
+			String spliter[] = m.group().split("/|\\.");
+			int current = Integer.parseInt(spliter[0]);
+			int total = Integer.parseInt(spliter[1]);
+
+			journeyDay = current + "/" + total;
+			int lenght = journeyDay.length();
+			day = journeyDay.substring(0, journeyDay.indexOf("/"));
+			journeyName = journeyDay.substring((journeyDay.indexOf("/") + 1), lenght);
+		}
+		LOGGER.info("journey param: " + journey); 
+		LOGGER.info("numDay param: " + numDay);
+		LOGGER.info("day: " + day);
+		LOGGER.info("dayJourney: " + journeyName);
+		if (!journeyName.equals(journey)) {
+			response.setStatus(404);
+		}
+		if (!day.equals(numDay)) {
+			response.setStatus(404);
+		}
+		if (journeyName.equals(journey) && day.equals(numDay)) {
+			LOGGER.info("check ok");
+			
+		}
+		response.getWriter().println("post success!");
+		response.setStatus(200);
 	}
 }

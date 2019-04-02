@@ -90,6 +90,7 @@ $('#sign-out').on('click',()=>{
 	});
 });
 
+// next lesson
 var uri = window.location.pathname;
 var numLesson = uri.slice(8);
 numLesson = numLesson*1; 
@@ -195,7 +196,215 @@ $('#nextLesson')
 				        console.log("Error getting documents: ", error);
 				    });
 				});
+// end next lesson
 
+// next journey day
+var uri = window.location.pathname;
+// numLesson = numLesson*1;
+console.log("uri: " + uri);
+var journeyDay = uri.slice(9);
+var indexDay = journeyDay.indexOf("/")*1;  
+var journey = journeyDay.slice(0,indexDay);
+var journeyName = (journeyDay.slice(0,indexDay)).slice(0,1); 
+console.log("journey: " + journey);
+indexDay = indexDay + 1;
+var day = journeyDay.slice(indexDay);
+console.log("day: " + day);
+facebookId = getCookie('facebookId'); 
+var docJourneyDay = journey + day + facebookId;
+console.log("docJourneyDay: " + docJourneyDay);
+var numDay = 0;
+numDay = day*1;
+$('#nextDay')
+		.click(
+				function() {
+					uid = getCookie('uid');
+					console.log("uid: " + uid);
+					if (uid === undefined) {
+						Swal({
+							position : 'center',
+							title : 'Vui lòng đăng nhập trước khi chuyển sang tiếp theo của hành trình!',
+							showConfirmButton : false,
+							timer : 2000,
+						});
+						return;
+					}
+					console.log("click send video journey day check.");
+					// check day in journey
+						db.collection("JourneyDay").doc(docJourneyDay).get().then(function(doc) {
+						    if (doc.exists) {
+						        console.log("Document data:", doc.data());
+						        if(doc.data().status == 1){
+					            	console.log("status: " + doc.data().status);
+					            	var nextJourneyDayUrl = "/journey/" + journey + "/" + numDay;
+					            	window.location.href = nextJourneyDayUrl;
+					            }
+						        else {
+						        	console.log("status == 0");
+						        	$('#sendVideoDay').show();
+									$('#urlDay').show();
+									$('#nextDay').hide();
+									Swal({
+										title : 'Paste your video link below.'
+									});
+									Swal({
+										position : 'center',
+										title : 'Vui lòng nhập link video của bạn về bài học này!',
+										showConfirmButton : false,
+										timer : 2000,
+									});
+									$('#sendVideoDay').click(
+					        				function() {
+					        					var urlVideo = $('#lastDay').val();
+		        								if (urlVideo == "") {
+		        									Swal({
+		        										position : 'center',
+		        										title : 'Vui lòng nhập video ngày hành trình của bạn trước khi chuyển sang ngày tiếp theo!',
+		        										showConfirmButton : false,
+		        										timer : 2000,
+		        									});
+		        									return;
+		        								}
+		        								var strUrlCut = urlVideo.slice(8, (urlVideo
+		        										.indexOf("facebook") - 1));
+		        								var strUrlLast = urlVideo.slice((urlVideo
+		        										.indexOf("facebook") - 1));
+		        								var strHTTP = "https://m";
+		        								var URL = strHTTP + strUrlLast;
+		        								console.log("URL: " + URL);
+		        								$.ajax({
+		        									url : "/checkJourneyDay?url=" + URL + "&journey="
+													+ journeyName + "&numDay=" + numDay,
+													type : 'POST',
+													success : function(data) {
+														console.log('data: ' + data);
+// window.location.href = data;
+													},
+													error : function(jqXHR, textStatus, errorThrown) {
+														if (jqXHR.status == 404) {
+															Swal({
+																position : 'center',
+																type : 'error',
+																title : 'Link video không đúng .Vui lòng nhập lại link video ngày hành trình của bạn!',
+																showConfirmButton : false,
+																timer : 2000,
+															});
+														}
+														if (jqXHR.status == 403) {
+															alert("error 403");
+														}
+														if (jqXHR.status == 405) {
+															alert("error 405");
+														}
+														if (jqXHR.status == 401) {
+															Swal({
+																position : 'center',
+																title : 'Phiên bản đã hết hạn, vui lòng đăng nhập lại!',
+																showConfirmButton : false,
+																timer : 3000,
+															});
+														}
+													}
+		        								});
+					        				});
+						        }
+						    } else {
+						        console.log("No such document!");
+						    }
+						}).catch(function(error) {
+						    console.log("Error getting document:", error); 
+						});
+					// end check day
+// db.collection("JourneyDay").where("lesson", "==", numLesson).where("uid",
+// "==", uid)
+// .get()
+// .then(function(querySnapshot) {
+// querySnapshot.forEach(function(doc) {
+// if(doc.data().status == 1){
+// console.log("status: " + doc.data().status);
+// numLesson = numLesson + 1;
+// var nextVideoUrl = "/lesson/" + numLesson;
+// window.location.href = nextVideoUrl;
+// }
+// else {
+// $('#sendVideoDay').show();
+// $('#urlDay').show();
+// $('#nextDay').hide();
+// Swal({
+// title : 'Paste your video link below.'
+// });
+// Swal({
+// position : 'center',
+// title : 'Vui lòng nhập link video của bạn về bài học này!',
+// showConfirmButton : false,
+// timer : 2000,
+// });
+// $('#sendVideoDay')
+// .click(
+// function() {
+// console.log("status: 0");
+// var urlVideo = $('#lastDay').val();
+// if (urlVideo == "") {
+// Swal({
+// position : 'center',
+// title : 'Vui lòng nhập video bài học của bạn trước khi chuyển sang bài học
+// tiếp theo!',
+// showConfirmButton : false,
+// timer : 2000,
+// });
+// return;
+// }
+// var strUrlCut = urlVideo.slice(8, (urlVideo
+// .indexOf("facebook") - 1));
+// var strUrlLast = urlVideo.slice((urlVideo
+// .indexOf("facebook") - 1));
+// var strHTTP = "https://m";
+// var URL = strHTTP + strUrlLast;
+// console.log("URL: " + URL);
+// $.ajax({
+// url : "/checkVideo?url=" + URL + "&numLesson="
+// + numLesson,
+// type : 'POST',
+// success : function(data) {
+// console.log('data: ' + data);
+// window.location.href = data;
+// },
+// error : function(jqXHR, textStatus, errorThrown) {
+// if (jqXHR.status == 404) {
+// Swal({
+// position : 'center',
+// type : 'error',
+// title : 'Link video không đúng .Vui lòng nhập lại link video bài học của
+// bạn!',
+// showConfirmButton : false,
+// timer : 2000,
+// });
+// }
+// if (jqXHR.status == 403) {
+// alert("error 403");
+// }
+// if (jqXHR.status == 405) {
+// alert("error 405");
+// }
+// if (jqXHR.status == 401) {
+// Swal({
+// position : 'center',
+// title : 'Phiên bản đã hết hạn, vui lòng đăng nhập lại!',
+// showConfirmButton : false,
+// timer : 3000,
+// });
+// }
+// }
+// });
+// });
+// }
+// });
+// })
+// .catch(function(error) {
+// console.log("Error getting documents: ", error);
+// });
+				});
+// end next journey day
 
 
 
