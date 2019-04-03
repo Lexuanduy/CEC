@@ -181,36 +181,45 @@ public class LessonController {
 		String postId = (String) map.get("top_level_post_id");
 		String memberId = (String) map.get("content_owner_id_new");
 		String memberName = doc.select("meta[property=\"og:title\"]").attr("content");
-		LOGGER.info("lessonNumber :" + numLesson);
-		if (Integer.parseInt(numLesson) == lessonCheckNow) {
-			String docLessonMember = numLesson + facebookId;
-			DocumentReference docRefLessonMember = db.collection("LessonMember").document(docLessonMember);
-			Map<String, Object> updatesLesson = new HashMap<>();
-			updatesLesson.put("memberId", memberId);
-			updatesLesson.put("memberName", memberName);
-			updatesLesson.put("postId", postId);
-			updatesLesson.put("status", 1);
-			updatesLesson.put("url", url);
-			updatesLesson.put("updatedAt", System.currentTimeMillis() / 1000);
-			ApiFuture<WriteResult> futureLessonMember = docRefLessonMember.update(updatesLesson);
-			// update Account
-			String docAccount = facebookId;
-			DocumentReference docRefAccount = db.collection("Account").document(docAccount);
-			ApiFuture<DocumentSnapshot> futureAccount = docRefAccount.get();
-			DocumentSnapshot document = futureAccount.get();
-			if (document.exists()) {
-				// Update an existing document
-				LOGGER.info("update memberId in account");
-				ApiFuture<WriteResult> future = docRefAccount.update("memberId", memberId);
+		// check name account
+		String docAccount = facebookId;
+		DocumentReference docRefAccount = db.collection("Account").document(docAccount);
+		ApiFuture<DocumentSnapshot> futureAccount = docRefAccount.get();
+		DocumentSnapshot document = futureAccount.get();
+		Account account = document.toObject(Account.class);
+		if (!account.getDisplayName().equals(memberName)) {
+			LOGGER.info("An cap bai viet cua nguoi khac.");
+			response.setStatus(405);
+		}
+		else {
+			LOGGER.info("lessonNumber :" + numLesson);
+			if (Integer.parseInt(numLesson) == lessonCheckNow) {
+				String docLessonMember = numLesson + facebookId;
+				DocumentReference docRefLessonMember = db.collection("LessonMember").document(docLessonMember);
+				Map<String, Object> updatesLesson = new HashMap<>();
+				updatesLesson.put("memberId", memberId);
+				updatesLesson.put("memberName", memberName);
+				updatesLesson.put("postId", postId);
+				updatesLesson.put("status", 1);
+				updatesLesson.put("url", url);
+				updatesLesson.put("updatedAt", System.currentTimeMillis() / 1000);
+				ApiFuture<WriteResult> futureLessonMember = docRefLessonMember.update(updatesLesson);
+				// update Account
+
+				if (document.exists()) {
+					// Update an existing document
+					LOGGER.info("update memberId in account");
+					ApiFuture<WriteResult> future = docRefAccount.update("memberId", memberId);
+				} else {
+					System.out.println("No such document account!");
+				}
+				lessonCheckNow = lessonCheckNow + 1;
+				String uriReturn = "/lesson/" + String.valueOf(lessonCheckNow);
+				response.getWriter().print(String.valueOf(uriReturn));
+				response.setStatus(200);
 			} else {
-				System.out.println("No such document account!");
+				response.setStatus(404);
 			}
-			lessonCheckNow = lessonCheckNow + 1;
-			String uriReturn = "/lesson/" + String.valueOf(lessonCheckNow);
-			response.getWriter().print(String.valueOf(uriReturn));
-			response.setStatus(200);
-		} else {
-			response.setStatus(404);
 		}
 	}
 }

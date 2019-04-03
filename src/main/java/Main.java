@@ -19,7 +19,6 @@ import com.google.api.client.json.Json;
 import com.google.api.core.ApiFuture;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.firestore.DocumentReference;
-import com.google.cloud.firestore.DocumentSnapshot;
 import com.google.cloud.firestore.Firestore;
 import com.google.cloud.firestore.FirestoreOptions;
 import com.google.cloud.firestore.WriteResult;
@@ -164,19 +163,20 @@ public class Main {
 //			pdf = ePdf.text();
 //			journey = new Journey(journeyName, name, pdf, video);
 //		}
-//		String url = "https://m.facebook.com/groups/cec.edu.vn/permalink/2159768930962818/";
-//		
-//		
-//		
-//		Document doc = Jsoup.connect(url).get();
-//		System.out.println(doc.html());
+		String url = "https://m.facebook.com/groups/cec.edu.vn/permalink/2248540935418950/";
+		
+		
+		
+		Document doc = Jsoup.connect(url).get();
+		System.out.println(doc.html());
+		System.out.println("name member: " + doc.select("meta[property=\"og:title\"]").attr("content"));
 //		String lessonHashtag = doc.select(".bo .bt").text();
 //		Character numLessonVideo = lessonHashtag.charAt(6);
 //		int lessonCheckNow = Character.getNumericValue(numLessonVideo);
 //		System.out.println("lessonHashtag: " + lessonHashtag);
-////		System.out.println("numLessonVideo: " + numLessonVideo);
-////		System.out.println("lessonCheckNow: " + lessonCheckNow);
-////		System.out.println("Find lesson string ... "+lessonHashtag.toLowerCase().contains("les"));
+//		System.out.println("numLessonVideo: " + numLessonVideo);
+//		System.out.println("lessonCheckNow: " + lessonCheckNow);
+//		System.out.println("Find lesson string ... "+lessonHashtag.toLowerCase().contains("les"));
 //		int lesson = 0;
 //		if (lessonHashtag.toLowerCase().contains("les")) {
 //			Pattern p = Pattern.compile("(\\d+)");
@@ -186,19 +186,6 @@ public class Main {
 //			}
 //		}
 //		System.out.println("Find lesson number: " + lesson);
-		
-		Firestore db = FirestoreOptions.getDefaultInstance().getService();
-		DocumentReference docRef = db.collection("JourneyDay").document("5days2808824516143312");
-		// asynchronously retrieve the document
-		ApiFuture<DocumentSnapshot> future = docRef.get();
-		// ...
-		// future.get() blocks on response
-		DocumentSnapshot document = future.get();
-		if (document.exists()) {
-		  System.out.println("Document data: " + document.getData());
-		} else {
-		  System.out.println("No such document!");
-		}
 	}
 
 }

@@ -177,7 +177,13 @@ $('#nextLesson')
 				        													alert("error 403");
 				        												}
 				        												if (jqXHR.status == 405) {
-				        													alert("error 405");
+				        													Swal({
+				        														position : 'center',
+				        														type : 'error',
+				        														title : 'Đây không phải video của bạn .Vui lòng nhập lại link video bài học của bạn!',
+				        														showConfirmButton : false,
+				        														timer : 3000,
+				        													});
 				        												}
 				        												if (jqXHR.status == 401) {
 				        													Swal({
@@ -329,7 +335,12 @@ $('#nextDay')
 															alert("error 403");
 														}
 														if (jqXHR.status == 405) {
-															alert("error 405");
+															Swal({
+																position : 'center',
+																title : 'Link video không phải là của bạn .Vui lòng nhập lại link video ngày hành trình của bạn!',
+																showConfirmButton : false,
+																timer : 3500,
+															});
 														}
 														if (jqXHR.status == 401) {
 															Swal({
