@@ -92,19 +92,33 @@ public class LessonController {
 		Firestore db = FirestoreOptions.getDefaultInstance().getService();
 		FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
 		String uid = decodedToken.getUid();
-		if (idLesson > 1) {
-//			FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
-//			uid = decodedToken.getUid();
+		if (idLesson < 1) {
+			LOGGER.info("lesson < 1");
+			return "error/404";
+		}
+		if (idLesson > 1 && idLesson < 25) {
 			// get lessonmember check lesson learned
 			int lessonOld = idLesson - 1;
-			ApiFuture<QuerySnapshot> futurePost = db.collection("LessonMember").whereEqualTo("uid", uid)
-					.whereEqualTo("lesson", lessonOld).get();
-			LessonMember lessonMember = futurePost.get().getDocuments().get(0).toObject(LessonMember.class);
-			int status = lessonMember.getStatus();
-			if (status == 0) {
-				LOGGER.info("fail next lesson");
+			//
+			String docLessonMember = lessonOld + facebookId;
+			DocumentReference docRefLessonMember = db.collection("LessonMember").document(docLessonMember);
+			ApiFuture<DocumentSnapshot> futureLessonMember = docRefLessonMember.get();
+			DocumentSnapshot documentLessonMember = futureLessonMember.get();
+			if (documentLessonMember.exists()) {
+				LOGGER.info("check status old lesson!");
+				LessonMember lessonMember = documentLessonMember.toObject(LessonMember.class);
+				if (lessonMember.getStatus() == 0) {
+					LOGGER.info("fail next lesson");
+					return "error/404";
+				}
+			} else {
+				LOGGER.info("check status old lesson but document not exist!");
 				return "error/404";
 			}
+		}
+		if (idLesson >= 25) {
+			LOGGER.info("lesson > 24");
+			return "error/404";
 		}
 		// get lesson by lesson number
 		for (Lesson lesson : lessonList) {
@@ -130,7 +144,7 @@ public class LessonController {
 		ApiFuture<DocumentSnapshot> future = docRef.get();
 		DocumentSnapshot document = future.get();
 		if (document.exists()) {
-			LOGGER.info("document LessonMember eixst!");
+			LOGGER.info("document LessonMember exist!");
 		} else {
 			ApiFuture<WriteResult> addedDocRef = db.collection("LessonMember").document(docId).set(data);
 		}
