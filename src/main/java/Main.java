@@ -163,13 +163,13 @@ public class Main {
 //			pdf = ePdf.text();
 //			journey = new Journey(journeyName, name, pdf, video);
 //		}
-		String url = "https://m.facebook.com/groups/cec.edu.vn/permalink/2248540935418950/";
-		
-		
-		
-		Document doc = Jsoup.connect(url).get();
-		System.out.println(doc.html());
-		System.out.println("name member: " + doc.select("meta[property=\"og:title\"]").attr("content"));
+//		String url = "https://m.facebook.com/groups/cec.edu.vn/permalink/2248540935418950/";
+//		
+//		
+//		
+//		Document doc = Jsoup.connect(url).get();
+//		System.out.println(doc.html());
+//		System.out.println("name member: " + doc.select("meta[property=\"og:title\"]").attr("content"));
 //		String lessonHashtag = doc.select(".bo .bt").text();
 //		Character numLessonVideo = lessonHashtag.charAt(6);
 //		int lessonCheckNow = Character.getNumericValue(numLessonVideo);
@@ -186,6 +186,8 @@ public class Main {
 //			}
 //		}
 //		System.out.println("Find lesson number: " + lesson);
+		// test send mail
+		
 	}
 
 }

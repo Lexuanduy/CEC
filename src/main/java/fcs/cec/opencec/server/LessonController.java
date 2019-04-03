@@ -3,15 +3,18 @@ package fcs.cec.opencec.server;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.jsoup.Connection.Method;
+import org.jsoup.Connection.Response;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -32,13 +35,9 @@ import com.google.cloud.firestore.DocumentReference;
 import com.google.cloud.firestore.DocumentSnapshot;
 import com.google.cloud.firestore.Firestore;
 import com.google.cloud.firestore.FirestoreOptions;
-import com.google.cloud.firestore.QueryDocumentSnapshot;
-import com.google.cloud.firestore.QuerySnapshot;
 import com.google.cloud.firestore.WriteResult;
 import com.google.firebase.FirebaseApp;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
-import com.google.firebase.auth.FirebaseToken;
 
 import fcs.cec.opencec.entity.Account;
 import fcs.cec.opencec.entity.Lesson;
@@ -71,6 +70,7 @@ public class LessonController {
 		Lesson lesson = null;
 		for (Element element : elements) {
 			name = element.attr("name");
+			LOGGER.info("lesson: " + name);
 			eImg1 = element.child(0);
 			img1 = eImg1.text();
 			eImg2 = element.child(1);
@@ -82,6 +82,17 @@ public class LessonController {
 			lesson = new Lesson(name, audio, video, img1, img2);
 			lessonList.add(lesson);
 		}
+		// send email
+//		LOGGER.info("send email");
+//		String urlSendMail = "http://httpmailservice.appspot.com/sendEmail";
+//		try {
+//			Response content = Jsoup.connect(urlSendMail).ignoreContentType(true).timeout(60 * 1000)
+//					.data("subject", "TEST").data("to", "chaule5593@gmail.com").data("from", "opencecv2@gmail.com")
+//					.data("content", "abcXYZ").method(Method.GET).followRedirects(true).ignoreHttpErrors(true)
+//					.execute();
+//		} catch (IOException e1) {
+//			e1.printStackTrace();
+//		}
 	}
 
 	@RequestMapping(value = "lesson/{id}", method = RequestMethod.GET)
@@ -190,8 +201,7 @@ public class LessonController {
 		if (!account.getDisplayName().equals(memberName)) {
 			LOGGER.info("An cap bai viet cua nguoi khac.");
 			response.setStatus(405);
-		}
-		else {
+		} else {
 			LOGGER.info("lessonNumber :" + numLesson);
 			if (Integer.parseInt(numLesson) == lessonCheckNow) {
 				String docLessonMember = numLesson + facebookId;
