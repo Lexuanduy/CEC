@@ -822,8 +822,9 @@ public class JourneyController {
 
 	@RequestMapping(value = "checkJourneyDay", method = RequestMethod.POST)
 	public void checkJourneyDay(Model model, @RequestParam String url, @CookieValue("idToken") String idToken,
-			@RequestParam String journey, @RequestParam String numDay, HttpServletResponse response)
-			throws IOException, FirebaseAuthException {
+			@CookieValue("facebookId") String facebookId, @RequestParam String journey, @RequestParam String numDay,
+			HttpServletResponse response)
+			throws IOException, FirebaseAuthException, InterruptedException, ExecutionException {
 		FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
 		String uid = decodedToken.getUid();
 		Firestore db = FirestoreOptions.getDefaultInstance().getService();
@@ -835,7 +836,7 @@ public class JourneyController {
 		String memberId = (String) map.get("content_owner_id_new");
 		String memberName = doc.select("meta[property=\"og:title\"]").attr("content");
 		String _journeyDay = doc.select(".bo p").text();
-		Pattern p = Pattern.compile("(\\d+)(/|\\.)(\\d+)"); 
+		Pattern p = Pattern.compile("(\\d+)(/|\\.)(\\d+)");
 		Matcher m = p.matcher(_journeyDay.toLowerCase());
 		String journeyDay = null;
 		String journeyName = null;
@@ -850,21 +851,101 @@ public class JourneyController {
 			day = journeyDay.substring(0, journeyDay.indexOf("/"));
 			journeyName = journeyDay.substring((journeyDay.indexOf("/") + 1), lenght);
 		}
-		LOGGER.info("journey param: " + journey); 
+		LOGGER.info("journey param: " + journey);
 		LOGGER.info("numDay param: " + numDay);
 		LOGGER.info("day: " + day);
 		LOGGER.info("dayJourney: " + journeyName);
 		if (!journeyName.equals(journey)) {
+			LOGGER.info("journey in post # journey uri");
 			response.setStatus(404);
 		}
 		if (!day.equals(numDay)) {
+			LOGGER.info("day in post # day uri");
 			response.setStatus(404);
 		}
 		if (journeyName.equals(journey) && day.equals(numDay)) {
 			LOGGER.info("check ok");
-			
+			String docLessonMember = journey + "days" + numDay + facebookId;
+			LOGGER.info("docLessonMember: " + docLessonMember);
+			DocumentReference docRefJourney = db.collection("JourneyDay").document(docLessonMember);
+			Map<String, Object> updates = new HashMap<>();
+			updates.put("memberId", memberId);
+			updates.put("memberName", memberName);
+			updates.put("postId", postId);
+			updates.put("status", 1);
+			updates.put("url", url);
+			updates.put("updatedAt", System.currentTimeMillis() / 1000);
+			ApiFuture<WriteResult> futureJourneyDay = docRefJourney.update(updates);
+			// update Account
+			String docAccount = facebookId;
+			DocumentReference docRefAccount = db.collection("Account").document(docAccount);
+			ApiFuture<DocumentSnapshot> futureAccount = docRefAccount.get();
+			DocumentSnapshot document = futureAccount.get();
+			if (document.exists()) {
+				// Update an existing document
+				LOGGER.info("update memberId in account");
+				ApiFuture<WriteResult> future = docRefAccount.update("memberId", memberId);
+			} else {
+				System.out.println("No such document account!");
+			}
+
+			String uri = null;
+			if (journeyName.equals("3") && numDay.equals("3")) {
+				LOGGER.info("3days3");
+				uri = "/journey/5days/1";
+				response.getWriter().println(uri);
+				response.setStatus(200);
+			}
+			if (journeyName.equals("5") && numDay.equals("5")) {
+				LOGGER.info("5days5");
+				uri = "/journey/7days/1";
+				response.getWriter().println(uri);
+				response.setStatus(200);
+			}
+			if (journeyName.equals("7") && numDay.equals("7")) {
+				LOGGER.info("7days7");
+				uri = "/journey/10days/1";
+				response.getWriter().println(uri);
+				response.setStatus(200);
+			}
+			if (journeyName.equals("10") && numDay.equals("10")) {
+				LOGGER.info("10days10");
+				uri = "/journey/21days/1";
+				response.getWriter().println(uri);
+				response.setStatus(200);
+			}
+			if (journeyName.equals("21") && numDay.equals("21")) {
+				LOGGER.info("21days21");
+				uri = "/journey/45days/1";
+				response.getWriter().println(uri);
+				response.setStatus(200);
+			}
+			if (journeyName.equals("45") && numDay.equals("45")) {
+				LOGGER.info("45days45");
+				uri = "/journey/90days/1";
+				response.getWriter().println(uri);
+				response.setStatus(200);
+			}
+			if (journeyName.equals("90") && numDay.equals("90")) {
+				LOGGER.info("90days90");
+				uri = "/journey/90days/90";
+				response.getWriter().println(uri);
+				response.setStatus(200);
+			}
+			if ((journeyName.equals("3") && (Integer.parseInt(numDay) < 3))
+					|| (journeyName.equals("5") && (Integer.parseInt(numDay) < 5))
+					|| (journeyName.equals("7") && (Integer.parseInt(numDay) < 7))
+					|| (journeyName.equals("10") && (Integer.parseInt(numDay) < 10))
+					|| (journeyName.equals("21") && (Integer.parseInt(numDay) < 21))
+					|| (journeyName.equals("45") && (Integer.parseInt(numDay) < 45))
+					|| (journeyName.equals("90") && (Integer.parseInt(numDay) < 90))) {
+				LOGGER.info(journeyName + "days/" + numDay);
+				int dayNumber = Integer.parseInt(numDay) + 1;
+				day = String.valueOf(dayNumber);
+				uri = "/journey/" + journey + "days" + "/" + day;
+				response.getWriter().println(uri);
+				response.setStatus(200);
+			}
 		}
-		response.getWriter().println("post success!");
-		response.setStatus(200);
 	}
 }

@@ -200,7 +200,6 @@ $('#nextLesson')
 
 // next journey day
 var uri = window.location.pathname;
-// numLesson = numLesson*1;
 console.log("uri: " + uri);
 var journeyDay = uri.slice(9);
 var indexDay = journeyDay.indexOf("/")*1;  
@@ -213,11 +212,9 @@ console.log("day: " + day);
 facebookId = getCookie('facebookId'); 
 var docJourneyDay = journey + day + facebookId;
 console.log("docJourneyDay: " + docJourneyDay);
-var numDay = 0;
-numDay = day*1;
+var numDay = day*1;
 $('#nextDay')
-		.click(
-				function() {
+		.click(function() {
 					uid = getCookie('uid');
 					console.log("uid: " + uid);
 					if (uid === undefined) {
@@ -235,9 +232,44 @@ $('#nextDay')
 						    if (doc.exists) {
 						        console.log("Document data:", doc.data());
 						        if(doc.data().status == 1){
-					            	console.log("status: " + doc.data().status);
-					            	var nextJourneyDayUrl = "/journey/" + journey + "/" + numDay;
-					            	window.location.href = nextJourneyDayUrl;
+						        	if ((day < 3 && journey == "3days") || (day < 5 && journey == "5days") || (day < 7 && journey == "7days") || (day < 10 && journey == "10days") || (day < 21 && journey == "21days") || (day < 45 && journey == "45days") || (day <90 && journey == "90days")) {
+						        		console.log("status: " + doc.data().status);
+						            	numDay = numDay + 1;
+						            	console.log("numday: " + numDay);
+						            	var nextJourneyDayUrl = "/journey/" + journey + "/" + numDay;
+						            	window.location.href = nextJourneyDayUrl;
+						        	}
+					            	if ((day >= 3 || day >= 5 || day >= 7 || day >= 10 || day >= 21 || day >= 45 || day >=90)) {
+					            		if(journey == "3days" && day == 3){
+							        		console.log("uri: " + "3days/3");
+							        		window.location.href = "/journey/5days/1";
+							        	}
+							        	if(journey == "5days" && day == 5){
+							        		console.log("uri: " + "5days/5");
+							        		window.location.href = "/journey/7days/1";
+							        	}
+							        	if(journey == "7days" && day == 7){
+							        		console.log("uri: " + "7days/7");
+							        		window.location.href = "/journey/10days/1";
+							        	}
+							        	if(journey == "10days" && day == 10){
+							        		console.log("uri: " + "10days/10");
+							        		window.location.href = "/journey/21days/1";
+							        	}
+							        	if(journey == "21days" && day == 21){
+							        		console.log("uri: " + "21days/21");
+							        		window.location.href = "/journey/45days/1";
+							        	}
+							        	if(journey == "45days" && day == 45){
+							        		console.log("uri: " + "45days/45");
+							        		window.location.href = "/journey/90days/1";
+							        	}
+							        	if(journey == "90days" && day == 90){
+							        		console.log("uri: " + "90days/90");
+							        		return;
+							        	}
+					            	}
+					            	return;
 					            }
 						        else {
 						        	console.log("status == 0");
@@ -278,7 +310,7 @@ $('#nextDay')
 													type : 'POST',
 													success : function(data) {
 														console.log('data: ' + data);
-// window.location.href = data;
+														window.location.href = data;
 													},
 													error : function(jqXHR, textStatus, errorThrown) {
 														if (jqXHR.status == 404) {
@@ -307,6 +339,7 @@ $('#nextDay')
 													}
 		        								});
 					        				});
+									return;
 						        }
 						    } else {
 						        console.log("No such document!");
