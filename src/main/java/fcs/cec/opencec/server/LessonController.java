@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletResponse;
@@ -83,15 +85,15 @@ public class LessonController {
 	}
 
 	@RequestMapping(value = "lesson/{id}", method = RequestMethod.GET)
-	public String lesson(Model model, @PathVariable("id") String id, @CookieValue("idToken") String idToken,
+	public String lesson(Model model, @PathVariable("id") String id, @CookieValue("uid") String uid,
 			@CookieValue("facebookId") String facebookId, HttpServletResponse response)
 			throws InterruptedException, ExecutionException, FirebaseAuthException, IOException {
-		LOGGER.info("idToken: " + idToken);
-		LOGGER.info("facebookId: " + facebookId);
+//		LOGGER.info("idToken: " + idToken);
+//		LOGGER.info("facebookId: " + facebookId);
 		int idLesson = Integer.parseInt(id);
 		Firestore db = FirestoreOptions.getDefaultInstance().getService();
-		FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
-		String uid = decodedToken.getUid();
+//		FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
+//		String uid = decodedToken.getUid();
 		if (idLesson < 1) {
 			LOGGER.info("lesson < 1");
 			return "error/404";
@@ -153,17 +155,26 @@ public class LessonController {
 	}
 
 	@RequestMapping(value = "checkVideo", method = RequestMethod.POST)
-	public void checkVideo(Model model, @RequestParam String url, @CookieValue("idToken") String idToken,
-			@RequestParam String numLesson, HttpServletResponse response)
+	public void checkVideo(Model model, @RequestParam String url, @CookieValue("uid") String uid,
+			@CookieValue("facebookId") String facebookId, @RequestParam String numLesson, HttpServletResponse response)
 			throws IOException, InterruptedException, ExecutionException, ServletException, FirebaseAuthException {
-		LOGGER.info("idToken: " + idToken);
-		FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
-		String uid = decodedToken.getUid();
+//		LOGGER.info("idToken: " + idToken);
+//		FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
+//		String uid = decodedToken.getUid();
 		Firestore db = FirestoreOptions.getDefaultInstance().getService();
 		Document doc = Jsoup.connect(url).get();
 		String lessonHashtag = doc.select(".bo .bt").text();
-		Character numLessonVideo = lessonHashtag.charAt(6);
-		int lessonCheckNow = Character.getNumericValue(numLessonVideo);
+		int lessonCheckNow = 0;
+		// check lesson by DK
+		if (lessonHashtag.toLowerCase().contains("les")) {
+			Pattern p = Pattern.compile("(\\d+)");
+			Matcher m = p.matcher(lessonHashtag.toLowerCase());
+			if (m.find()) {
+				lessonCheckNow = Integer.parseInt(m.group());
+			}
+		}
+		LOGGER.info("Find lesson number: " + lessonCheckNow);
+		//
 		String object = doc.select("#m_story_permalink_view .bb").attr("data-ft");
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String, Object> map = mapper.readValue(object, Map.class);
@@ -171,37 +182,29 @@ public class LessonController {
 		String memberId = (String) map.get("content_owner_id_new");
 		String memberName = doc.select("meta[property=\"og:title\"]").attr("content");
 		LOGGER.info("lessonNumber :" + numLesson);
-//		lessonCheckNow = 3;
-		String docId = null;
-//		LOGGER.info("uid: " + uid);
 		if (Integer.parseInt(numLesson) == lessonCheckNow) {
-			ApiFuture<QuerySnapshot> futureLesson = db.collection("LessonMember").whereEqualTo("uid", uid)
-					.whereEqualTo("lesson", lessonCheckNow).get();
-			List<QueryDocumentSnapshot> lessonDocuments = futureLesson.get().getDocuments();
-			for (DocumentSnapshot document : lessonDocuments) {
-				docId = document.getId();
+			String docLessonMember = numLesson + facebookId;
+			DocumentReference docRefLessonMember = db.collection("LessonMember").document(docLessonMember);
+			Map<String, Object> updatesLesson = new HashMap<>();
+			updatesLesson.put("memberId", memberId);
+			updatesLesson.put("memberName", memberName);
+			updatesLesson.put("postId", postId);
+			updatesLesson.put("status", 1);
+			updatesLesson.put("url", url);
+			updatesLesson.put("updatedAt", System.currentTimeMillis() / 1000);
+			ApiFuture<WriteResult> futureLessonMember = docRefLessonMember.update(updatesLesson);
+			// update Account
+			String docAccount = facebookId;
+			DocumentReference docRefAccount = db.collection("Account").document(docAccount);
+			ApiFuture<DocumentSnapshot> futureAccount = docRefAccount.get();
+			DocumentSnapshot document = futureAccount.get();
+			if (document.exists()) {
+				// Update an existing document
+				LOGGER.info("update memberId in account");
+				ApiFuture<WriteResult> future = docRefAccount.update("memberId", memberId);
+			} else {
+				System.out.println("No such document account!");
 			}
-			LOGGER.info("docId: " + docId);
-			if (docId == null) {
-				response.setStatus(401);
-				return;
-			}
-			DocumentReference docRefLesson = db.collection("LessonMember").document(docId);
-			Map<String, Object> updates = new HashMap<>();
-			updates.put("memberId", memberId);
-			updates.put("memberName", memberName);
-			updates.put("postId", postId);
-			updates.put("status", 1);
-			updates.put("url", url);
-			updates.put("updatedAt", System.currentTimeMillis() / 1000);
-			ApiFuture<WriteResult> futureLessonMember = docRefLesson.update(updates);
-			// map member in account
-			ApiFuture<QuerySnapshot> futureAccount = db.collection("Account").whereEqualTo("uid", uid).get();
-			Account account = futureAccount.get().getDocuments().get(0).toObject(Account.class);
-			String id = account.getId();
-			DocumentReference docRef = db.collection("Account").document(id);
-			ApiFuture<WriteResult> future = docRef.update("memberId", memberId);
-			// end map
 			lessonCheckNow = lessonCheckNow + 1;
 			String uriReturn = "/lesson/" + String.valueOf(lessonCheckNow);
 			response.getWriter().print(String.valueOf(uriReturn));

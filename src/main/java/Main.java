@@ -19,6 +19,7 @@ import com.google.api.client.json.Json;
 import com.google.api.core.ApiFuture;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.firestore.DocumentReference;
+import com.google.cloud.firestore.DocumentSnapshot;
 import com.google.cloud.firestore.Firestore;
 import com.google.cloud.firestore.FirestoreOptions;
 import com.google.cloud.firestore.WriteResult;
@@ -34,8 +35,8 @@ import fcs.cec.opencec.entity.Lesson;
 
 public class Main {
 
-//	public static void main(String[] args)
-//			throws IOException, InterruptedException, ExecutionException, FirebaseAuthException {
+	public static void main(String[] args)
+			throws IOException, InterruptedException, ExecutionException, FirebaseAuthException {
 		// story_body_container
 //		https://www.facebook.com/hashtag/lesson8cec?source=feed_text&epa=HASHTAG
 //		https://m.facebook.com/groups/cec.edu.vn/permalink/2259370051002705/
@@ -47,7 +48,7 @@ public class Main {
 //		String object = doc.select("#m_story_permalink_view .bb").attr("data-ft");
 //		ObjectMapper mapper = new ObjectMapper();
 //		Map<String, Object> map = mapper.readValue(object, Map.class);
-//		System.out.println("top_level_post_id: " + map.get("top_level_post_id"));
+//		System.out.println("top_level_post_id: " + map.get("top_level_post_id")); 
 //		System.out.println("content_owner_id_new: " + map.get("content_owner_id_new"));
 ////		System.out.println("lesson hashtag: " + doc.select(".bo .bt").text());
 //		System.out.println("name member: " + doc.select("meta[property=\"og:title\"]").attr("content"));
@@ -163,6 +164,41 @@ public class Main {
 //			pdf = ePdf.text();
 //			journey = new Journey(journeyName, name, pdf, video);
 //		}
-//	}
+//		String url = "https://m.facebook.com/groups/cec.edu.vn/permalink/2159768930962818/";
+//		
+//		
+//		
+//		Document doc = Jsoup.connect(url).get();
+//		System.out.println(doc.html());
+//		String lessonHashtag = doc.select(".bo .bt").text();
+//		Character numLessonVideo = lessonHashtag.charAt(6);
+//		int lessonCheckNow = Character.getNumericValue(numLessonVideo);
+//		System.out.println("lessonHashtag: " + lessonHashtag);
+////		System.out.println("numLessonVideo: " + numLessonVideo);
+////		System.out.println("lessonCheckNow: " + lessonCheckNow);
+////		System.out.println("Find lesson string ... "+lessonHashtag.toLowerCase().contains("les"));
+//		int lesson = 0;
+//		if (lessonHashtag.toLowerCase().contains("les")) {
+//			Pattern p = Pattern.compile("(\\d+)");
+//			Matcher m = p.matcher(lessonHashtag.toLowerCase());
+//			if (m.find()) {
+//				lesson = Integer.parseInt(m.group());
+//			}
+//		}
+//		System.out.println("Find lesson number: " + lesson);
+		
+		Firestore db = FirestoreOptions.getDefaultInstance().getService();
+		DocumentReference docRef = db.collection("JourneyDay").document("5days2808824516143312");
+		// asynchronously retrieve the document
+		ApiFuture<DocumentSnapshot> future = docRef.get();
+		// ...
+		// future.get() blocks on response
+		DocumentSnapshot document = future.get();
+		if (document.exists()) {
+		  System.out.println("Document data: " + document.getData());
+		} else {
+		  System.out.println("No such document!");
+		}
+	}
 
 }

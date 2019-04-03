@@ -36,6 +36,7 @@ firebase.auth().onAuthStateChanged(function (user) {
 				displayName = obj.user.displayName;
 				photoURL = obj.user.photoURL;
 				accessToken = obj.user.stsTokenManager.accessToken;
+				console.log("idToken: " + accessToken);
 				
                 $('#sign-in')[0].hidden = true;
                 document.getElementById("photoURL").src= photoURL;
@@ -93,6 +94,9 @@ $('#sign-out').on('click',()=>{
 // next lesson
 var uri = window.location.pathname;
 var numLesson = uri.slice(8);
+facebookId = getCookie('facebookId');
+var docLessonMember = numLesson + facebookId;
+console.log("docLessonMember: " + docLessonMember);
 numLesson = numLesson*1; 
 console.log("numlesson: " + numLesson);
 $('#nextLesson')
@@ -110,17 +114,14 @@ $('#nextLesson')
 						return;
 					}
 					console.log("click send video check");
-					db.collection("LessonMember").where("lesson", "==", numLesson).where("uid", "==", uid)
-				    .get()
-				    .then(function(querySnapshot) {
-				        querySnapshot.forEach(function(doc) {
-				            if(doc.data().status == 1){
+					db.collection("LessonMember").doc(docLessonMember).get().then(function(doc) {
+						if (doc.exists) {
+							if(doc.data().status == 1){
 				            	console.log("status: " + doc.data().status);
 				            	numLesson = numLesson + 1;
 				            	var nextVideoUrl = "/lesson/" + numLesson;
 				            	window.location.href = nextVideoUrl;
-				            }
-				            else {
+				            }else {
 								$('#sendVideo').show();
 								$('#urlLesson').show();
 								$('#nextLesson').hide();
@@ -190,11 +191,13 @@ $('#nextLesson')
 				        										});
 				        				});
 				            }
-				        });
-				    })
-				    .catch(function(error) {
-				        console.log("Error getting documents: ", error);
-				    });
+						}
+						else {
+							console.log("No such document LessonMember!");
+						}
+					}).catch(function(error) {
+					    console.log("Error getting document LessonMember:", error); 
+					});
 				});
 // end next lesson
 
@@ -342,10 +345,10 @@ $('#nextDay')
 									return;
 						        }
 						    } else {
-						        console.log("No such document!");
+						        console.log("No such document JourneyDay!");
 						    }
 						}).catch(function(error) {
-						    console.log("Error getting document:", error); 
+						    console.log("Error getting document JourneyDay:", error); 
 						});
 					// end check day
 // db.collection("JourneyDay").where("lesson", "==", numLesson).where("uid",

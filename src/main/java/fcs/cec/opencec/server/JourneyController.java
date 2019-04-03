@@ -83,11 +83,11 @@ public class JourneyController {
 
 	@RequestMapping(value = "journey/{name}/{day}", method = RequestMethod.GET)
 	public String journeyDays(Model model, @PathVariable("name") String name, @PathVariable("day") String day,
-			@CookieValue("idToken") String idToken, @CookieValue("facebookId") String facebookId)
+			@CookieValue("uid") String uid, @CookieValue("facebookId") String facebookId)
 			throws FirebaseAuthException, InterruptedException, ExecutionException {
 		Firestore db = FirestoreOptions.getDefaultInstance().getService();
-		FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
-		String uid = decodedToken.getUid();
+//		FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
+//		String uid = decodedToken.getUid();
 		int dayJourney = Integer.parseInt(day);
 		LOGGER.info("dayJourney first: " + dayJourney);
 		// journey day in 3days
@@ -304,6 +304,7 @@ public class JourneyController {
 					data.put("updatedAt", System.currentTimeMillis() / 1000);
 					String docId = name + String.valueOf(dayJourney) + facebookId;
 					DocumentReference docRefJourneyDay = db.collection("JourneyDay").document(docId);
+					LOGGER.info("docId: " + docId); 
 					ApiFuture<DocumentSnapshot> futureJourneyDay = docRefJourneyDay.get();
 					DocumentSnapshot documentJourneyDay = futureJourneyDay.get();
 					if (documentJourneyDay.exists()) {
@@ -944,12 +945,12 @@ public class JourneyController {
 	}
 
 	@RequestMapping(value = "checkJourneyDay", method = RequestMethod.POST)
-	public void checkJourneyDay(Model model, @RequestParam String url, @CookieValue("idToken") String idToken,
+	public void checkJourneyDay(Model model, @RequestParam String url,
 			@CookieValue("facebookId") String facebookId, @RequestParam String journey, @RequestParam String numDay,
 			HttpServletResponse response)
 			throws IOException, FirebaseAuthException, InterruptedException, ExecutionException {
-		FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
-		String uid = decodedToken.getUid();
+//		FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
+//		String uid = decodedToken.getUid();
 		Firestore db = FirestoreOptions.getDefaultInstance().getService();
 		Document doc = Jsoup.connect(url).get();
 		String object = doc.select("#m_story_permalink_view .bb").attr("data-ft");
@@ -978,6 +979,14 @@ public class JourneyController {
 		LOGGER.info("numDay param: " + numDay);
 		LOGGER.info("day: " + day);
 		LOGGER.info("dayJourney: " + journeyName);
+		if (journeyName == null || day == null) {
+			LOGGER.info("journeyName null || day null.");
+			response.setStatus(404);
+		}
+		if (journeyName == null && day == null) {
+			LOGGER.info("journeyName null && day null.");
+			response.setStatus(404);
+		}
 		if (!journeyName.equals(journey)) {
 			LOGGER.info("journey in post # journey uri");
 			response.setStatus(404);
@@ -988,9 +997,9 @@ public class JourneyController {
 		}
 		if (journeyName.equals(journey) && day.equals(numDay)) {
 			LOGGER.info("check ok");
-			String docLessonMember = journey + "days" + numDay + facebookId;
-			LOGGER.info("docLessonMember: " + docLessonMember);
-			DocumentReference docRefJourney = db.collection("JourneyDay").document(docLessonMember);
+			String docJourneyDay = journey + "days" + numDay + facebookId;
+			LOGGER.info("docJourneyDay: " + docJourneyDay);
+			DocumentReference docRefJourney = db.collection("JourneyDay").document(docJourneyDay);
 			Map<String, Object> updates = new HashMap<>();
 			updates.put("memberId", memberId);
 			updates.put("memberName", memberName);
