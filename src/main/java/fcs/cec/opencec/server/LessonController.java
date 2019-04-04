@@ -82,17 +82,6 @@ public class LessonController {
 			lesson = new Lesson(name, audio, video, img1, img2);
 			lessonList.add(lesson);
 		}
-		// send email
-//		LOGGER.info("send email");
-//		String urlSendMail = "http://httpmailservice.appspot.com/sendEmail";
-//		try {
-//			Response content = Jsoup.connect(urlSendMail).ignoreContentType(true).timeout(60 * 1000)
-//					.data("subject", "TEST").data("to", "chaule5593@gmail.com").data("from", "opencecv2@gmail.com")
-//					.data("content", "abcXYZ").method(Method.GET).followRedirects(true).ignoreHttpErrors(true)
-//					.execute();
-//		} catch (IOException e1) {
-//			e1.printStackTrace();
-//		}
 	}
 
 	@RequestMapping(value = "lesson/{id}", method = RequestMethod.GET)
