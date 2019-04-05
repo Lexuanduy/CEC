@@ -56,6 +56,13 @@ public class Account {
 	public void setMemberId(String memberId) {
 		this.memberId = memberId;
 	}
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
 	private String id;
 	private String uid;
 	private String memberId;
@@ -63,4 +70,5 @@ public class Account {
 	private String email;
 	private boolean emailVerified;
 	private String photoURL;
+	private String role;
 }
