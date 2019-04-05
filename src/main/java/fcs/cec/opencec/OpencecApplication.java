@@ -391,6 +391,32 @@ public class OpencecApplication {
 											break;
 										} else {
 											lessonNext = String.valueOf(lesson + 1);
+											String docLessonMember = lessonNext + accountId;
+											loggerApp.info("docLessonMember: " + docLessonMember);
+											DocumentReference docRefLessonMember = db.collection("LessonMember")
+													.document(docLessonMember);
+											ApiFuture<DocumentSnapshot> futureLessonMember = docRefLessonMember.get();
+											DocumentSnapshot documentLessonMember = futureLessonMember.get();
+											if (documentLessonMember.exists()) {
+												loggerApp.info("Document LessonMember exist!");
+											} else {
+												loggerApp.info("No such document LessonMember!");
+												Map<String, Object> data = new HashMap<>();
+												lesson = lesson + 1;
+												data.put("lesson", lesson);
+												data.put("memberId", posterId);
+												data.put("memberName", "");
+												data.put("postId", "");
+												data.put("status", 0);
+												data.put("url", "");
+												data.put("uid", uid);
+												data.put("accountId", accountId);
+												data.put("createdAt", System.currentTimeMillis() / 1000);
+												data.put("updatedAt", System.currentTimeMillis() / 1000);
+												ApiFuture<WriteResult> addedDocRef = db.collection("LessonMember")
+														.document(docLessonMember).set(data);
+											}
+
 											contentSend = "Chào bạn, đây là link bài học tiếp theo: http://35.226.165.231/lesson/"
 													+ lessonNext;
 											loggerApp.info("contentSend: " + contentSend);
