@@ -45,7 +45,7 @@ public class JourneyController {
 	static ArrayList<Journey> dayList = new ArrayList<Journey>();
 	static {
 		Document doc = null;
-		String url = "https://script.googleusercontent.com/macros/echo?user_content_key=0NO97RWrfF-bJwtuCor55KnVudJNvt4gN5w-X370sfV5UB5xDmEweNtl6_tfcVgjYIC97WTT_sLSxU0ASo7MtdZOet-eACKzm5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnCT0QRJ7P_-LtV3tAd8_b_dUnbO1rEvbeLLB2eAoIGhp1hENMaacOI9TktsviLkDHJlUq1JAmpDs&lib=MmSKrXssQcdpiSXxZX7nm1QZVzjmXS3D2";
+		String url = "https://script.googleusercontent.com/macros/echo?user_content_key=dmTT0L5ltyjs6C0mzfB8Kf1FkNPCAqiExMVyEY7hPKS9QIrht-BvnAzuAZYIZvlrnSaC13gWKjpsPFnfMb3lT9L5wfimIUbgm5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnCT0QRJ7P_-LtV3tAd8_b_dUnbO1rEvbeLLB2eAoIGhp1hENMaacOI9TktsviLkDHJlUq1JAmpDs&lib=MmSKrXssQcdpiSXxZX7nm1QZVzjmXS3D2";
 		try {
 			doc = Jsoup.connect(url).timeout(30000).get();
 		} catch (IOException e1) {
@@ -57,28 +57,29 @@ public class JourneyController {
 		String day = null;
 		String pdf = null;
 		String video = null;
-		Journey journey = null;
 		int indexStartJourneyDay = 0;
-		int indexEndJourneyDay = 0;
-		String storageJourneyName = null;
-		int indexEndStorageJourneyName = 0;
+		int indexText1 = 0;
+		int indexText2 = 0;
 		String journeyName = null;
+		Journey journey = null;
+		String text = null;
+		String uri = null;
 		for (Element element : elements) {
-			videoMp4 = element.child(1);
-			video = videoMp4.text();
-			indexStartJourneyDay = video.indexOf("opencec.appspot.com/");
-			indexEndJourneyDay = video.indexOf("/day");
-			storageJourneyName = video.substring(indexStartJourneyDay, indexEndJourneyDay);
-			indexEndStorageJourneyName = storageJourneyName.indexOf("/");
-			journeyName = storageJourneyName.substring(indexEndStorageJourneyName + 1);
-			System.out.println("journeyName: " + journeyName);
 			day = element.attr("name");
 			ePdf = element.child(0);
 			pdf = ePdf.text();
+			videoMp4 = element.child(1);
+			video = videoMp4.text();
+			indexStartJourneyDay = pdf.indexOf("opencec.appspot.com/");
+			text = pdf.substring(indexStartJourneyDay);
+			indexText1 = text.indexOf("/") + 1;
+			uri = text.substring(indexText1);
+			indexText2 = uri.indexOf("/");
+			journeyName = uri.substring(0, indexText2);
+			System.out.println(journeyName);
+			System.out.println(day);
 			journey = new Journey(journeyName, day, pdf, video);
-			if (journeyName.equals("3days") || journeyName.equals("5days") || journeyName.equals("7days")) {
-				dayList.add(journey);
-			}
+			dayList.add(journey);
 		}
 	}
 

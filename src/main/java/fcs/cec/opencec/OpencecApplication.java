@@ -328,7 +328,8 @@ public class OpencecApplication {
 											}
 											if (journeyName.contentEquals("21") && day.equals("21")) {
 												loggerApp.info("21/21");
-												docJourneyDay = "45days1" + accountId;
+												String journeyNew = "45days1";
+												docJourneyDay = journeyNew+accountId;
 												loggerApp.info("docJourneyDay: " + docJourneyDay);
 												// create new day in journey day
 												DocumentReference docRef = db.collection("JourneyDay")
