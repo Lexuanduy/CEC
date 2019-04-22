@@ -3,12 +3,15 @@ package fcs.cec.opencec.server;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -35,9 +38,13 @@ import com.google.cloud.firestore.DocumentReference;
 import com.google.cloud.firestore.DocumentSnapshot;
 import com.google.cloud.firestore.Firestore;
 import com.google.cloud.firestore.FirestoreOptions;
+import com.google.cloud.firestore.QueryDocumentSnapshot;
+import com.google.cloud.firestore.QuerySnapshot;
 import com.google.cloud.firestore.WriteResult;
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
+import com.google.firebase.auth.FirebaseToken;
 
 import fcs.cec.opencec.entity.Account;
 import fcs.cec.opencec.entity.Lesson;
@@ -84,24 +91,44 @@ public class LessonController {
 		}
 	}
 
+//	@RequestMapping(value = "lesson/1", method = RequestMethod.GET)
+//	public String lessonFirst(Model model) {
+//		for (Lesson lesson : lessonList) {
+//			if (lesson.getName().equals("1")) {
+//				model.addAttribute("lesson", lesson);
+//			} else {
+//				break;
+//			}
+//		}
+//		return "lesson/lesson";
+//	}
+
 	@RequestMapping(value = "lesson/{id}", method = RequestMethod.GET)
-	public String lesson(Model model, @PathVariable("id") String id, @CookieValue("uid") String uid,
-			@CookieValue("facebookId") String facebookId, HttpServletResponse response)
+	public String lesson(Model model, @PathVariable("id") String id,
+			@CookieValue(value = "myCookie", required = false) String idToken, HttpServletResponse response)
 			throws InterruptedException, ExecutionException, FirebaseAuthException, IOException {
-//		LOGGER.info("idToken: " + idToken);
-//		LOGGER.info("facebookId: " + facebookId);
 		int idLesson = Integer.parseInt(id);
+		LOGGER.info("idLesson: " + idLesson);
 		Firestore db = FirestoreOptions.getDefaultInstance().getService();
-//		FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
-//		String uid = decodedToken.getUid();
+
 		if (idLesson < 1) {
 			LOGGER.info("lesson < 1");
 			return "error/404";
 		}
 		if (idLesson > 1 && idLesson < 25) {
-			// get lessonmember check lesson learned
 			int lessonOld = idLesson - 1;
-			//
+
+			FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
+			String uid = decodedToken.getUid();
+			// get doc id account
+			ApiFuture<QuerySnapshot> futureAccount = db.collection("Account").whereEqualTo("uid", uid).get();
+			List<QueryDocumentSnapshot> accountDocuments = futureAccount.get().getDocuments();
+			String facebookId = null;
+			for (DocumentSnapshot document : accountDocuments) {
+				System.out.println(document.getId() + " => " + document.toObject(Account.class));
+				facebookId = document.getId();
+			}
+
 			String docLessonMember = lessonOld + facebookId;
 			DocumentReference docRefLessonMember = db.collection("LessonMember").document(docLessonMember);
 			ApiFuture<DocumentSnapshot> futureLessonMember = docRefLessonMember.get();
@@ -117,6 +144,53 @@ public class LessonController {
 				LOGGER.info("check status old lesson but document not exist!");
 				return "error/404";
 			}
+			if (idLesson == 2) {
+				LOGGER.info("lesson 2.");
+				Map<String, Object> data = new HashMap<>();
+				idLesson = 2;
+				data.put("lesson", idLesson);
+				data.put("memberId", facebookId);
+				data.put("memberName", "");
+				data.put("postId", "");
+				data.put("status", 0);
+				data.put("url", "");
+				data.put("uid", uid);
+				data.put("accountId", facebookId);
+				data.put("createdAt", System.currentTimeMillis() / 1000);
+				data.put("updatedAt", System.currentTimeMillis() / 1000);
+				String docId = String.valueOf(idLesson) + facebookId;
+				DocumentReference docRefLesson = db.collection("LessonMember").document(docId);
+				ApiFuture<DocumentSnapshot> futureLesson = docRefLesson.get();
+				DocumentSnapshot documentLesson = futureLesson.get();
+				if (documentLesson.exists()) {
+					LOGGER.info("document LessonMember exist!");
+				} else {
+					LOGGER.info("create doccument lesson2!");
+					ApiFuture<WriteResult> addedDocRef = db.collection("LessonMember").document(docId).set(data);
+				}
+			}
+			// create new next lesson
+			Map<String, Object> data = new HashMap<>();
+			idLesson = idLesson + 1;
+			data.put("lesson", idLesson);
+			data.put("memberId", facebookId);
+			data.put("memberName", "");
+			data.put("postId", "");
+			data.put("status", 0);
+			data.put("url", "");
+			data.put("uid", uid);
+			data.put("accountId", facebookId);
+			data.put("createdAt", System.currentTimeMillis() / 1000);
+			data.put("updatedAt", System.currentTimeMillis() / 1000);
+			String docId = String.valueOf(idLesson) + facebookId;
+			DocumentReference docRefLesson = db.collection("LessonMember").document(docId);
+			ApiFuture<DocumentSnapshot> futureLesson = docRefLesson.get();
+			DocumentSnapshot documentLesson = futureLesson.get();
+			if (documentLesson.exists()) {
+				LOGGER.info("document LessonMember exist!");
+			} else {
+				ApiFuture<WriteResult> addedDocRef = db.collection("LessonMember").document(docId).set(data);
+			}
 		}
 		if (idLesson >= 25) {
 			LOGGER.info("lesson > 24");
@@ -127,28 +201,6 @@ public class LessonController {
 			if (lesson.getName().equals(id)) {
 				model.addAttribute("lesson", lesson);
 			}
-		}
-		// create new next lesson
-		Map<String, Object> data = new HashMap<>();
-		idLesson = idLesson + 1;
-		data.put("lesson", idLesson);
-		data.put("memberId", facebookId);
-		data.put("memberName", "");
-		data.put("postId", "");
-		data.put("status", 0);
-		data.put("url", "");
-		data.put("uid", uid);
-		data.put("accountId", facebookId);
-		data.put("createdAt", System.currentTimeMillis() / 1000);
-		data.put("updatedAt", System.currentTimeMillis() / 1000);
-		String docId = String.valueOf(idLesson) + facebookId;
-		DocumentReference docRef = db.collection("LessonMember").document(docId);
-		ApiFuture<DocumentSnapshot> future = docRef.get();
-		DocumentSnapshot document = future.get();
-		if (document.exists()) {
-			LOGGER.info("document LessonMember exist!");
-		} else {
-			ApiFuture<WriteResult> addedDocRef = db.collection("LessonMember").document(docId).set(data);
 		}
 
 		return "lesson/lesson";

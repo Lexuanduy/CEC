@@ -68,8 +68,7 @@ function getCookie(key) {
 	}
 
 
-// set avatar from photoURL in cookie
-// document.getElementById("photoURL").src= getCookie('photoURL');
+document.getElementById("photoURL").src = getCookie('photoURL');
 
 $('#sign-out').on('click',()=>{
 	$('#logout').on('click',()=>{
@@ -92,13 +91,7 @@ $('#sign-out').on('click',()=>{
 });
 
 // next lesson
-var uri = window.location.pathname;
-var numLesson = uri.slice(8);
-facebookId = getCookie('facebookId');
-var docLessonMember = numLesson + facebookId;
-console.log("docLessonMember: " + docLessonMember);
-numLesson = numLesson*1; 
-console.log("numlesson: " + numLesson);
+
 $('#nextLesson')
 		.click(
 				function() {
@@ -113,6 +106,13 @@ $('#nextLesson')
 						});
 						return;
 					}
+					var uri = window.location.pathname;
+					var numLesson = uri.slice(8);
+					facebookId = getCookie('facebookId');
+					var docLessonMember = numLesson + facebookId;
+					console.log("docLessonMember: " + docLessonMember);
+					numLesson = numLesson*1; 
+					console.log("numlesson: " + numLesson);
 					console.log("click send video check");
 					db.collection("LessonMember").doc(docLessonMember).get().then(function(doc) {
 						if (doc.exists) {
@@ -208,20 +208,6 @@ $('#nextLesson')
 // end next lesson
 
 // next journey day
-var uri = window.location.pathname;
-console.log("uri: " + uri);
-var journeyDay = uri.slice(9);
-var indexDay = journeyDay.indexOf("/")*1;  
-var journey = journeyDay.slice(0,indexDay);
-var journeyName = (journeyDay.slice(0,indexDay)).slice(0,1); 
-console.log("journey: " + journey);
-indexDay = indexDay + 1;
-var day = journeyDay.slice(indexDay);
-console.log("day: " + day);
-facebookId = getCookie('facebookId'); 
-var docJourneyDay = journey + day + facebookId;
-console.log("docJourneyDay: " + docJourneyDay);
-var numDay = day*1;
 $('#nextDay')
 		.click(function() {
 					uid = getCookie('uid');
@@ -235,6 +221,20 @@ $('#nextDay')
 						});
 						return;
 					}
+					var uri = window.location.pathname;
+					console.log("uri: " + uri);
+					var journeyDay = uri.slice(9);
+					var indexDay = journeyDay.indexOf("/")*1;  
+					var journey = journeyDay.slice(0,indexDay);
+					var journeyName = (journeyDay.slice(0,indexDay)).slice(0,1); 
+					console.log("journey: " + journey);
+					indexDay = indexDay + 1;
+					var day = journeyDay.slice(indexDay);
+					console.log("day: " + day);
+					facebookId = getCookie('facebookId'); 
+					var docJourneyDay = journey + day + facebookId;
+					console.log("docJourneyDay: " + docJourneyDay);
+					var numDay = day*1;
 					console.log("click send video journey day check.");
 					// check day in journey
 						db.collection("JourneyDay").doc(docJourneyDay).get().then(function(doc) {

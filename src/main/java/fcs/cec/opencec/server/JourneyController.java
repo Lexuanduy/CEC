@@ -3,6 +3,7 @@ package fcs.cec.opencec.server;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.regex.Matcher;
@@ -30,6 +31,8 @@ import com.google.cloud.firestore.DocumentReference;
 import com.google.cloud.firestore.DocumentSnapshot;
 import com.google.cloud.firestore.Firestore;
 import com.google.cloud.firestore.FirestoreOptions;
+import com.google.cloud.firestore.QueryDocumentSnapshot;
+import com.google.cloud.firestore.QuerySnapshot;
 import com.google.cloud.firestore.WriteResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
@@ -83,9 +86,22 @@ public class JourneyController {
 		}
 	}
 
+//	@RequestMapping(value = "journey/3days/1", method = RequestMethod.GET)
+//	public String journeyDaysFirst(Model model) {
+//		for (Journey journey : dayList) {
+//			if (journey.getName().equals("3days") && journey.getDay().equals("1")) {
+//				model.addAttribute("journey", journey);
+//			} else {
+//				break;
+//			}
+//		}
+//
+//		return "journeys/journeyDay";
+//	}
+
 	@RequestMapping(value = "journey/{name}/{day}", method = RequestMethod.GET)
 	public String journeyDays(Model model, @PathVariable("name") String name, @PathVariable("day") String day,
-			@CookieValue("uid") String uid, @CookieValue("facebookId") String facebookId)
+			@CookieValue(value = "myCookie", required = false) String idToken)
 			throws FirebaseAuthException, InterruptedException, ExecutionException {
 		Firestore db = FirestoreOptions.getDefaultInstance().getService();
 //		FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
@@ -99,6 +115,45 @@ public class JourneyController {
 				return "error/404";
 			}
 			if ((Integer.parseInt(day) > 1) && (Integer.parseInt(day) < 4)) {
+				// get facebookId, get uid
+				FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
+				String uid = decodedToken.getUid();
+				// get doc id account
+				ApiFuture<QuerySnapshot> futureAccount = db.collection("Account").whereEqualTo("uid", uid).get();
+				List<QueryDocumentSnapshot> accountDocuments = futureAccount.get().getDocuments();
+				String facebookId = null;
+				for (DocumentSnapshot document : accountDocuments) {
+					System.out.println(document.getId() + " => " + document.toObject(Account.class));
+					facebookId = document.getId();
+				}
+
+				// create day 2 in journey day 3days
+				if (Integer.parseInt(day) == 2) {
+					LOGGER.info("3days day == 2");
+					// create new journey day
+					Map<String, Object> data = new HashMap<>();
+					dayJourney = 2;
+					data.put("day", dayJourney);
+					data.put("memberId", facebookId);
+					data.put("memberName", "");
+					data.put("postId", "");
+					data.put("status", 0);
+					data.put("url", "");
+					data.put("uid", uid);
+					data.put("accountId", facebookId);
+					data.put("createdAt", System.currentTimeMillis() / 1000);
+					data.put("updatedAt", System.currentTimeMillis() / 1000);
+					String docId = name + String.valueOf(dayJourney) + facebookId;
+					DocumentReference docRefJourneyDay = db.collection("JourneyDay").document(docId);
+					ApiFuture<DocumentSnapshot> futureJourneyDay = docRefJourneyDay.get();
+					DocumentSnapshot documentJourneyDay = futureJourneyDay.get();
+					if (documentJourneyDay.exists()) {
+						LOGGER.info("document JourneyDay eixst!");
+					} else {
+						ApiFuture<WriteResult> addedDocRef = db.collection("JourneyDay").document(docId).set(data);
+					}
+				}
+
 				int dayJourneyOld = dayJourney - 1;
 				String docJourneyDay = name + dayJourneyOld + facebookId;
 				LOGGER.info("doc journey day: " + docJourneyDay);
@@ -170,41 +225,54 @@ public class JourneyController {
 				LOGGER.info("3days day >= 4");
 				return "error/404";
 			}
-			if (Integer.parseInt(day) == 1) {
-				LOGGER.info("3days day == 1");
-				// create new journey day
-				Map<String, Object> data = new HashMap<>();
-				dayJourney = Integer.parseInt(day) + 1;
-				data.put("day", dayJourney);
-				data.put("memberId", facebookId);
-				data.put("memberName", "");
-				data.put("postId", "");
-				data.put("status", 0);
-				data.put("url", "");
-				data.put("uid", uid);
-				data.put("accountId", facebookId);
-				data.put("createdAt", System.currentTimeMillis() / 1000);
-				data.put("updatedAt", System.currentTimeMillis() / 1000);
-				String docId = name + String.valueOf(dayJourney) + facebookId;
-				DocumentReference docRefJourneyDay = db.collection("JourneyDay").document(docId);
-				ApiFuture<DocumentSnapshot> futureJourneyDay = docRefJourneyDay.get();
-				DocumentSnapshot documentJourneyDay = futureJourneyDay.get();
-				if (documentJourneyDay.exists()) {
-					LOGGER.info("document JourneyDay eixst!");
-				} else {
-					ApiFuture<WriteResult> addedDocRef = db.collection("JourneyDay").document(docId).set(data);
-				}
-			}
+//			if (Integer.parseInt(day) == 1) {
+//				LOGGER.info("3days day == 1");
+//				// create new journey day
+//				Map<String, Object> data = new HashMap<>();
+//				dayJourney = Integer.parseInt(day) + 1;
+//				data.put("day", dayJourney);
+//				data.put("memberId", facebookId);
+//				data.put("memberName", "");
+//				data.put("postId", "");
+//				data.put("status", 0);
+//				data.put("url", "");
+//				data.put("uid", uid);
+//				data.put("accountId", facebookId);
+//				data.put("createdAt", System.currentTimeMillis() / 1000);
+//				data.put("updatedAt", System.currentTimeMillis() / 1000);
+//				String docId = name + String.valueOf(dayJourney) + facebookId;
+//				DocumentReference docRefJourneyDay = db.collection("JourneyDay").document(docId);
+//				ApiFuture<DocumentSnapshot> futureJourneyDay = docRefJourneyDay.get();
+//				DocumentSnapshot documentJourneyDay = futureJourneyDay.get();
+//				if (documentJourneyDay.exists()) {
+//					LOGGER.info("document JourneyDay eixst!");
+//				} else {
+//					ApiFuture<WriteResult> addedDocRef = db.collection("JourneyDay").document(docId).set(data);
+//				}
+//			}
 		}
 		// end journey day in 3days
 
 		// journey day in 5days
 		if (name.equals("5days")) {
+			// get facebookId, get uid
+			FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
+			String uid = decodedToken.getUid();
+			// get doc id account
+			ApiFuture<QuerySnapshot> futureAccount = db.collection("Account").whereEqualTo("uid", uid).get();
+			List<QueryDocumentSnapshot> accountDocuments = futureAccount.get().getDocuments();
+			String facebookId = null;
+			for (DocumentSnapshot document : accountDocuments) {
+				System.out.println(document.getId() + " => " + document.toObject(Account.class));
+				facebookId = document.getId();
+			}
+
 			if (Integer.parseInt(day) < 1) {
 				LOGGER.info("5days day < 1");
 				return "error/404";
 			}
 			if ((Integer.parseInt(day) > 1) && (Integer.parseInt(day) < 6)) {
+
 				int dayJourneyOld = dayJourney - 1;
 				String docJourneyDay = name + dayJourneyOld + facebookId;
 				LOGGER.info("doc journey day: " + docJourneyDay);
@@ -324,11 +392,24 @@ public class JourneyController {
 
 		// journey day in 7days
 		if (name.equals("7days")) {
+			// get facebookId, get uid
+			FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
+			String uid = decodedToken.getUid();
+			// get doc id account
+			ApiFuture<QuerySnapshot> futureAccount = db.collection("Account").whereEqualTo("uid", uid).get();
+			List<QueryDocumentSnapshot> accountDocuments = futureAccount.get().getDocuments();
+			String facebookId = null;
+			for (DocumentSnapshot document : accountDocuments) {
+				System.out.println(document.getId() + " => " + document.toObject(Account.class));
+				facebookId = document.getId();
+			}
+
 			if (Integer.parseInt(day) < 1) {
 				LOGGER.info("7days day < 1");
 				return "error/404";
 			}
 			if ((Integer.parseInt(day) > 1) && (Integer.parseInt(day) < 8)) {
+
 				int dayJourneyOld = dayJourney - 1;
 				String docJourneyDay = name + dayJourneyOld + facebookId;
 				LOGGER.info("doc journey day: " + docJourneyDay);
@@ -447,11 +528,24 @@ public class JourneyController {
 
 		// journey day in 10days
 		if (name.equals("10days")) {
+			// get facebookId, get uid
+			FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
+			String uid = decodedToken.getUid();
+			// get doc id account
+			ApiFuture<QuerySnapshot> futureAccount = db.collection("Account").whereEqualTo("uid", uid).get();
+			List<QueryDocumentSnapshot> accountDocuments = futureAccount.get().getDocuments();
+			String facebookId = null;
+			for (DocumentSnapshot document : accountDocuments) {
+				System.out.println(document.getId() + " => " + document.toObject(Account.class));
+				facebookId = document.getId();
+			}
+
 			if (Integer.parseInt(day) < 1) {
 				LOGGER.info("10days day < 1");
 				return "error/404";
 			}
 			if ((Integer.parseInt(day) > 1) && (Integer.parseInt(day) < 11)) {
+
 				int dayJourneyOld = dayJourney - 1;
 				String docJourneyDay = name + dayJourneyOld + facebookId;
 				LOGGER.info("doc journey day: " + docJourneyDay);
@@ -570,11 +664,24 @@ public class JourneyController {
 
 		// journey day in 21days
 		if (name.equals("21days")) {
+			// get facebookId, get uid
+			FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
+			String uid = decodedToken.getUid();
+			// get doc id account
+			ApiFuture<QuerySnapshot> futureAccount = db.collection("Account").whereEqualTo("uid", uid).get();
+			List<QueryDocumentSnapshot> accountDocuments = futureAccount.get().getDocuments();
+			String facebookId = null;
+			for (DocumentSnapshot document : accountDocuments) {
+				System.out.println(document.getId() + " => " + document.toObject(Account.class));
+				facebookId = document.getId();
+			}
+
 			if (Integer.parseInt(day) < 1) {
 				LOGGER.info("21days day < 1");
 				return "error/404";
 			}
 			if ((Integer.parseInt(day) > 1) && (Integer.parseInt(day) < 22)) {
+
 				int dayJourneyOld = dayJourney - 1;
 				String docJourneyDay = name + dayJourneyOld + facebookId;
 				LOGGER.info("doc journey day: " + docJourneyDay);
@@ -693,11 +800,24 @@ public class JourneyController {
 
 		// journey day in 45days
 		if (name.equals("45days")) {
+			// get facebookId, get uid
+			FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
+			String uid = decodedToken.getUid();
+			// get doc id account
+			ApiFuture<QuerySnapshot> futureAccount = db.collection("Account").whereEqualTo("uid", uid).get();
+			List<QueryDocumentSnapshot> accountDocuments = futureAccount.get().getDocuments();
+			String facebookId = null;
+			for (DocumentSnapshot document : accountDocuments) {
+				System.out.println(document.getId() + " => " + document.toObject(Account.class));
+				facebookId = document.getId();
+			}
+
 			if (Integer.parseInt(day) < 1) {
 				LOGGER.info("45days day < 1");
 				return "error/404";
 			}
 			if ((Integer.parseInt(day) > 1) && (Integer.parseInt(day) < 46)) {
+
 				int dayJourneyOld = dayJourney - 1;
 				String docJourneyDay = name + dayJourneyOld + facebookId;
 				LOGGER.info("doc journey day: " + docJourneyDay);
@@ -816,11 +936,24 @@ public class JourneyController {
 
 		// journey day in 90days
 		if (name.equals("90days")) {
+			// get facebookId, get uid
+			FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
+			String uid = decodedToken.getUid();
+			// get doc id account
+			ApiFuture<QuerySnapshot> futureAccount = db.collection("Account").whereEqualTo("uid", uid).get();
+			List<QueryDocumentSnapshot> accountDocuments = futureAccount.get().getDocuments();
+			String facebookId = null;
+			for (DocumentSnapshot document : accountDocuments) {
+				System.out.println(document.getId() + " => " + document.toObject(Account.class));
+				facebookId = document.getId();
+			}
+
 			if (Integer.parseInt(day) < 1) {
 				LOGGER.info("90days day < 1");
 				return "error/404";
 			}
 			if ((Integer.parseInt(day) > 1) && (Integer.parseInt(day) < 91)) {
+
 				int dayJourneyOld = dayJourney - 1;
 				String docJourneyDay = name + dayJourneyOld + facebookId;
 				LOGGER.info("doc journey day: " + docJourneyDay);
