@@ -101,7 +101,7 @@ public class JourneyController {
 
 	@RequestMapping(value = "journey/{name}/{day}", method = RequestMethod.GET)
 	public String journeyDays(Model model, @PathVariable("name") String name, @PathVariable("day") String day,
-			@CookieValue(value = "myCookie", required = false) String idToken)
+			@CookieValue(value = "idToken", required = false) String idToken)
 			throws FirebaseAuthException, InterruptedException, ExecutionException {
 		Firestore db = FirestoreOptions.getDefaultInstance().getService();
 //		FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
@@ -116,6 +116,7 @@ public class JourneyController {
 			}
 			if ((Integer.parseInt(day) > 1) && (Integer.parseInt(day) < 4)) {
 				// get facebookId, get uid
+				LOGGER.info("idToken: " + idToken);
 				FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
 				String uid = decodedToken.getUid();
 				// get doc id account

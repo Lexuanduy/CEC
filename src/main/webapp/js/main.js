@@ -58,17 +58,15 @@ firebase.auth().onAuthStateChanged(function (user) {
     }
 });
 
+
 // get cookie
 function getCookie(key) {
 	  const regexp = new RegExp(`.*${key}=([^;]*)`);
 	  const result = regexp.exec(document.cookie);
 	  if(result) {
-	    return result [1];
+	    return result [1]; 
 	  }
 	}
-
-
-document.getElementById("photoURL").src = getCookie('photoURL');
 
 $('#sign-out').on('click',()=>{
 	$('#logout').on('click',()=>{

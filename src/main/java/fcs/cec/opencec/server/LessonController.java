@@ -105,7 +105,7 @@ public class LessonController {
 
 	@RequestMapping(value = "lesson/{id}", method = RequestMethod.GET)
 	public String lesson(Model model, @PathVariable("id") String id,
-			@CookieValue(value = "myCookie", required = false) String idToken, HttpServletResponse response)
+			@CookieValue(value = "idToken", required = false) String idToken, HttpServletResponse response)
 			throws InterruptedException, ExecutionException, FirebaseAuthException, IOException {
 		int idLesson = Integer.parseInt(id);
 		LOGGER.info("idLesson: " + idLesson);
