@@ -45,7 +45,7 @@ public class ProfileController {
 		// get Video by posterId
 		ApiFuture<QuerySnapshot> queryVideo = db.collection("Video").whereEqualTo("posterId", id).get();
 		List<Video> videos = queryVideo.get().toObjects(Video.class);
-		
+
 		model.addAttribute("member", member);
 		model.addAttribute("posts", posts);
 		model.addAttribute("videos", videos);
@@ -67,6 +67,7 @@ public class ProfileController {
 			posterId = video.getPosterId();
 		} else {
 			LOGGER.info("No such document video!");
+			return "error/404";
 		}
 		// get member by posterId
 		DocumentReference docRefMember = db.collection("Member").document(posterId);
@@ -77,13 +78,14 @@ public class ProfileController {
 			member = documentMem.toObject(Member.class);
 		} else {
 			LOGGER.info("No such document member!");
+			return "error/404"; 
 		}
 		// get memberpost
 		ApiFuture<QuerySnapshot> futurePost = db.collection("MemberPost").whereEqualTo("posterId", posterId).get();
 		List<QueryDocumentSnapshot> documents = futurePost.get().getDocuments();
 		MemberPost memberPost = null;
 		for (DocumentSnapshot documentPost : documents) {
-		  memberPost = documentPost.toObject(MemberPost.class);
+			memberPost = documentPost.toObject(MemberPost.class);
 		}
 
 		model.addAttribute("video", video);

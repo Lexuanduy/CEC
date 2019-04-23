@@ -19,6 +19,7 @@ import com.google.api.client.json.Json;
 import com.google.api.core.ApiFuture;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.firestore.DocumentReference;
+import com.google.cloud.firestore.DocumentSnapshot;
 import com.google.cloud.firestore.Firestore;
 import com.google.cloud.firestore.FirestoreOptions;
 import com.google.cloud.firestore.WriteResult;
@@ -31,6 +32,7 @@ import com.google.firebase.auth.FirebaseToken;
 import ch.qos.logback.classic.Logger;
 import fcs.cec.opencec.entity.Journey;
 import fcs.cec.opencec.entity.Lesson;
+import fcs.cec.opencec.entity.Member;
 
 public class Main {
 
@@ -188,43 +190,53 @@ public class Main {
 //		System.out.println("Find lesson number: " + lesson);
 		// test send mail
 
-		Document doc = null;
-		String url = "https://script.googleusercontent.com/macros/echo?user_content_key=dmTT0L5ltyjs6C0mzfB8Kf1FkNPCAqiExMVyEY7hPKS9QIrht-BvnAzuAZYIZvlrnSaC13gWKjpsPFnfMb3lT9L5wfimIUbgm5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnCT0QRJ7P_-LtV3tAd8_b_dUnbO1rEvbeLLB2eAoIGhp1hENMaacOI9TktsviLkDHJlUq1JAmpDs&lib=MmSKrXssQcdpiSXxZX7nm1QZVzjmXS3D2";
-		try {
-			doc = Jsoup.connect(url).timeout(30000).get();
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
-		Elements elements = doc.select("day");
-		Element ePdf = null;
-		Element videoMp4 = null;
-		String day = null;
-		String pdf = null;
-		String video = null;
-		int indexStartJourneyDay = 0;
-		int indexText1 = 0;
-		int indexText2 = 0;
-		String journeyName = null;
-		Journey journey = null;
-		String text = null;
-		String uri = null;
-		for (Element element : elements) {
-			day = element.attr("name");
-			ePdf = element.child(0);
-			pdf = ePdf.text();
-			videoMp4 = element.child(1);
-			video = videoMp4.text();
-			indexStartJourneyDay = pdf.indexOf("opencec.appspot.com/");
-			text = pdf.substring(indexStartJourneyDay);
-			indexText1 = text.indexOf("/") + 1;
-			uri = text.substring(indexText1);
-			indexText2 = uri.indexOf("/");
-			journeyName = uri.substring(0, indexText2);
-			System.out.println(journeyName);
-			System.out.println(day);
-
-				journey = new Journey(journeyName, day, pdf, video);
-//				dayList.add(journey);
+//		Document doc = null;
+//		String url = "https://script.googleusercontent.com/macros/echo?user_content_key=dmTT0L5ltyjs6C0mzfB8Kf1FkNPCAqiExMVyEY7hPKS9QIrht-BvnAzuAZYIZvlrnSaC13gWKjpsPFnfMb3lT9L5wfimIUbgm5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnCT0QRJ7P_-LtV3tAd8_b_dUnbO1rEvbeLLB2eAoIGhp1hENMaacOI9TktsviLkDHJlUq1JAmpDs&lib=MmSKrXssQcdpiSXxZX7nm1QZVzjmXS3D2";
+//		try {
+//			doc = Jsoup.connect(url).timeout(30000).get();
+//		} catch (IOException e1) {
+//			e1.printStackTrace();
+//		}
+//		Elements elements = doc.select("day");
+//		Element ePdf = null;
+//		Element videoMp4 = null;
+//		String day = null;
+//		String pdf = null;
+//		String video = null;
+//		int indexStartJourneyDay = 0;
+//		int indexText1 = 0;
+//		int indexText2 = 0;
+//		String journeyName = null;
+//		Journey journey = null;
+//		String text = null;
+//		String uri = null;
+//		for (Element element : elements) {
+//			day = element.attr("name");
+//			ePdf = element.child(0);
+//			pdf = ePdf.text();
+//			videoMp4 = element.child(1);
+//			video = videoMp4.text();
+//			indexStartJourneyDay = pdf.indexOf("opencec.appspot.com/");
+//			text = pdf.substring(indexStartJourneyDay);
+//			indexText1 = text.indexOf("/") + 1;
+//			uri = text.substring(indexText1);
+//			indexText2 = uri.indexOf("/");
+//			journeyName = uri.substring(0, indexText2);
+//			System.out.println(journeyName);
+//			System.out.println(day);
+//
+//				journey = new Journey(journeyName, day, pdf, video);
+////				dayList.add(journey);
+//		}
+		Firestore db = FirestoreOptions.getDefaultInstance().getService();
+		DocumentReference docRefMember = db.collection("Member").document("2278970332376010");
+		ApiFuture<DocumentSnapshot> futureMember = docRefMember.get();
+		Member member = null;
+		DocumentSnapshot documentMem = futureMember.get();
+		if (documentMem.exists()) {
+			member = documentMem.toObject(Member.class);
+		} else {
+			System.out.println("No such document member!");
 		}
 
 	}

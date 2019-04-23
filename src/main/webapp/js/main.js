@@ -58,7 +58,6 @@ firebase.auth().onAuthStateChanged(function (user) {
     }
 });
 
-
 // get cookie
 function getCookie(key) {
 	  const regexp = new RegExp(`.*${key}=([^;]*)`);

@@ -112,7 +112,7 @@ public class JourneyController {
 		if (name.equals("3days")) {
 			if (Integer.parseInt(day) < 1) {
 				LOGGER.info("3days day < 1");
-				return "error/404";
+				return "error/error-journey";
 			}
 			if ((Integer.parseInt(day) > 1) && (Integer.parseInt(day) < 4)) {
 				// get facebookId, get uid
@@ -167,7 +167,7 @@ public class JourneyController {
 					int status = journeyDay.getStatus();
 					if (status == 0) {
 						LOGGER.info("status == 0");
-						return "error/404";
+						return "error/error-journey-old";
 					}
 					// create new journey day
 					Map<String, Object> data = new HashMap<>();
@@ -219,12 +219,12 @@ public class JourneyController {
 					}
 				} else {
 					LOGGER.info("No such document JourneyDay!");
-					return "error/404";
+					return "error/error-journey";
 				}
 			}
 			if (Integer.parseInt(day) >= 4) {
 				LOGGER.info("3days day >= 4");
-				return "error/404";
+				return "error/error-journey";
 			}
 //			if (Integer.parseInt(day) == 1) {
 //				LOGGER.info("3days day == 1");
@@ -270,7 +270,7 @@ public class JourneyController {
 
 			if (Integer.parseInt(day) < 1) {
 				LOGGER.info("5days day < 1");
-				return "error/404";
+				return "error/error-journey";
 			}
 			if ((Integer.parseInt(day) > 1) && (Integer.parseInt(day) < 6)) {
 
@@ -286,7 +286,7 @@ public class JourneyController {
 					int status = journeyDay.getStatus();
 					if (status == 0) {
 						LOGGER.info("status == 0");
-						return "error/404";
+						return "error/error-journey-old";
 					}
 					// create new journey day
 					Map<String, Object> data = new HashMap<>();
@@ -337,12 +337,12 @@ public class JourneyController {
 					}
 				} else {
 					LOGGER.info("No such document JourneyDay!");
-					return "error/404";
+					return "error/error-journey";
 				}
 			}
 			if (Integer.parseInt(day) >= 6) {
 				LOGGER.info("5days day >= 6");
-				return "error/404";
+				return "error/error-journey";
 			}
 			if (Integer.parseInt(day) == 1) {
 				LOGGER.info("5days day == 1");
@@ -358,7 +358,7 @@ public class JourneyController {
 					int status = journeyDay.getStatus();
 					if (status == 0) {
 						LOGGER.info("status == 0");
-						return "error/404";
+						return "error/error-journey-old";
 					}
 					// create new journey day
 					Map<String, Object> data = new HashMap<>();
@@ -385,7 +385,7 @@ public class JourneyController {
 					}
 				} else {
 					LOGGER.info("No such document JourneyDay!");
-					return "error/404";
+					return "error/error-journey";
 				}
 			}
 		}
@@ -407,7 +407,7 @@ public class JourneyController {
 
 			if (Integer.parseInt(day) < 1) {
 				LOGGER.info("7days day < 1");
-				return "error/404";
+				return "error/error-journey";
 			}
 			if ((Integer.parseInt(day) > 1) && (Integer.parseInt(day) < 8)) {
 
@@ -423,7 +423,7 @@ public class JourneyController {
 					int status = journeyDay.getStatus();
 					if (status == 0) {
 						LOGGER.info("status == 0");
-						return "error/404";
+						return "error/error-journey-old"; 
 					}
 					// create new journey day
 					Map<String, Object> data = new HashMap<>();
@@ -474,12 +474,12 @@ public class JourneyController {
 					}
 				} else {
 					LOGGER.info("No such document JourneyDay!");
-					return "error/404";
+					return "error/error-journey";
 				}
 			}
 			if (Integer.parseInt(day) >= 8) {
 				LOGGER.info("7days day >= 8");
-				return "error/404";
+				return "error/error-journey";
 			}
 			if (Integer.parseInt(day) == 1) {
 				LOGGER.info("7days day == 1");
@@ -495,7 +495,7 @@ public class JourneyController {
 					int status = journeyDay.getStatus();
 					if (status == 0) {
 						LOGGER.info("status == 0");
-						return "error/404";
+						return "error/error-journey-old"; 
 					}
 					// create new journey day
 					Map<String, Object> data = new HashMap<>();
@@ -521,7 +521,7 @@ public class JourneyController {
 					}
 				} else {
 					LOGGER.info("No such document JourneyDay!");
-					return "error/404";
+					return "error/error-journey";
 				}
 			}
 		}
@@ -543,7 +543,7 @@ public class JourneyController {
 
 			if (Integer.parseInt(day) < 1) {
 				LOGGER.info("10days day < 1");
-				return "error/404";
+				return "error/error-journey";
 			}
 			if ((Integer.parseInt(day) > 1) && (Integer.parseInt(day) < 11)) {
 
@@ -559,7 +559,7 @@ public class JourneyController {
 					int status = journeyDay.getStatus();
 					if (status == 0) {
 						LOGGER.info("status == 0");
-						return "error/404";
+						return "error/error-journey-old"; 
 					}
 					// create new journey day
 					Map<String, Object> data = new HashMap<>();
@@ -610,12 +610,12 @@ public class JourneyController {
 					}
 				} else {
 					LOGGER.info("No such document JourneyDay!");
-					return "error/404";
+					return "error/error-journey";
 				}
 			}
 			if (Integer.parseInt(day) >= 11) {
 				LOGGER.info("10days day >= 11");
-				return "error/404";
+				return "error/error-journey";
 			}
 			if (Integer.parseInt(day) == 1) {
 				LOGGER.info("10days day == 1");
@@ -631,7 +631,7 @@ public class JourneyController {
 					int status = journeyDay.getStatus();
 					if (status == 0) {
 						LOGGER.info("status == 0");
-						return "error/404";
+						return "error/error-journey-old"; 
 					}
 					// create new journey day
 					Map<String, Object> data = new HashMap<>();
@@ -657,7 +657,7 @@ public class JourneyController {
 					}
 				} else {
 					LOGGER.info("No such document JourneyDay!");
-					return "error/404";
+					return "error/error-journey";
 				}
 			}
 		}
@@ -679,7 +679,7 @@ public class JourneyController {
 
 			if (Integer.parseInt(day) < 1) {
 				LOGGER.info("21days day < 1");
-				return "error/404";
+				return "error/error-journey";
 			}
 			if ((Integer.parseInt(day) > 1) && (Integer.parseInt(day) < 22)) {
 
@@ -695,7 +695,7 @@ public class JourneyController {
 					int status = journeyDay.getStatus();
 					if (status == 0) {
 						LOGGER.info("status == 0");
-						return "error/404";
+						return "error/error-journey-old";
 					}
 					// create new journey day
 					Map<String, Object> data = new HashMap<>();
@@ -746,12 +746,12 @@ public class JourneyController {
 					}
 				} else {
 					LOGGER.info("No such document JourneyDay!");
-					return "error/404";
+					return "error/error-journey-old";
 				}
 			}
 			if (Integer.parseInt(day) >= 22) {
 				LOGGER.info("21days day >= 22");
-				return "error/404";
+				return "error/error-journey";
 			}
 			if (Integer.parseInt(day) == 1) {
 				LOGGER.info("21days day == 1");
@@ -767,7 +767,7 @@ public class JourneyController {
 					int status = journeyDay.getStatus();
 					if (status == 0) {
 						LOGGER.info("status == 0");
-						return "error/404";
+						return "error/error-journey-old"; 
 					}
 					// create new journey day
 					Map<String, Object> data = new HashMap<>();
@@ -793,7 +793,7 @@ public class JourneyController {
 					}
 				} else {
 					LOGGER.info("No such document JourneyDay!");
-					return "error/404";
+					return "error/error-journey";
 				}
 			}
 		}
@@ -815,7 +815,7 @@ public class JourneyController {
 
 			if (Integer.parseInt(day) < 1) {
 				LOGGER.info("45days day < 1");
-				return "error/404";
+				return "error/error-journey";
 			}
 			if ((Integer.parseInt(day) > 1) && (Integer.parseInt(day) < 46)) {
 
@@ -831,7 +831,7 @@ public class JourneyController {
 					int status = journeyDay.getStatus();
 					if (status == 0) {
 						LOGGER.info("status == 0");
-						return "error/404";
+						return "error/error-journey-old"; 
 					}
 					// create new journey day
 					Map<String, Object> data = new HashMap<>();
@@ -882,12 +882,12 @@ public class JourneyController {
 					}
 				} else {
 					LOGGER.info("No such document JourneyDay!");
-					return "error/404";
+					return "error/error-journey";
 				}
 			}
 			if (Integer.parseInt(day) >= 46) {
 				LOGGER.info("45days day >= 46");
-				return "error/404";
+				return "error/error-journey";
 			}
 			if (Integer.parseInt(day) == 1) {
 				LOGGER.info("45days day == 1");
@@ -903,7 +903,7 @@ public class JourneyController {
 					int status = journeyDay.getStatus();
 					if (status == 0) {
 						LOGGER.info("status == 0");
-						return "error/404";
+						return "error/error-journey-old"; 
 					}
 					// create new journey day
 					Map<String, Object> data = new HashMap<>();
@@ -929,7 +929,7 @@ public class JourneyController {
 					}
 				} else {
 					LOGGER.info("No such document JourneyDay!");
-					return "error/404";
+					return "error/error-journey";
 				}
 			}
 		}
@@ -951,7 +951,7 @@ public class JourneyController {
 
 			if (Integer.parseInt(day) < 1) {
 				LOGGER.info("90days day < 1");
-				return "error/404";
+				return "error/error-journey";
 			}
 			if ((Integer.parseInt(day) > 1) && (Integer.parseInt(day) < 91)) {
 
@@ -967,7 +967,7 @@ public class JourneyController {
 					int status = journeyDay.getStatus();
 					if (status == 0) {
 						LOGGER.info("status == 0");
-						return "error/404";
+						return "error/error-journey-old"; 
 					}
 					// create new journey day
 					Map<String, Object> data = new HashMap<>();
@@ -1018,12 +1018,12 @@ public class JourneyController {
 					}
 				} else {
 					LOGGER.info("No such document JourneyDay!");
-					return "error/404";
+					return "error/error-journey";
 				}
 			}
 			if (Integer.parseInt(day) >= 91) {
 				LOGGER.info("90days day >= 91");
-				return "error/404";
+				return "error/error-journey";
 			}
 			if (Integer.parseInt(day) == 1) {
 				LOGGER.info("90days day == 1");
@@ -1039,7 +1039,7 @@ public class JourneyController {
 					int status = journeyDay.getStatus();
 					if (status == 0) {
 						LOGGER.info("status == 0");
-						return "error/404";
+						return "error/error-journey-old"; 
 					}
 					// create new journey day
 					Map<String, Object> data = new HashMap<>();
@@ -1065,7 +1065,7 @@ public class JourneyController {
 					}
 				} else {
 					LOGGER.info("No such document JourneyDay!");
-					return "error/404";
+					return "error/error-journey";
 				}
 			}
 		}

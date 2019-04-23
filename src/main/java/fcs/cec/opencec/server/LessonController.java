@@ -59,11 +59,13 @@ public class LessonController {
 	static ArrayList<Lesson> lessonList = new ArrayList<Lesson>();
 
 	static {
+
 		GoogleCredentials credentials = ComputeEngineCredentials.create();
 		FirebaseOptions options = new FirebaseOptions.Builder().setCredentials(credentials).setProjectId("opencec")
 				.build();
-
 		FirebaseApp.initializeApp(options);
+
+//		FirebaseApp.initializeApp();
 		Document doc = null;
 		String url = "https://script.googleusercontent.com/macros/echo?user_content_key=dmTT0L5ltyjs6C0mzfB8Kf1FkNPCAqiExMVyEY7hPKS9QIrht-BvnAzuAZYIZvlrnSaC13gWKjpsPFnfMb3lT9L5wfimIUbgm5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnCT0QRJ7P_-LtV3tAd8_b_dUnbO1rEvbeLLB2eAoIGhp1hENMaacOI9TktsviLkDHJlUq1JAmpDs&lib=MmSKrXssQcdpiSXxZX7nm1QZVzjmXS3D2";
 		try {
@@ -120,7 +122,7 @@ public class LessonController {
 
 		if (idLesson < 1) {
 			LOGGER.info("lesson < 1");
-			return "error/404";
+			return "error/error-lesson";
 		}
 		if (idLesson > 1 && idLesson < 25) {
 			int lessonOld = idLesson - 1;
@@ -145,11 +147,11 @@ public class LessonController {
 				LessonMember lessonMember = documentLessonMember.toObject(LessonMember.class);
 				if (lessonMember.getStatus() == 0) {
 					LOGGER.info("fail next lesson");
-					return "error/404";
+					return "error/error-lesson-old";
 				}
 			} else {
 				LOGGER.info("check status old lesson but document not exist!");
-				return "error/404";
+				return "error/error-lesson-old";
 			}
 			if (idLesson == 2) {
 				LOGGER.info("lesson 2.");
@@ -201,7 +203,7 @@ public class LessonController {
 		}
 		if (idLesson >= 25) {
 			LOGGER.info("lesson > 24");
-			return "error/404";
+			return "error/error-lesson";
 		}
 		// get lesson by lesson number
 		for (Lesson lesson : lessonList) {
