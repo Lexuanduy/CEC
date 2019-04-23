@@ -56,14 +56,8 @@ public class ProfileController {
 			hashMap.put("picture", memberPost.getPicture());
 			listMap.add(hashMap);
 		}
-
-		// get Video by posterId
-//		ApiFuture<QuerySnapshot> queryVideo = db.collection("Video").whereEqualTo("posterId", id).get();
-//		List<Video> videos = queryVideo.get().toObjects(Video.class);
-
 		model.addAttribute("member", member);
 		model.addAttribute("posts", listMap);
-//		model.addAttribute("videos", videos);
 		return "profiles/profile";
 	}
 
@@ -71,39 +65,31 @@ public class ProfileController {
 	public String fileDetail(Model model, @PathVariable("id") String id)
 			throws InterruptedException, ExecutionException {
 		Firestore db = FirestoreOptions.getDefaultInstance().getService();
-		// get video detail by id
-		DocumentReference docRef = db.collection("Video").document(id);
+
+		// get memberpost
+		DocumentReference docRef = db.collection("MemberPost").document(id);
 		ApiFuture<DocumentSnapshot> future = docRef.get();
-		Video video = null;
-		String posterId = null;
+		MemberPost memberPost = null;
 		DocumentSnapshot document = future.get();
 		if (document.exists()) {
-			video = document.toObject(Video.class);
-			posterId = video.getPosterId();
+			memberPost = document.toObject(MemberPost.class);
 		} else {
-			LOGGER.info("No such document video!");
-			return "error/404";
-		}
-		// get member by posterId
-		DocumentReference docRefMember = db.collection("Member").document(posterId);
-		ApiFuture<DocumentSnapshot> futureMember = docRefMember.get();
-		Member member = null;
-		DocumentSnapshot documentMem = futureMember.get();
-		if (documentMem.exists()) {
-			member = documentMem.toObject(Member.class);
-		} else {
-			LOGGER.info("No such document member!");
-			return "error/404";
-		}
-		// get memberpost
-		ApiFuture<QuerySnapshot> futurePost = db.collection("MemberPost").whereEqualTo("posterId", posterId).get();
-		List<QueryDocumentSnapshot> documents = futurePost.get().getDocuments();
-		MemberPost memberPost = null;
-		for (DocumentSnapshot documentPost : documents) {
-			memberPost = documentPost.toObject(MemberPost.class);
+			LOGGER.info("No such document member post!");
+			return "";
 		}
 
-		model.addAttribute("video", video);
+		// get member
+		DocumentReference docRefMember = db.collection("Member").document(memberPost.getPosterId());
+		ApiFuture<DocumentSnapshot> futureMember = docRefMember.get();
+		Member member = null;
+		DocumentSnapshot documentMember = futureMember.get();
+		if (documentMember.exists()) {
+			member = documentMember.toObject(Member.class);
+		} else {
+			LOGGER.info("No such document member!");
+			return "";
+		}
+
 		model.addAttribute("member", member);
 		model.addAttribute("memberPost", memberPost);
 		return "profiles/detail";

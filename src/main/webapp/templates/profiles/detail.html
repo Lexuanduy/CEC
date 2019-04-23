@@ -45,7 +45,7 @@
 								<div class="col-md-8 offset-md-2">
 									<div class="userBoxInfo" th:each="obj : ${member}">
 										<div class="inner" th:each="obj : ${memberPost}">
-											<div class="info" th:each="obj : ${video}">
+											<div class="info">
 												<div class="meta">
 													<div class="d-flex">
 														<a target="_blank"
@@ -58,7 +58,7 @@
 															<a target="_blank"
 																th:href="@{//facebook.com/profile.php(id=${member.id})}"
 																class="name"></a> <a
-																th:href="@{'https://www.facebook.com/groups/cec.edu.vn/permalink/' + ${video.id}}"
+																th:href="${memberPost.permalink}"
 																target="_blank" class="date">5 tháng trước</a>
 														</div>
 													</div>
@@ -68,13 +68,13 @@
 ❤️</pre>
 												</div>
 												<div class="text-center">
-													<div class="fb-video" th:data-href="${video.url}"
+													<div class="fb-video" th:data-href="${memberPost.permalink}"
 														data-width="500" data-show-text="false"></div>
 												</div>
 											</div>
 										</div>
 										<div class="fbComments">
-											<div class="fb-comments" th:data-href="${video.permalink}"
+											<div class="fb-comments" th:data-href="${memberPost.permalink}"
 												data-numposts="5"></div>
 										</div>
 									</div>
