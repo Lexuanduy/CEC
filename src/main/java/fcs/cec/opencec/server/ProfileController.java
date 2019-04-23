@@ -1,5 +1,7 @@
 package fcs.cec.opencec.server;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -38,17 +40,30 @@ public class ProfileController {
 			member = document.toObject(Member.class);
 		} else {
 			LOGGER.info("No such document member!");
+			return "";
 		}
 		// get MemberPost by posterId
+		List<HashMap<String, String>> listMap = new ArrayList<>();
 		ApiFuture<QuerySnapshot> queryPost = db.collection("MemberPost").whereEqualTo("posterId", id).get();
 		List<MemberPost> posts = queryPost.get().toObjects(MemberPost.class);
+		for (MemberPost memberPost : posts) {
+			HashMap<String, String> hashMap = new HashMap();
+			hashMap.put("posterId", id);
+			hashMap.put("posterName", member.getName());
+			hashMap.put("permalink", memberPost.getPermalink());
+			hashMap.put("id", memberPost.getId());
+			hashMap.put("content", memberPost.getContent());
+			hashMap.put("picture", memberPost.getPicture());
+			listMap.add(hashMap);
+		}
+
 		// get Video by posterId
-		ApiFuture<QuerySnapshot> queryVideo = db.collection("Video").whereEqualTo("posterId", id).get();
-		List<Video> videos = queryVideo.get().toObjects(Video.class);
+//		ApiFuture<QuerySnapshot> queryVideo = db.collection("Video").whereEqualTo("posterId", id).get();
+//		List<Video> videos = queryVideo.get().toObjects(Video.class);
 
 		model.addAttribute("member", member);
-		model.addAttribute("posts", posts);
-		model.addAttribute("videos", videos);
+		model.addAttribute("posts", listMap);
+//		model.addAttribute("videos", videos);
 		return "profiles/profile";
 	}
 
@@ -78,7 +93,7 @@ public class ProfileController {
 			member = documentMem.toObject(Member.class);
 		} else {
 			LOGGER.info("No such document member!");
-			return "error/404"; 
+			return "error/404";
 		}
 		// get memberpost
 		ApiFuture<QuerySnapshot> futurePost = db.collection("MemberPost").whereEqualTo("posterId", posterId).get();

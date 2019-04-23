@@ -101,40 +101,40 @@
 					</div>
 					<div class="row tab-pane fade show active"
 						style="text-align: center;" id="profileContent-1">
-						<div class="col-sm-4" th:each="video : ${videos}">
+						<div class="col-sm-4" th:each="post : ${posts}">
 							<div class="inner">
 								<div class="info">
 									<div class="meta">
 										<div class="d-flex">
 											<a target="_blank"
-												th:href="@{//facebook.com/profile.php(id=${video.posterId})}"
+												th:href="@{//facebook.com/profile.php(id=${post.posterId})}"
 												class="avatar mr-2"> <img
-												th:alt="@{${video.posterName}}"
-												th:src="@{'//graph.facebook.com/' + ${video.posterId} + '/picture?type=large&amp;width=40&amp;height=40'}"
+												th:alt="@{${post.posterName}}"
+												th:src="@{'//graph.facebook.com/' + ${post.posterId} + '/picture?type=large&amp;width=40&amp;height=40'}"
 												class="rounded-circle" width="40" height="40">
 											</a>
 											<div>
 												<a target="_blank"
-													th:href="@{//facebook.com/profile.php(id=${video.posterId})}"
-													class="name" th:text="${video.posterName}"></a> <a
-													th:href="@{'https://www.facebook.com/groups/cec.edu.vn/permalink/' + ${video.id}}"
+													th:href="@{//facebook.com/profile.php(id=${post.posterId})}"
+													class="name" th:text="${post.posterName}"></a> <a
+													th:href="${post.permalink}" 
 													target="_blank" class="date">5 tháng trước</a>
 											</div>
 										</div>
-										<a th:href="@{'/p/' + ${video.id}}" class="fb"> <i
+										<a th:href="@{'/p/' + ${post.id}}" class="fb"> <i
 											class="mdi mdi-open-in-new"></i>
 										</a>
 									</div>
 									<div class="desc">
-										<pre th:text="${video.content}">❤️</pre>
-										<a th:href="@{'/p/' + ${video.id}}" class="more">Xem Thêm</a>
+										<pre th:text="${post.content}">❤️</pre>
+										<a th:href="@{'/p/' + ${post.id}}" class="more">Xem Thêm</a>
 									</div>
 									<div class="coverImage">
 										<div class="videoWrap">
-											<div class="fb-video" th:data-href="${video.url}"
+											<div class="fb-video" th:data-href="${post.permalink}"
 												data-width="500" data-show-text="false"></div>
 										</div>
-										<img th:src="@{${video.picture}}">
+										<img th:src="@{${post.picture}}">
 									</div>
 								</div>
 							</div>

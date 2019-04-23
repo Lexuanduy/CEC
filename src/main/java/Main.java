@@ -18,10 +18,13 @@ import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
 import com.google.api.client.json.Json;
 import com.google.api.core.ApiFuture;
 import com.google.auth.oauth2.GoogleCredentials;
+import com.google.cloud.firestore.CollectionReference;
 import com.google.cloud.firestore.DocumentReference;
 import com.google.cloud.firestore.DocumentSnapshot;
 import com.google.cloud.firestore.Firestore;
 import com.google.cloud.firestore.FirestoreOptions;
+import com.google.cloud.firestore.QueryDocumentSnapshot;
+import com.google.cloud.firestore.QuerySnapshot;
 import com.google.cloud.firestore.WriteResult;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
@@ -33,6 +36,7 @@ import ch.qos.logback.classic.Logger;
 import fcs.cec.opencec.entity.Journey;
 import fcs.cec.opencec.entity.Lesson;
 import fcs.cec.opencec.entity.Member;
+import fcs.cec.opencec.entity.Video;
 
 public class Main {
 
@@ -229,14 +233,12 @@ public class Main {
 ////				dayList.add(journey);
 //		}
 		Firestore db = FirestoreOptions.getDefaultInstance().getService();
-		DocumentReference docRefMember = db.collection("Member").document("2278970332376010");
-		ApiFuture<DocumentSnapshot> futureMember = docRefMember.get();
-		Member member = null;
-		DocumentSnapshot documentMem = futureMember.get();
-		if (documentMem.exists()) {
-			member = documentMem.toObject(Member.class);
-		} else {
-			System.out.println("No such document member!");
+		ApiFuture<QuerySnapshot> docRefMember = db.collection("MemberPost").whereEqualTo("posterId", "100003849018015").get();
+		QuerySnapshot futureMember = docRefMember.get();
+		
+		QuerySnapshot documentMem = futureMember;
+		for (QueryDocumentSnapshot queryDocumentSnapshot : documentMem) {
+			System.out.println(queryDocumentSnapshot.getId());
 		}
 
 	}
