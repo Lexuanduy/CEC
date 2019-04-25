@@ -18,7 +18,7 @@ var provider = new firebase.auth.FacebookAuthProvider();
 firebase.auth().onAuthStateChanged(function (user) {
     if (user) {
         $('#sign-out')[0].hidden = false;
-        
+        document.getElementById("photoURL").src = getCookie('photoURL');
     } else {
         $('#sign-in')[0].hidden = false;
         $('#sign-in').on('click', () => {
@@ -28,6 +28,13 @@ firebase.auth().onAuthStateChanged(function (user) {
             });
             firebase.auth().signInWithPopup(provider).then( function (result) {
 // console.log(result);
+            	// set hourse cookie
+            	var now = new Date();
+            	var time = now.getTime();
+            	time += 3600 * 1000;
+            	now.setTime(time);
+            	
+            	//
                 var token = result.credential.accessToken; // Token facebook
                 console.log("token: " + token);
 				var obj = JSON.parse(JSON.stringify(result));
@@ -41,11 +48,26 @@ firebase.auth().onAuthStateChanged(function (user) {
                 $('#sign-in')[0].hidden = true;
                 document.getElementById("photoURL").src= photoURL;
                 // create cookie
-                 document.cookie = 'facebookId=' + facebookId;
-				 document.cookie = 'photoURL=' + photoURL;
-				 document.cookie = 'uid=' + uid;
-				 document.cookie = 'displayName=' + displayName;
-				 document.cookie = 'idToken=' + accessToken;
+                document.cookie = 
+                	'facebookId=' + facebookId + 
+                	'; expires=' + now.toUTCString() + 
+                	'; path=/';
+                document.cookie = 
+                	'photoURL=' + photoURL + 
+                	'; expires=' + now.toUTCString() + 
+                	'; path=/';
+                document.cookie = 
+                	'uid=' + uid + 
+                	'; expires=' + now.toUTCString() + 
+                	'; path=/';
+                document.cookie = 
+                	'displayName=' + displayName + 
+                	'; expires=' + now.toUTCString() + 
+                	'; path=/';
+                document.cookie = 
+                	'idToken=' + accessToken + 
+                	'; expires=' + now.toUTCString() + 
+                	'; path=/';
 		            
 // $('#displayName').html() = user.displayName;
             }).catch(function (error) {
