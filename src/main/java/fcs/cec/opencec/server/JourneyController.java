@@ -385,7 +385,7 @@ public class JourneyController {
 					int status = journeyDay.getStatus();
 					if (status == 0) {
 						LOGGER.info("status == 0");
-						return "error/error-journey-old"; 
+						return "error/error-journey-old";
 					}
 					// create new journey day
 					Map<String, Object> data = new HashMap<>();
@@ -457,7 +457,7 @@ public class JourneyController {
 					int status = journeyDay.getStatus();
 					if (status == 0) {
 						LOGGER.info("status == 0");
-						return "error/error-journey-old"; 
+						return "error/error-journey-old";
 					}
 					// create new journey day
 					Map<String, Object> data = new HashMap<>();
@@ -521,7 +521,7 @@ public class JourneyController {
 					int status = journeyDay.getStatus();
 					if (status == 0) {
 						LOGGER.info("status == 0");
-						return "error/error-journey-old"; 
+						return "error/error-journey-old";
 					}
 					// create new journey day
 					Map<String, Object> data = new HashMap<>();
@@ -593,7 +593,7 @@ public class JourneyController {
 					int status = journeyDay.getStatus();
 					if (status == 0) {
 						LOGGER.info("status == 0");
-						return "error/error-journey-old"; 
+						return "error/error-journey-old";
 					}
 					// create new journey day
 					Map<String, Object> data = new HashMap<>();
@@ -729,7 +729,7 @@ public class JourneyController {
 					int status = journeyDay.getStatus();
 					if (status == 0) {
 						LOGGER.info("status == 0");
-						return "error/error-journey-old"; 
+						return "error/error-journey-old";
 					}
 					// create new journey day
 					Map<String, Object> data = new HashMap<>();
@@ -793,7 +793,7 @@ public class JourneyController {
 					int status = journeyDay.getStatus();
 					if (status == 0) {
 						LOGGER.info("status == 0");
-						return "error/error-journey-old"; 
+						return "error/error-journey-old";
 					}
 					// create new journey day
 					Map<String, Object> data = new HashMap<>();
@@ -865,7 +865,7 @@ public class JourneyController {
 					int status = journeyDay.getStatus();
 					if (status == 0) {
 						LOGGER.info("status == 0");
-						return "error/error-journey-old"; 
+						return "error/error-journey-old";
 					}
 					// create new journey day
 					Map<String, Object> data = new HashMap<>();
@@ -929,7 +929,7 @@ public class JourneyController {
 					int status = journeyDay.getStatus();
 					if (status == 0) {
 						LOGGER.info("status == 0");
-						return "error/error-journey-old"; 
+						return "error/error-journey-old";
 					}
 					// create new journey day
 					Map<String, Object> data = new HashMap<>();
@@ -979,7 +979,7 @@ public class JourneyController {
 					int status = journeyDay.getStatus();
 					if (status == 0) {
 						LOGGER.info("status == 0");
-						return "error/error-journey-old"; 
+						return "error/error-journey-old";
 					}
 					// create new journey day
 					Map<String, Object> data = new HashMap<>();
@@ -1048,7 +1048,7 @@ public class JourneyController {
 			day = journeyDay.substring(0, journeyDay.indexOf("/"));
 			LOGGER.info("day member: " + day);
 			journeyName = journeyDay.substring((journeyDay.indexOf("/") + 1), lenght);
-			LOGGER.info("journey member: " + journeyName); 
+			LOGGER.info("journey member: " + journeyName);
 		}
 		LOGGER.info("journey param: " + journey);
 		LOGGER.info("numDay param: " + numDay);
@@ -1057,18 +1057,22 @@ public class JourneyController {
 		if (journeyName == null || day == null) {
 			LOGGER.info("journeyName null || day null.");
 			response.setStatus(404);
+			return;
 		}
 		if (journeyName == null && day == null) {
 			LOGGER.info("journeyName null && day null.");
 			response.setStatus(404);
+			return;
 		}
 		if (!journeyName.equals(journey)) {
 			LOGGER.info("journey in post # journey uri");
 			response.setStatus(404);
+			return;
 		}
 		if (!day.equals(numDay)) {
 			LOGGER.info("day in post # day uri");
 			response.setStatus(404);
+			return;
 		}
 		// check name account
 		String docAccount = facebookId;
@@ -1079,13 +1083,25 @@ public class JourneyController {
 		if (!account.getDisplayName().equals(memberName)) {
 			LOGGER.info("An cap bai viet cua nguoi khac.");
 			response.setStatus(405);
-		} 
-		else {
+			return;
+		} else {
 			if (journeyName.equals(journey) && day.equals(numDay)) {
 				LOGGER.info("check ok");
 				String docJourneyDay = journey + "days" + numDay + facebookId;
 				LOGGER.info("docJourneyDay: " + docJourneyDay);
 				DocumentReference docRefJourney = db.collection("JourneyDay").document(docJourneyDay);
+
+				// check url journey day old
+				ApiFuture<QuerySnapshot> futureJourney = db.collection("JourneyDay")
+						.whereEqualTo("accountId", facebookId).whereEqualTo("url", url).get();
+				List<QueryDocumentSnapshot> journeyDocuments = futureJourney.get().getDocuments();
+				if (!journeyDocuments.isEmpty()) {
+					LOGGER.info("url journey day exits, break.");
+					response.setStatus(400);
+					return;
+				}
+				// end check
+
 				Map<String, Object> updates = new HashMap<>();
 				updates.put("memberId", memberId);
 				updates.put("memberName", memberName);
@@ -1109,42 +1125,49 @@ public class JourneyController {
 					uri = "/journey/5days/1";
 					response.getWriter().println(uri);
 					response.setStatus(200);
+					return;
 				}
 				if (journeyName.equals("5") && numDay.equals("5")) {
 					LOGGER.info("5days5");
 					uri = "/journey/7days/1";
 					response.getWriter().println(uri);
 					response.setStatus(200);
+					return;
 				}
 				if (journeyName.equals("7") && numDay.equals("7")) {
 					LOGGER.info("7days7");
 					uri = "/journey/10days/1";
 					response.getWriter().println(uri);
 					response.setStatus(200);
+					return;
 				}
 				if (journeyName.equals("10") && numDay.equals("10")) {
 					LOGGER.info("10days10");
 					uri = "/journey/21days/1";
 					response.getWriter().println(uri);
 					response.setStatus(200);
+					return;
 				}
 				if (journeyName.equals("21") && numDay.equals("21")) {
 					LOGGER.info("21days21");
 					uri = "/journey/45days/1";
 					response.getWriter().println(uri);
 					response.setStatus(200);
+					return;
 				}
 				if (journeyName.equals("45") && numDay.equals("45")) {
 					LOGGER.info("45days45");
 					uri = "/journey/90days/1";
 					response.getWriter().println(uri);
 					response.setStatus(200);
+					return;
 				}
 				if (journeyName.equals("90") && numDay.equals("90")) {
 					LOGGER.info("90days90");
 					uri = "/journey/90days/90";
 					response.getWriter().println(uri);
 					response.setStatus(200);
+					return;
 				}
 				if ((journeyName.equals("3") && (Integer.parseInt(numDay) < 3))
 						|| (journeyName.equals("5") && (Integer.parseInt(numDay) < 5))
@@ -1159,6 +1182,7 @@ public class JourneyController {
 					uri = "/journey/" + journey + "days" + "/" + day;
 					response.getWriter().println(uri);
 					response.setStatus(200);
+					return;
 				}
 			}
 		}

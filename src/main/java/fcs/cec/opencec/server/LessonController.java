@@ -233,11 +233,24 @@ public class LessonController {
 		if (!account.getDisplayName().equals(memberName)) {
 			LOGGER.info("An cap bai viet cua nguoi khac.");
 			response.setStatus(405);
+			return;
 		} else {
 			LOGGER.info("lessonNumber :" + numLesson);
 			if (Integer.parseInt(numLesson) == lessonCheckNow) {
 				String docLessonMember = numLesson + facebookId;
 				DocumentReference docRefLessonMember = db.collection("LessonMember").document(docLessonMember);
+
+				// check url lesson old
+				ApiFuture<QuerySnapshot> futureLesson = db.collection("LessonMember")
+						.whereEqualTo("accountId", facebookId).whereEqualTo("url", url).get();
+				List<QueryDocumentSnapshot> documents = futureLesson.get().getDocuments();
+				if (!documents.isEmpty()) {
+					LOGGER.info("url lesson exits, break.");
+					response.setStatus(400);
+					return;
+				}
+				// end check url
+
 				Map<String, Object> updatesLesson = new HashMap<>();
 				updatesLesson.put("memberId", memberId);
 				updatesLesson.put("memberName", memberName);
@@ -259,8 +272,10 @@ public class LessonController {
 				String uriReturn = "/lesson/" + String.valueOf(lessonCheckNow);
 				response.getWriter().print(String.valueOf(uriReturn));
 				response.setStatus(200);
+				return;
 			} else {
 				response.setStatus(404);
+				return;
 			}
 		}
 	}

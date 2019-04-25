@@ -194,6 +194,15 @@ $('#nextLesson')
 				        														timer : 2000,
 				        													});
 				        												}
+				        												if (jqXHR.status == 400) {
+				        													Swal({
+				        														position : 'center',
+				        														type : 'error',
+				        														title : 'Link video đã tồn tại .Vui lòng nhập lại link video bài học của bạn!',
+				        														showConfirmButton : false,
+				        														timer : 2000,
+				        													});
+				        												}
 				        												if (jqXHR.status == 403) {
 				        													alert("error 403");
 				        												}
@@ -361,6 +370,14 @@ $('#nextDay')
 																title : 'Link video không phải là của bạn .Vui lòng nhập lại link video ngày hành trình của bạn!',
 																showConfirmButton : false,
 																timer : 3500,
+															});
+														}
+														if (jqXHR.status == 400) {
+															Swal({
+																position : 'center',
+																title : 'Link video đã tồn tại. Vui lòng nhập lại link video ngày hành trình của bạn!',
+																showConfirmButton : false,
+																timer : 3000,
 															});
 														}
 														if (jqXHR.status == 401) {
