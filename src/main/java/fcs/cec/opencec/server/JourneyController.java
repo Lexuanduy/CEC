@@ -1021,9 +1021,12 @@ public class JourneyController {
 	}
 
 	@RequestMapping(value = "checkJourneyDay", method = RequestMethod.POST)
-	public void checkJourneyDay(Model model, @RequestParam String url, @RequestParam String facebookId,
-			@RequestParam String journey, @RequestParam String numDay, HttpServletResponse response)
+	public void checkJourneyDay(Model model, @RequestParam String url,
+			@CookieValue(value = "idToken", required = true) String idToken, @RequestParam String journey,
+			@RequestParam String numDay, HttpServletResponse response)
 			throws IOException, FirebaseAuthException, InterruptedException, ExecutionException {
+		FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
+		String uid = decodedToken.getUid();
 		Firestore db = FirestoreOptions.getDefaultInstance().getService();
 		Document doc = Jsoup.connect(url).get();
 		String object = doc.select("#m_story_permalink_view .bb").attr("data-ft");
@@ -1072,6 +1075,17 @@ public class JourneyController {
 		if (!day.equals(numDay)) {
 			LOGGER.info("day in post # day uri");
 			response.setStatus(404);
+			return;
+		}
+		// get account by uid
+		ApiFuture<QuerySnapshot> futureAcc = db.collection("Account").whereEqualTo("uid", uid).get();
+		List<QueryDocumentSnapshot> accDocuments = futureAcc.get().getDocuments();
+		String facebookId = null;
+		for (DocumentSnapshot document : accDocuments) {
+			facebookId = document.getId();
+		}
+		if (facebookId == null) {
+			LOGGER.info("facebookId null");
 			return;
 		}
 		// check name account

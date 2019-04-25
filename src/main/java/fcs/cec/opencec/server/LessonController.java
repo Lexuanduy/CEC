@@ -198,12 +198,13 @@ public class LessonController {
 	}
 
 	@RequestMapping(value = "checkVideo", method = RequestMethod.POST)
-	public void checkVideo(Model model, @RequestParam String url, @RequestParam String facebookId,
-			@RequestParam String numLesson, HttpServletResponse response)
+	public void checkVideo(Model model, @RequestParam String url,
+			@CookieValue(value = "idToken", required = true) String idToken, @RequestParam String numLesson,
+			HttpServletResponse response)
 			throws IOException, InterruptedException, ExecutionException, ServletException, FirebaseAuthException {
-		LOGGER.info("facebookId: " + facebookId);
-//		FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
-//		String uid = decodedToken.getUid();
+//		LOGGER.info("facebookId: " + facebookId);
+		FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
+		String uid = decodedToken.getUid();
 		Firestore db = FirestoreOptions.getDefaultInstance().getService();
 		Document doc = Jsoup.connect(url).get();
 		String lessonHashtag = doc.select(".bo .bt").text();
@@ -224,6 +225,17 @@ public class LessonController {
 		String postId = (String) map.get("top_level_post_id");
 		String memberId = (String) map.get("content_owner_id_new");
 		String memberName = doc.select("meta[property=\"og:title\"]").attr("content");
+		// get account by uid
+		ApiFuture<QuerySnapshot> futureAcc = db.collection("Account").whereEqualTo("uid", uid).get();
+		List<QueryDocumentSnapshot> accDocuments = futureAcc.get().getDocuments();
+		String facebookId  = null;
+		for (DocumentSnapshot document : accDocuments) {
+			facebookId = document.getId();
+		}
+		if(facebookId == null) {
+			LOGGER.info("facebookId null");
+			return;
+		}
 		// check name account
 		String docAccount = facebookId;
 		DocumentReference docRefAccount = db.collection("Account").document(docAccount);
