@@ -54,12 +54,12 @@ public class LessonController {
 
 	static {
 
-		GoogleCredentials credentials = ComputeEngineCredentials.create();
-		FirebaseOptions options = new FirebaseOptions.Builder().setCredentials(credentials).setProjectId("opencec")
-				.build();
-		FirebaseApp.initializeApp(options);
+//		GoogleCredentials credentials = ComputeEngineCredentials.create();
+//		FirebaseOptions options = new FirebaseOptions.Builder().setCredentials(credentials).setProjectId("opencec")
+//				.build();
+//		FirebaseApp.initializeApp(options);
 
-//		FirebaseApp.initializeApp();
+		FirebaseApp.initializeApp();
 		Document doc = null;
 		String url = "https://script.googleusercontent.com/macros/echo?user_content_key=dmTT0L5ltyjs6C0mzfB8Kf1FkNPCAqiExMVyEY7hPKS9QIrht-BvnAzuAZYIZvlrnSaC13gWKjpsPFnfMb3lT9L5wfimIUbgm5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnCT0QRJ7P_-LtV3tAd8_b_dUnbO1rEvbeLLB2eAoIGhp1hENMaacOI9TktsviLkDHJlUq1JAmpDs&lib=MmSKrXssQcdpiSXxZX7nm1QZVzjmXS3D2";
 		try {
@@ -228,11 +228,11 @@ public class LessonController {
 		// get account by uid
 		ApiFuture<QuerySnapshot> futureAcc = db.collection("Account").whereEqualTo("uid", uid).get();
 		List<QueryDocumentSnapshot> accDocuments = futureAcc.get().getDocuments();
-		String facebookId  = null;
+		String facebookId = null;
 		for (DocumentSnapshot document : accDocuments) {
 			facebookId = document.getId();
 		}
-		if(facebookId == null) {
+		if (facebookId == null) {
 			LOGGER.info("facebookId null");
 			return;
 		}
@@ -290,5 +290,36 @@ public class LessonController {
 				return;
 			}
 		}
+	}
+
+	@RequestMapping(value = "/events/altp", method = RequestMethod.GET)
+	public String evtAltp(Model model, @CookieValue(value = "idToken", required = true) String idToken)
+			throws FirebaseAuthException, InterruptedException, ExecutionException {
+		FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
+		String uid = decodedToken.getUid();
+		Firestore db = FirestoreOptions.getDefaultInstance().getService();
+		// get account id
+		ApiFuture<QuerySnapshot> future = db.collection("Account").whereEqualTo("uid", uid).get();
+		List<QueryDocumentSnapshot> documents = future.get().getDocuments();
+		String accountId = null;
+		for (DocumentSnapshot document : documents) {
+			accountId = document.getId();
+		}
+		LOGGER.info("account Id: " + accountId);
+		// get list lesson learned
+		ApiFuture<QuerySnapshot> futureLesson = db.collection("LessonMember").whereEqualTo("accountId", accountId)
+				.whereEqualTo("status", 1).get();
+		List<QueryDocumentSnapshot> lessonDocuments = futureLesson.get().getDocuments();
+		for (DocumentSnapshot document : lessonDocuments) {
+			LessonMember lesson = document.toObject(LessonMember.class);
+			LOGGER.info("lesson: " + lesson.getLesson());
+			LOGGER.info("name: " + lesson.getMemberName());
+		}
+
+		// get list lesson
+		for (Lesson lesson : lessonList) {
+
+		}
+		return "altp/event-altp";
 	}
 }
