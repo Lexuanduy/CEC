@@ -10,90 +10,75 @@
 		<div class="lesson">
 			<section class="pageIntro">
 				<div class="container text-center" th:each="obj : ${journey}">
-					<h1 class="headingSecondary text-white text-center"
-						th:text="${journey.day}"></h1>
+					<div class="text-journey">
+						<p class="dayJourney text-white">Day</p>
+						<p class="dayJ text-white" th:text="${journey.day}"></p>
+					</div>
 				</div>
 			</section>
 			<section class="lessonInfo">
 				<div class="container" th:each="obj : ${journey}">
 					<div class="row">
 						<div class="col-md-3">
-							<!-- <h3 class="text-left">
+							<h3 class="text-left">
 								<a href="">Hướng dẫn</a>
 							</h3>
-							<p>- Để học tốt bài học này, hãy tìm hiểu chủ đề của bài học
-								này trong hai hình ảnh bên dưới video của giảng viên CEC.</p>
-							<p>- Chú ý theo dõi, lắng nghe và làm theo các bài giảng của
-								Giảng viên CEC trong video.</p>
-							<p>- Kết hợp với từ vựng và cách phát âm các từ trong hai
-								hình ảnh bên dưới video để có thể liên hệ trực tiếp với bài
-								giảng, nó sẽ giúp bạn đạt được kết quả tốt nhất sau bài học này.</p> -->
+							<p>- Hành trình 90days là một trải nghiệm tuyệt vời dành cho
+								tất cả mọi người.</p>
+							<p>- Hành trình 90days được chia thành các hành trình nhỏ như
+								3days, 5days, 7days, ...90days.</p>
+							<p>- Để có thể phát triển từng ngày, chúng ta sẽ cùng vượt
+								qua từng ngày thử thách trong từng hành trình.</p>
+							<p>- Trong hành trình 90days chúng ta sẽ đi qua từng ngày,
+								cùng với đó là những kỹ năng, những trải nghiệm sẽ được tích
+								lũy.</p>
+							<p>- Trong hành trình 3days, bắt đầu từ day1, sau đó sẽ qua
+								day2, day3. Sau khi hoàn thành 3days, chúng ta sẽ tiếp tục với
+								hành trình 5days...</p>
+
 						</div>
 						<div class="col-md-6">
-							<h3>
-								<!-- <audio controls="" class="mb-5">
-								<source th:src="@{${lesson.audioURL}}" type="audio/mpeg">
-							</audio> -->
-								<a th:href="@{${journey.pdfUrl}}">Link file PDF</a>
-							</h3>
-							<h3>Video hành trình</h3>
+							<div class=name-journey>
+								<h3 class="div-journey-text">Video hành trình</h3>
+								<h3 class="div-journey-name" th:text="${journey.name}"></h3>
+							</div>
 							<video width="320" height="240" controls="">
 								<source th:src="@{${journey.videoURL}}" type="video/mp4">
 							</video>
 						</div>
 						<div class="col-md-3">
-							<!-- <h3 class="text-left">
+							<h3 class="text-left">
 								<a href="">Nhiệm vụ</a>
 							</h3>
-							<h4>Tự đặt ra những câu hỏi cho bản thân:</h4>
-							<p>- Những kỹ năng nào tôi sẽ đạt được sau bài học này?</p>
-							<p>- Sau bài học này tôi sẽ học thêm từ mới và cách phát âm
-								chúng?</p>
-							<p>- Và điều quan trọng nhất là làm thế nào để có tiếp thu
-								bài học một cách nhanh nhất? Để có thể thực hiện nhiệm vụ tiếp
-								theo.</p>
-							<p>- Sau khi kết thúc bài học, bạn hãy tạo cho mình một
-								video, trong video đó nói lại những gì bạn đã học được bằng
-								tiếng Anh và dán url video của bạn vào CEC ở phần chuyển bài học
-								bên dưới để chúng tôi có thể kiểm duyệt rằng bạn đã hoàn thành
-								bài học này hay chưa?</p>
-							<p>- Chỉ sau khi hoàn thành bài học này, bạn mới có thể học
-								tiếp bài học tiếp theo trên CEC.</p>
-							<h5 style="color: green;">Chúc bạn thành công, học được
-								những điều bổ ích và luôn có những phút giây vui vẻ khi học cùng
-								CEC !!!</h5> -->
+							<p>- Sau khi xem video của giảng viên CEC, chúng ta sẽ quay
+								lại video clip thực hành nói của chính mình theo những gì giảng
+								viên đã thực hiện.</p>
+							<p>- Sau đó chúng ta sẽ gửi video ngày hành trình của mình
+								theo từng hành trình lên CEC.</p>
+							<p>- Để có thể tiếp tục thực hành ngày hành trình day2, thì
+								chúng ta sẽ phải hoàn thành nhiệm vụ của day1,...</p>
+							<p>- Để có thể tiếp tục thực hành hành trình 5days thì chúng
+								ta phải hoàn thành nhiệm vụ hành trình 3days với từng day1.
+								day2, day3.</p>
+							<p>- Cho đến khi chúng ta có thể hoàn thành hành trình
+								90days.</p>
 						</div>
 					</div>
 					<hr class="mb-5 mt-5">
-					<div class="row">
-						<!-- <div class="col-md-6">
-							<p>
-								<img alt="requester review" th:src="@{${lesson.imageURL1}}">
-							</p>
-						</div>
-						<div class="col-md-6">
-							<p>
-								<img alt="requester review" th:src="@{${lesson.imageURL2}}">
-							</p>
-						</div> -->
+					<div class="row" style="text-align: center;">
+						<embed th:src="@{${journey.pdfUrl}}" width="650" height="400" style="margin:0 auto;">
+						</embed>
 					</div>
 					<div class="row">
 						<div class="col-md-6 offset-md-3">
-							<div class="btn-group" style="float: right; margin-top: 20px;">
-								<!-- <button id="nextLesson" class="btn btn-primary">Bài
-									tiếp theo >></button> -->
+							<div class="btn-group" style="float: right; margin-top: 35px;">
 								<button id="nextDay" class="btn btn-primary">Ngày tiếp
 									theo >></button>
 							</div>
 						</div>
 						<div class="col-md-6 offset-md-3">
-							<!-- <div class="form-group" style="margin-top: 15px; display: none;"
-								id="urlLesson"> -->
 							<div class="form-group" style="margin-top: 15px; display: none;"
 								id="urlDay">
-								<!-- <label for="usr" style="color: blue;">Link video về bài
-									học này của bạn:</label> <input type="text" class="form-control"
-									id="lastLesson" style="border-color: black;"> -->
 								<label for="usr" style="color: blue;">Link video ngày
 									tương ứng với hành trình này của bạn:</label> <input type="text"
 									class="form-control" id="lastDay" style="border-color: black;">

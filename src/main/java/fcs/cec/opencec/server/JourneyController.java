@@ -86,19 +86,6 @@ public class JourneyController {
 		}
 	}
 
-//	@RequestMapping(value = "journey/3days/1", method = RequestMethod.GET)
-//	public String journeyDaysFirst(Model model) {
-//		for (Journey journey : dayList) {
-//			if (journey.getName().equals("3days") && journey.getDay().equals("1")) {
-//				model.addAttribute("journey", journey);
-//			} else {
-//				break;
-//			}
-//		}
-//
-//		return "journeys/journeyDay";
-//	}
-
 	@RequestMapping(value = "journey/{name}/{day}", method = RequestMethod.GET)
 	public String journeyDays(Model model, @PathVariable("name") String name, @PathVariable("day") String day,
 			@CookieValue(value = "idToken", required = false) String idToken)
@@ -226,31 +213,6 @@ public class JourneyController {
 				LOGGER.info("3days day >= 4");
 				return "error/error-journey";
 			}
-//			if (Integer.parseInt(day) == 1) {
-//				LOGGER.info("3days day == 1");
-//				// create new journey day
-//				Map<String, Object> data = new HashMap<>();
-//				dayJourney = Integer.parseInt(day) + 1;
-//				data.put("day", dayJourney);
-//				data.put("memberId", facebookId);
-//				data.put("memberName", "");
-//				data.put("postId", "");
-//				data.put("status", 0);
-//				data.put("url", "");
-//				data.put("uid", uid);
-//				data.put("accountId", facebookId);
-//				data.put("createdAt", System.currentTimeMillis() / 1000);
-//				data.put("updatedAt", System.currentTimeMillis() / 1000);
-//				String docId = name + String.valueOf(dayJourney) + facebookId;
-//				DocumentReference docRefJourneyDay = db.collection("JourneyDay").document(docId);
-//				ApiFuture<DocumentSnapshot> futureJourneyDay = docRefJourneyDay.get();
-//				DocumentSnapshot documentJourneyDay = futureJourneyDay.get();
-//				if (documentJourneyDay.exists()) {
-//					LOGGER.info("document JourneyDay eixst!");
-//				} else {
-//					ApiFuture<WriteResult> addedDocRef = db.collection("JourneyDay").document(docId).set(data);
-//				}
-//			}
 		}
 		// end journey day in 3days
 
@@ -974,28 +936,6 @@ public class JourneyController {
 					dayJourney = Integer.parseInt(day) + 1;
 					// check day < 91 in 90days
 					if (dayJourney < 91) {
-//						if (dayJourney == 90) {
-//							data.put("day", 1);
-//							data.put("memberId", facebookId);
-//							data.put("memberName", "");
-//							data.put("postId", "");
-//							data.put("status", 0);
-//							data.put("url", "");
-//							data.put("uid", uid);
-//							data.put("accountId", facebookId);
-//							data.put("createdAt", System.currentTimeMillis() / 1000);
-//							data.put("updatedAt", System.currentTimeMillis() / 1000);
-//							String docId = "90days1" + facebookId;
-//							DocumentReference docRefJourneyDay = db.collection("JourneyDay").document(docId);
-//							ApiFuture<DocumentSnapshot> futureJourneyDay = docRefJourneyDay.get();
-//							DocumentSnapshot documentJourneyDay = futureJourneyDay.get();
-//							if (documentJourneyDay.exists()) {
-//								LOGGER.info("document JourneyDay exist!");
-//							} else {
-//								ApiFuture<WriteResult> addedDocRef = db.collection("JourneyDay").document(docId)
-//										.set(data);
-//							}
-//						}
 						data.put("day", dayJourney);
 						data.put("memberId", facebookId);
 						data.put("memberName", "");
@@ -1081,11 +1021,9 @@ public class JourneyController {
 	}
 
 	@RequestMapping(value = "checkJourneyDay", method = RequestMethod.POST)
-	public void checkJourneyDay(Model model, @RequestParam String url, @CookieValue("facebookId") String facebookId,
+	public void checkJourneyDay(Model model, @RequestParam String url, @RequestParam String facebookId,
 			@RequestParam String journey, @RequestParam String numDay, HttpServletResponse response)
 			throws IOException, FirebaseAuthException, InterruptedException, ExecutionException {
-//		FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
-//		String uid = decodedToken.getUid();
 		Firestore db = FirestoreOptions.getDefaultInstance().getService();
 		Document doc = Jsoup.connect(url).get();
 		String object = doc.select("#m_story_permalink_view .bb").attr("data-ft");
@@ -1108,7 +1046,9 @@ public class JourneyController {
 			journeyDay = current + "/" + total;
 			int lenght = journeyDay.length();
 			day = journeyDay.substring(0, journeyDay.indexOf("/"));
+			LOGGER.info("day member: " + day);
 			journeyName = journeyDay.substring((journeyDay.indexOf("/") + 1), lenght);
+			LOGGER.info("journey member: " + journeyName); 
 		}
 		LOGGER.info("journey param: " + journey);
 		LOGGER.info("numDay param: " + numDay);
@@ -1139,7 +1079,8 @@ public class JourneyController {
 		if (!account.getDisplayName().equals(memberName)) {
 			LOGGER.info("An cap bai viet cua nguoi khac.");
 			response.setStatus(405);
-		} else {
+		} 
+		else {
 			if (journeyName.equals(journey) && day.equals(numDay)) {
 				LOGGER.info("check ok");
 				String docJourneyDay = journey + "days" + numDay + facebookId;

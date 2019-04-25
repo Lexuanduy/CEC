@@ -10,14 +10,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.jsoup.Connection.Method;
-import org.jsoup.Connection.Response;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -99,18 +93,6 @@ public class LessonController {
 			lessonList.add(lesson);
 		}
 	}
-
-//	@RequestMapping(value = "lesson/1", method = RequestMethod.GET)
-//	public String lessonFirst(Model model) {
-//		for (Lesson lesson : lessonList) {
-//			if (lesson.getName().equals("1")) {
-//				model.addAttribute("lesson", lesson);
-//			} else {
-//				break;
-//			}
-//		}
-//		return "lesson/lesson";
-//	}
 
 	@RequestMapping(value = "lesson/{id}", method = RequestMethod.GET)
 	public String lesson(Model model, @PathVariable("id") String id,
@@ -216,10 +198,10 @@ public class LessonController {
 	}
 
 	@RequestMapping(value = "checkVideo", method = RequestMethod.POST)
-	public void checkVideo(Model model, @RequestParam String url, @CookieValue("uid") String uid,
-			@CookieValue("facebookId") String facebookId, @RequestParam String numLesson, HttpServletResponse response)
+	public void checkVideo(Model model, @RequestParam String url, @RequestParam String facebookId,
+			@RequestParam String numLesson, HttpServletResponse response)
 			throws IOException, InterruptedException, ExecutionException, ServletException, FirebaseAuthException {
-//		LOGGER.info("idToken: " + idToken);
+		LOGGER.info("facebookId: " + facebookId);
 //		FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
 //		String uid = decodedToken.getUid();
 		Firestore db = FirestoreOptions.getDefaultInstance().getService();

@@ -105,7 +105,7 @@ $('#nextLesson')
 					}
 					var uri = window.location.pathname;
 					var numLesson = uri.slice(8);
-					facebookId = getCookie('facebookId');
+					facebookId = getCookie('facebookId'); 
 					var docLessonMember = numLesson + facebookId;
 					console.log("docLessonMember: " + docLessonMember);
 					numLesson = numLesson*1; 
@@ -135,6 +135,8 @@ $('#nextLesson')
 				        		.click(
 				        				function() {
 				        				            	console.log("status: 0");
+				        				            	console.log("get cookie facebookId: " + getCookie('facebookId'));
+				        				            	console.log("get cookie uid: " + getCookie('uid'));
 				        				            	var urlVideo = $('#lastLesson').val();
 				        								if (urlVideo == "") {
 				        									Swal({
@@ -154,7 +156,7 @@ $('#nextLesson')
 				        								console.log("URL: " + URL);
 				        								$.ajax({
 				        											url : "/checkVideo?url=" + URL + "&numLesson="
-				        													+ numLesson,
+				        													+ numLesson + "&facebookId=" + facebookId,
 				        											type : 'POST',
 				        											success : function(data) {
 				        												console.log('data: ' + data);
@@ -312,7 +314,7 @@ $('#nextDay')
 		        								console.log("URL: " + URL);
 		        								$.ajax({
 		        									url : "/checkJourneyDay?url=" + URL + "&journey="
-													+ journeyName + "&numDay=" + numDay,
+													+ journeyName + "&numDay=" + numDay + "&facebookId=" + facebookId,
 													type : 'POST',
 													success : function(data) {
 														console.log('data: ' + data);

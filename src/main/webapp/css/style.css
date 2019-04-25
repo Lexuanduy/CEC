@@ -1067,6 +1067,33 @@ px
 	min-width: auto;
 	line-height: 35px;
 }
+
+.dayJourney{
+	text-align: right;
+    width: 50%;
+    float: left;
+    margin: 0;
+    font-size:31px;
+}
+.dayJ{
+	width: 50%;
+    text-align: left;
+    float: left;
+    margin: 0;
+    font-size:31px;
+}
+.text-journey{
+	width:100%;
+	margin:0 auto;
+}
+.div-journey-text{
+	width: 33%;
+    float: left;
+}
+.div-journey-name{
+	width: 67%;
+    float: left;
+}
 /* ============================================================ RESPONSIVE ============================================================ */
 @media ( min-width : 1200px) {
 	.container {
