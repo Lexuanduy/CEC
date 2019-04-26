@@ -36,14 +36,12 @@ firebase.auth().onAuthStateChanged(function (user) {
             	
             	//
                 var token = result.credential.accessToken; // Token facebook
-                console.log("token: " + token);
 				var obj = JSON.parse(JSON.stringify(result));
 				facebookId = obj.additionalUserInfo.profile.id;
 				uid = obj.user.uid;
 				displayName = obj.user.displayName;
 				photoURL = obj.user.photoURL;
 				accessToken = obj.user.stsTokenManager.accessToken;
-				console.log("idToken: " + accessToken);
 				
                 $('#sign-in')[0].hidden = true;
                 document.getElementById("photoURL").src= photoURL;

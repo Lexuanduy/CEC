@@ -75,7 +75,7 @@
 
 			<!-- Winner
 		================================================== -->
-			<section class="winner">
+			<!-- <section class="winner">
 				<div class="container">
 					<div class="hasBorderBottom">
 						<h2 class="headingSecondary text-center">Thành viên đoạt giải</h2>
@@ -133,118 +133,181 @@
 						</div>
 					</div>
 				</div>
-			</section>
+			</section> -->
 
 			<section>
-			<div class="container">
-				<div class="listLesson hasBorderBottom">
-					<h2 class="headingSecondary text-center">Danh sách bài học</h2>
-					<p class="text-center textLead mb-5">We have many training programs that include</p>
+				<div class="container">
+					<div class="listLesson hasBorderBottom">
+						<h2 class="headingSecondary text-center">Danh sách bài học</h2>
+						<p class="text-center textLead mb-5">We have many training
+							programs that include</p>
 
-					<div class="row">
-						<!-- start active -->
-						<c:forEach items="${lessonNames}" var="lessonName1">
-							<div class="col-xl-3 col-lg-3 col-md-4 col-sm-12 lessonItem active">
+						<div class="row">
+							<!-- start active -->
+							<!-- <c:forEach items="${lessonNames}" var="lessonName1"> -->
+							<div
+								class="col-xl-3 col-lg-3 col-md-4 col-sm-12 lessonItem active"
+								th:each="lessonActive : ${activeLessons}">
 								<div class="inner">
 									<div class="lock">
-										<span>
-											<i class="mdi mdi-lock icon"></i>
-											Lesson ${lessonName.getKey()}
+										<span> <i class="mdi mdi-lock icon"></i>
+											<p th:text="${lessonActive.nameLesson}"></p>
 										</span>
 									</div>
-									<a href="/lesson/${lessonName.getKey()}">
-										<strong>Lesson ${lessonName.getKey()}</strong>
-										<span class="name">${lessonName.getValue()}</span>
+									<a th:href="@{'/lesson/' + ${lessonActive.keyLesson}}"> <span
+										class="name" th:text="${lessonActive.nameLesson}"></span>
 									</a>
 								</div>
 							</div>
-						</c:forEach>
-						<!-- end active -->
-						<!-- start -->
-						
+							<!-- </c:forEach> -->
+							<!-- end active -->
+							<!-- start -->
 
-						
-						<c:forEach items="${lessonNamesNotExist}" var="lessonNameNotExist"> 
-						<div class="col-xl-3 col-lg-3 col-md-4 col-sm-12 lessonItem">
-							<div class="inner">
-								<!-- <div class="lock" onclick="openNewLesson('${lessonNameNotExist.getKey()}');"> -->
-								
-								<div class="lock">
-									<span class="lockMessage">
-										<i class="mdi mdi-lock icon"></i>
-										Lesson ${lessonNameNotExist.getKey()}
-									</span>
-									<span class="unlockMessage">
-										<i class="mdi mdi-lock-open icon"></i>
-										Unlock this lesson
-									</span>
+
+
+							<!-- <c:forEach items="${lessonNamesNotExist}"
+								var="lessonNameNotExist"> -->
+							<div class="col-xl-3 col-lg-3 col-md-4 col-sm-12 lessonItem"
+								th:each="lessonLock : ${lockLessons}">
+								<div class="inner">
+									<!-- <div class="lock" > -->
+									<div class="lock">
+										<span class="lockMessage"> <i class="mdi mdi-lock icon"></i>
+											<p th:text="${lessonLock.nameLesson}"></p>
+										</span> <span class="unlockMessage"
+											th:data-parameter1="${lessonLock.keyLesson}"
+											onclick="openNewLesson(this.getAttribute('data-parameter1'));">
+											<i class="mdi mdi-lock-open icon"></i> Unlock this lesson
+										</span>
+									</div>
+
+									<script type="text/javascript">
+										function openNewLesson(num) {
+											var url = prompt("Nhập đường dẫn bài làm mới nhất cuả bài số "
+													+ num);
+											var strUrlCut = url.slice(8, (url
+													.indexOf("facebook") - 1));
+											var strUrlLast = url.slice((url
+													.indexOf("facebook") - 1));
+											var strHTTP = "https://m";
+											var URL = strHTTP + strUrlLast;
+											$
+													.post(
+															"/checkVideo?url="
+																	+ URL
+																	+ "&numLesson="
+																	+ num,
+															function(data) {
+																console
+																		.log(data);
+																alert("Bài học của bạn đã được submit.");
+																window.location.href = "/events/altp";
+															})
+													.fail(
+															function(xhr,
+																	status,
+																	error) {
+																if (xhr.status == 404) {
+																	Swal({
+																		position : 'center',
+																		type : 'error',
+																		title : 'Link video không đúng .Vui lòng nhập lại link video bài học của bạn!',
+																		showConfirmButton : false,
+																		timer : 2000,
+																	});
+																}
+																if (xhr.status == 400) {
+																	Swal({
+																		position : 'center',
+																		type : 'error',
+																		title : 'Link video đã tồn tại .Vui lòng nhập lại link video bài học của bạn!',
+																		showConfirmButton : false,
+																		timer : 2000,
+																	});
+																}
+																if (xhr.status == 403) {
+																	alert("error 403");
+																}
+																if (xhr.status == 405) {
+																	Swal({
+																		position : 'center',
+																		type : 'error',
+																		title : 'Đây không phải video của bạn .Vui lòng nhập lại link video bài học của bạn!',
+																		showConfirmButton : false,
+																		timer : 3000,
+																	});
+																}
+																if (xhr.status == 401) {
+																	Swal({
+																		position : 'center',
+																		title : 'Phiên bản đã hết hạn, vui lòng đăng nhập lại!',
+																		showConfirmButton : false,
+																		timer : 3000,
+																	});
+																}
+															});
+										}
+									</script>
+									<a href="#"> <strong th:text="${lessonLock.nameLesson}"></strong>
+										<span class="name" th:text="${lessonLock.nameLesson}"></span>
+									</a>
 								</div>
-								
-								 <script type="text/javascript">
-									
-								 	function openNewLesson(num)
-									{
-										var url = prompt("Nhập đường dẫn bài làm mới nhất cuả bài số "+(num-1))
-										$.get( "/altp/newlesson?lessonid="+(num-1)+"&url="+url, function( data ) {
-											  alert( "Bài học của bạn đã được submit.");
-											});
-									}
-								 	
-								</script>
-								<a href="#">
-									<strong>Lesson ${lessonNameNotExist.getKey()}</strong>
-									<span class="name">${lessonNameNotExist.getValue()}</span>
-								 </a>
 							</div>
+							<!-- </c:forEach> -->
+							<!-- end -->
 						</div>
-						</c:forEach> 
-					<!-- end -->
 					</div>
 				</div>
-			</div>
-		</section>
+			</section>
 
-		<!-- Member's Videos
+			<!-- Member's Videos
 		================================================== -->
-		<section class="membersVideo">
-			<div class="container">
-				<h2 class="headingSecondary text-center">Video Ai là triệu phú</h2>
-				<p class="textLead text-center mb-5">We have many training programs that include</p>
-				<div class="gridMasonry">
-				<!-- start  -->
-				
-				  <c:forEach items="${altpPosts}" var="altpPost"> 
-					<div class="grid-item userBoxInfo">
-						<div class="inner">
-							<div class="info">
-								<div class="meta">
-									<div class="d-flex">
-										<a href="https://cec.net.vn/m/${altpPost.posterId}" class="avatar mr-2">
-											<img src="//graph.facebook.com/${memberIds[altpPost.posterId].id}/picture?type=square" alt="" class="rounded-circle" width="40">
-										</a>
-										<div>
-											<a href="https://cec.net.vn/m/${altpPost.posterId}" class="name">${memberIds[altpPost.posterId].name}</a>
-											<a href="https://www.facebook.com/groups/cec.edu.vn/permalink/${fn:replace(altpPost.id, '1784461175160264_', '')}" target="_blank" class="date">${altpPost.createdDate}</a>
+			<section class="membersVideo">
+				<div class="container">
+					<h2 class="headingSecondary text-center">Video Ai là triệu phú</h2>
+					<p class="textLead text-center mb-5">We have many training
+						programs that include</p>
+					<div class="gridMasonry">
+						<!-- start  -->
+
+						<!-- <c:forEach items="${altpPosts}" var="altpPost">
+							<div class="grid-item userBoxInfo">
+								<div class="inner">
+									<div class="info">
+										<div class="meta">
+											<div class="d-flex">
+												<a href="https://cec.net.vn/m/${altpPost.posterId}"
+													class="avatar mr-2"> <img
+													src="//graph.facebook.com/${memberIds[altpPost.posterId].id}/picture?type=square"
+													alt="" class="rounded-circle" width="40">
+												</a>
+												<div>
+													<a href="https://cec.net.vn/m/${altpPost.posterId}"
+														class="name">${memberIds[altpPost.posterId].name}</a> <a
+														href="https://www.facebook.com/groups/cec.edu.vn/permalink/${fn:replace(altpPost.id, '1784461175160264_', '')}"
+														target="_blank" class="date">${altpPost.createdDate}</a>
+												</div>
+											</div>
 										</div>
-									</div>
-								</div>
-								<pre class="desc">
+										<pre class="desc">
 									${altpPost.content}
 		 						</pre>
-	 						</div>
-	 						<div class="coverImage">
-								<div class="videoWrap">
-									<div class="fb-video" data-href="${altpPost.getPicture().split(" srcvideo ")[1]}" data-width="500" data-show-text="false"></div>
+									</div>
+									<div class="coverImage">
+										<div class="videoWrap">
+											<div class="fb-video"
+												data-href="${altpPost.getPicture().split("
+												srcvideo ")[1]}" data-width="500" data-show-text="false"></div>
+										</div>
+										<img src="" srcvideo ")[0]}" alt="">
+									</div>
 								</div>
-								<img src="" srcvideo ")[0]}" alt="">
 							</div>
-						</div>
+						</c:forEach> -->
+						<!-- end  -->
 					</div>
-				</c:forEach>
-				<!-- end  -->
 				</div>
-			</div>
-		</section>
+			</section>
 		</div>
 	</div>
 </body>

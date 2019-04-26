@@ -310,16 +310,37 @@ public class LessonController {
 		ApiFuture<QuerySnapshot> futureLesson = db.collection("LessonMember").whereEqualTo("accountId", accountId)
 				.whereEqualTo("status", 1).get();
 		List<QueryDocumentSnapshot> lessonDocuments = futureLesson.get().getDocuments();
+		int numLessons = lessonDocuments.size();
+		LOGGER.info("numLessons: " + numLessons);
+
+		List<HashMap<String, String>> listLessonActive = new ArrayList<>();
 		for (DocumentSnapshot document : lessonDocuments) {
-			LessonMember lesson = document.toObject(LessonMember.class);
-			LOGGER.info("lesson: " + lesson.getLesson());
-			LOGGER.info("name: " + lesson.getMemberName());
+			LessonMember lessonMember = document.toObject(LessonMember.class);
+			HashMap<String, String> hashMap = new HashMap();
+			String nameLesson = "Lesson " + String.valueOf(lessonMember.getLesson());
+			hashMap.put("nameLesson", nameLesson);
+			hashMap.put("keyLesson", String.valueOf(lessonMember.getLesson()));
+			LOGGER.info("nameLesson: " + nameLesson);
+			LOGGER.info("keyLesson: " + String.valueOf(lessonMember.getLesson()));
+			listLessonActive.add(hashMap);
 		}
 
 		// get list lesson
+		List<HashMap<String, String>> listLessonLock = new ArrayList<>();
 		for (Lesson lesson : lessonList) {
-
+			if (Integer.parseInt(lesson.getName()) > numLessons) {
+				HashMap<String, String> hashMap = new HashMap();
+				hashMap.put("keyLesson", lesson.getName());
+				LOGGER.info("keyLesson: " + lesson.getName());
+				String nameLesson = "Lesson " + lesson.getName();
+				hashMap.put("nameLesson", nameLesson);
+				LOGGER.info("nameLesson: " + nameLesson);
+				listLessonLock.add(hashMap);
+			}
 		}
+
+		model.addAttribute("activeLessons", listLessonActive);
+		model.addAttribute("lockLessons", listLessonLock);
 		return "altp/event-altp";
 	}
 }
