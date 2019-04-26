@@ -31,7 +31,7 @@ firebase.auth().onAuthStateChanged(function (user) {
             	// set hourse cookie
             	var now = new Date();
             	var time = now.getTime();
-            	time += 3600 * 1000;
+            	time += 3600 * 24 * 1000;
             	now.setTime(time);
             	
             	//
