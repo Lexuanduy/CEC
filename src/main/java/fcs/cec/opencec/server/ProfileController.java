@@ -37,18 +37,37 @@ public class ProfileController {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ProfileController.class);
 
 	@GetMapping(value = "m/{id}")
-	public String profile(Model model, @PathVariable("id") String id) throws InterruptedException, ExecutionException {
+	public String profile(Model model, @PathVariable("id") String id)
+			throws InterruptedException, ExecutionException, JsonParseException, JsonMappingException, IOException {
 		Firestore db = FirestoreOptions.getDefaultInstance().getService();
 		// get Member by document member id
 		DocumentReference docRef = db.collection("Member").document(id);
 		ApiFuture<DocumentSnapshot> future = docRef.get();
-		Member member = null;
+		Member member = new Member();
 		DocumentSnapshot document = future.get();
 		if (document.exists()) {
 			member = document.toObject(Member.class);
 		} else {
 			LOGGER.info("No such document member!");
-			return "error/error-member";
+			Document doc = null;
+			String url = "https://graph.facebook.com/" + id
+					+ "?access_token=1326545090735920|EaDaF1Rk_p41xfQaCqp--qHpNJg";
+			try {
+				doc = Jsoup.connect(url).ignoreContentType(true).timeout(30000).get();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+			LOGGER.info("connected");
+			LOGGER.info("doc: " + doc);
+			String object = doc.select("body").text();
+			ObjectMapper mapper = new ObjectMapper();
+			Map<String, Object> map = mapper.readValue(object, Map.class);
+			String name = (String) map.get("name");
+			LOGGER.info(name);
+			member.setAvatar("");
+			member.setId(id);
+			member.setName(name);
+			ApiFuture<WriteResult> futureMem = db.collection("Member").document(id).set(member);
 		}
 		// get MemberPost by posterId
 		List<HashMap<String, String>> listMap = new ArrayList<>();
@@ -80,40 +99,11 @@ public class ProfileController {
 		ApiFuture<DocumentSnapshot> future = docRef.get();
 		MemberPost memberPost = new MemberPost();
 		DocumentSnapshot document = future.get();
-		String name = null;
-		String idMem = null;
 		if (document.exists()) {
 			memberPost = document.toObject(MemberPost.class);
 		} else {
 			LOGGER.info("No such document member post!");
-			Document doc = null;
-			String url = "https://graph.facebook.com/" + id
-					+ "?access_token=1326545090735920|EaDaF1Rk_p41xfQaCqp--qHpNJg";
-			try {
-				doc = Jsoup.connect(url).ignoreContentType(true).timeout(30000).get();
-			} catch (IOException e1) {
-				e1.printStackTrace();
-			}
-			LOGGER.info("connected");
-			LOGGER.info("doc: " + doc);
-			String object = doc.select("body").text();
-			ObjectMapper mapper = new ObjectMapper();
-			Map<String, Object> map = mapper.readValue(object, Map.class);
-			name = (String) map.get("name");
-			idMem = (String) map.get("id");
-			LOGGER.info(name);
-			LOGGER.info("idMem" + idMem);
-
-			memberPost.setPosterId(idMem);
-			memberPost.setAttachments("");
-			memberPost.setContent("");
-			memberPost.setPermalink("");
-			memberPost.setId(docId);
-			memberPost.setPicture("");
-			memberPost.setType("");
-			memberPost.setCreatedDate(System.currentTimeMillis());
-			memberPost.setLastUpdate(System.currentTimeMillis());
-			ApiFuture<WriteResult> futureMemPost = db.collection("MemberPost").document(docId).set(memberPost);
+			return "error/error-member-post";
 		}
 
 		// get member
@@ -124,12 +114,7 @@ public class ProfileController {
 		if (documentMember.exists()) {
 			member = documentMember.toObject(Member.class);
 		} else {
-			LOGGER.info("No such document member!");
-			member.setAvatar("");
-			member.setId(idMem);
-			member.setName(name);
-			ApiFuture<WriteResult> futureMem = db.collection("Member").document(idMem).set(member);
-//			return "error/error-member";
+			return "error/error-member";
 		}
 
 		model.addAttribute("member", member);
