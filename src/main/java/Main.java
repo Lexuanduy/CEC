@@ -233,12 +233,17 @@ public class Main {
 ////				dayList.add(journey);
 //		}
 		Firestore db = FirestoreOptions.getDefaultInstance().getService();
-		ApiFuture<QuerySnapshot> docRefMember = db.collection("MemberPost").whereEqualTo("posterId", "100003849018015").get();
-		QuerySnapshot futureMember = docRefMember.get();
+		DocumentReference docRef = db.collection("MemberPost").document("1784461175160264_2278970332376010");
 		
-		QuerySnapshot documentMem = futureMember;
-		for (QueryDocumentSnapshot queryDocumentSnapshot : documentMem) {
-			System.out.println(queryDocumentSnapshot.getId());
+		// asynchronously retrieve the document
+		ApiFuture<DocumentSnapshot> future = docRef.get();
+		// ...
+		// future.get() blocks on response
+		DocumentSnapshot document = future.get();
+		if (document.exists()) {
+		  System.out.println("Document data: " + document.getData());
+		} else {
+		  System.out.println("No such document!");
 		}
 
 	}

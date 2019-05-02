@@ -1,10 +1,16 @@
 package fcs.cec.opencec.server;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -12,17 +18,19 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.DocumentReference;
 import com.google.cloud.firestore.DocumentSnapshot;
 import com.google.cloud.firestore.Firestore;
 import com.google.cloud.firestore.FirestoreOptions;
-import com.google.cloud.firestore.QueryDocumentSnapshot;
 import com.google.cloud.firestore.QuerySnapshot;
+import com.google.cloud.firestore.WriteResult;
 
 import fcs.cec.opencec.entity.Member;
 import fcs.cec.opencec.entity.MemberPost;
-import fcs.cec.opencec.entity.Video;
 
 @Controller
 public class ProfileController {
@@ -63,32 +71,65 @@ public class ProfileController {
 
 	@GetMapping(value = "p/{id}")
 	public String fileDetail(Model model, @PathVariable("id") String id)
-			throws InterruptedException, ExecutionException {
+			throws InterruptedException, ExecutionException, JsonParseException, JsonMappingException, IOException {
 		Firestore db = FirestoreOptions.getDefaultInstance().getService();
 
 		// get memberpost
-		DocumentReference docRef = db.collection("MemberPost").document(id);
+		String docId = "1784461175160264_" + id;
+		DocumentReference docRef = db.collection("MemberPost").document(docId);
 		ApiFuture<DocumentSnapshot> future = docRef.get();
-		MemberPost memberPost = null;
+		MemberPost memberPost = new MemberPost();
 		DocumentSnapshot document = future.get();
+		String name = null;
+		String idMem = null;
 		if (document.exists()) {
 			memberPost = document.toObject(MemberPost.class);
 		} else {
 			LOGGER.info("No such document member post!");
+			Document doc = null;
+			String url = "https://graph.facebook.com/" + id
+					+ "?access_token=1326545090735920|EaDaF1Rk_p41xfQaCqp--qHpNJg";
+			try {
+				doc = Jsoup.connect(url).ignoreContentType(true).timeout(30000).get();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+			LOGGER.info("connected");
+			LOGGER.info("doc: " + doc);
+			String object = doc.select("body").text();
+			ObjectMapper mapper = new ObjectMapper();
+			Map<String, Object> map = mapper.readValue(object, Map.class);
+			name = (String) map.get("name");
+			idMem = (String) map.get("id");
+			LOGGER.info(name);
+			LOGGER.info("idMem" + idMem);
 
-			return "error/error-member-post";
+			memberPost.setPosterId(idMem);
+			memberPost.setAttachments("");
+			memberPost.setContent("");
+			memberPost.setPermalink("");
+			memberPost.setId(docId);
+			memberPost.setPicture("");
+			memberPost.setType("");
+			memberPost.setCreatedDate(System.currentTimeMillis());
+			memberPost.setLastUpdate(System.currentTimeMillis());
+			ApiFuture<WriteResult> futureMemPost = db.collection("MemberPost").document(docId).set(memberPost);
 		}
 
 		// get member
 		DocumentReference docRefMember = db.collection("Member").document(memberPost.getPosterId());
 		ApiFuture<DocumentSnapshot> futureMember = docRefMember.get();
-		Member member = null;
+		Member member = new Member();
 		DocumentSnapshot documentMember = futureMember.get();
 		if (documentMember.exists()) {
 			member = documentMember.toObject(Member.class);
 		} else {
 			LOGGER.info("No such document member!");
-			return "error/error-member";
+			member.setAvatar("");
+			member.setId(idMem);
+			member.setName(name);
+			ApiFuture<WriteResult> futureMem = db.collection("Member").document(idMem).set(member);
+//			return "error/error-member";
 		}
 
 		model.addAttribute("member", member);
