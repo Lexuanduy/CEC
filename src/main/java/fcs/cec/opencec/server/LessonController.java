@@ -104,10 +104,21 @@ public class LessonController {
 
 		if (idLesson < 1) {
 			LOGGER.info("lesson < 1");
-			return "error/error-lesson";
+			return "error/error-lesson"; 
 		}
 		if (idLesson > 1 && idLesson < 24) {
 			int lessonOld = idLesson - 1;
+			LOGGER.info("idToken: " + idToken);
+			if (idToken == null) {
+				LOGGER.info("check idToken null.");
+				List<HashMap<String, String>> listMap = new ArrayList<>();
+				HashMap<String, String> hashMap = new HashMap();
+				String urlLesson = "/lesson/" + String.valueOf(idLesson);
+				hashMap.put("urlLesson", urlLesson);
+				listMap.add(hashMap);
+				model.addAttribute("lesson", listMap);
+				return "check-idToken/check-token";
+			}
 
 			FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
 			String uid = decodedToken.getUid();

@@ -104,6 +104,16 @@ public class JourneyController {
 			if ((Integer.parseInt(day) > 1) && (Integer.parseInt(day) < 4)) {
 				// get facebookId, get uid
 				LOGGER.info("idToken: " + idToken);
+				if (idToken == null) {
+					LOGGER.info("check idToken null.");
+					List<HashMap<String, String>> listMap = new ArrayList<>();
+					HashMap<String, String> hashMap = new HashMap();
+					String urlJourneyDay = "/journey/3days/" + day;
+					hashMap.put("urlJourneyDay", urlJourneyDay);
+					listMap.add(hashMap);
+					model.addAttribute("journeyDay", listMap);
+					return "check-idToken/check-token-journey";
+				}
 				FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
 				String uid = decodedToken.getUid();
 				// get doc id account
@@ -219,6 +229,16 @@ public class JourneyController {
 		// journey day in 5days
 		if (name.equals("5days")) {
 			// get facebookId, get uid
+			if (idToken == null) {
+				LOGGER.info("check idToken null.");
+				List<HashMap<String, String>> listMap = new ArrayList<>();
+				HashMap<String, String> hashMap = new HashMap();
+				String urlJourneyDay = "/journey/5days/" + day;
+				hashMap.put("urlJourneyDay", urlJourneyDay);
+				listMap.add(hashMap);
+				model.addAttribute("journeyDay", listMap);
+				return "check-idToken/check-token-journey";
+			}
 			FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
 			String uid = decodedToken.getUid();
 			// get doc id account
@@ -235,7 +255,7 @@ public class JourneyController {
 				return "error/error-journey";
 			}
 			if ((Integer.parseInt(day) > 1) && (Integer.parseInt(day) < 6)) {
-
+				
 				int dayJourneyOld = dayJourney - 1;
 				String docJourneyDay = name + dayJourneyOld + facebookId;
 				LOGGER.info("doc journey day: " + docJourneyDay);
@@ -356,6 +376,16 @@ public class JourneyController {
 		// journey day in 7days
 		if (name.equals("7days")) {
 			// get facebookId, get uid
+			if (idToken == null) {
+				LOGGER.info("check idToken null.");
+				List<HashMap<String, String>> listMap = new ArrayList<>();
+				HashMap<String, String> hashMap = new HashMap();
+				String urlJourneyDay = "/journey/7days/" + day;
+				hashMap.put("urlJourneyDay", urlJourneyDay);
+				listMap.add(hashMap);
+				model.addAttribute("journeyDay", listMap);
+				return "check-idToken/check-token-journey";
+			}
 			FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
 			String uid = decodedToken.getUid();
 			// get doc id account
@@ -491,6 +521,16 @@ public class JourneyController {
 
 		// journey day in 10days
 		if (name.equals("10days")) {
+			if (idToken == null) {
+				LOGGER.info("check idToken null.");
+				List<HashMap<String, String>> listMap = new ArrayList<>();
+				HashMap<String, String> hashMap = new HashMap();
+				String urlJourneyDay = "/journey/10days/" + day;
+				hashMap.put("urlJourneyDay", urlJourneyDay);
+				listMap.add(hashMap);
+				model.addAttribute("journeyDay", listMap);
+				return "check-idToken/check-token-journey";
+			}
 			// get facebookId, get uid
 			FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
 			String uid = decodedToken.getUid();
@@ -628,6 +668,16 @@ public class JourneyController {
 		// journey day in 21days
 		if (name.equals("21days")) {
 			// get facebookId, get uid
+			if (idToken == null) {
+				LOGGER.info("check idToken null.");
+				List<HashMap<String, String>> listMap = new ArrayList<>();
+				HashMap<String, String> hashMap = new HashMap();
+				String urlJourneyDay = "/journey/21days/" + day;
+				hashMap.put("urlJourneyDay", urlJourneyDay);
+				listMap.add(hashMap);
+				model.addAttribute("journeyDay", listMap);
+				return "check-idToken/check-token-journey";
+			}
 			FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
 			String uid = decodedToken.getUid();
 			// get doc id account
@@ -764,6 +814,16 @@ public class JourneyController {
 		// journey day in 45days
 		if (name.equals("45days")) {
 			// get facebookId, get uid
+			if (idToken == null) {
+				LOGGER.info("check idToken null.");
+				List<HashMap<String, String>> listMap = new ArrayList<>();
+				HashMap<String, String> hashMap = new HashMap();
+				String urlJourneyDay = "/journey/45days/" + day;
+				hashMap.put("urlJourneyDay", urlJourneyDay);
+				listMap.add(hashMap);
+				model.addAttribute("journeyDay", listMap);
+				return "check-idToken/check-token-journey";
+			}
 			FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
 			String uid = decodedToken.getUid();
 			// get doc id account
@@ -900,6 +960,16 @@ public class JourneyController {
 		// journey day in 90days
 		if (name.equals("90days")) {
 			// get facebookId, get uid
+			if (idToken == null) {
+				LOGGER.info("check idToken null.");
+				List<HashMap<String, String>> listMap = new ArrayList<>();
+				HashMap<String, String> hashMap = new HashMap();
+				String urlJourneyDay = "/journey/90days/" + day;
+				hashMap.put("urlJourneyDay", urlJourneyDay);
+				listMap.add(hashMap);
+				model.addAttribute("journeyDay", listMap);
+				return "check-idToken/check-token-journey";
+			}
 			FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
 			String uid = decodedToken.getUid();
 			// get doc id account
@@ -1004,7 +1074,7 @@ public class JourneyController {
 						ApiFuture<WriteResult> addedDocRef = db.collection("JourneyDay").document(docId).set(data);
 					}
 				} else {
-					LOGGER.info("No such document JourneyDay!");
+					LOGGER.info("No such document JourneyDay!"); 
 					return "error/error-journey";
 				}
 			}
