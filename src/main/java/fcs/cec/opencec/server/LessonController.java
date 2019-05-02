@@ -10,6 +10,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.jsoup.Jsoup;
@@ -104,7 +106,7 @@ public class LessonController {
 
 		if (idLesson < 1) {
 			LOGGER.info("lesson < 1");
-			return "error/error-lesson"; 
+			return "error/error-lesson";
 		}
 		if (idLesson > 1 && idLesson < 24) {
 			int lessonOld = idLesson - 1;
@@ -304,8 +306,25 @@ public class LessonController {
 	}
 
 	@RequestMapping(value = "/events/altp", method = RequestMethod.GET)
-	public String evtAltp(Model model, @CookieValue(value = "idToken", required = true) String idToken)
+	public String evtAltp(Model model, HttpServletRequest request)
 			throws FirebaseAuthException, InterruptedException, ExecutionException {
+
+		Cookie[] cookies = request.getCookies();
+		String idToken = null;
+		if (cookies != null) {
+			for (Cookie cookie : cookies) {
+				if (cookie.getName().equals("idToken")) {
+					// do something
+					idToken = cookie.getValue();
+				}
+			}
+		}
+
+		if (idToken == null) {
+			LOGGER.info("check idToken null.");
+			return "check-idToken/check-token-events";
+		}
+
 		FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
 		String uid = decodedToken.getUid();
 		Firestore db = FirestoreOptions.getDefaultInstance().getService();
