@@ -24,7 +24,8 @@ public class MemberController {
 	private static final Logger LOGGER = LoggerFactory.getLogger(MemberController.class);
 
 	@GetMapping(value = "/members", params = "page")
-	public String members(Model model, @RequestParam("page") int page) throws InterruptedException, ExecutionException {
+	public String members(Model model, @RequestParam(value = "page", required = false) int page)
+			throws InterruptedException, ExecutionException {
 		LOGGER.info("page: " + page);
 		// ko co page thi page = 1
 		if (page < 1) {

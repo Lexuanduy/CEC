@@ -73,12 +73,16 @@ public class ProfileController {
 		List<HashMap<String, String>> listMap = new ArrayList<>();
 		ApiFuture<QuerySnapshot> queryPost = db.collection("MemberPost").whereEqualTo("posterId", id).get();
 		List<MemberPost> posts = queryPost.get().toObjects(MemberPost.class);
+
+		String postIdCut;
 		for (MemberPost memberPost : posts) {
 			HashMap<String, String> hashMap = new HashMap();
 			hashMap.put("posterId", id);
 			hashMap.put("posterName", member.getName());
 			hashMap.put("permalink", memberPost.getPermalink());
-			hashMap.put("id", memberPost.getId());
+			postIdCut = memberPost.getId().substring(17);
+			LOGGER.info("postIdCut: " + postIdCut);
+			hashMap.put("id", postIdCut);
 			hashMap.put("content", memberPost.getContent());
 			hashMap.put("picture", memberPost.getPicture());
 			listMap.add(hashMap);
@@ -95,11 +99,13 @@ public class ProfileController {
 
 		// get memberpost
 		String docId = "1784461175160264_" + id;
+		LOGGER.info("docId: " + docId);
 		DocumentReference docRef = db.collection("MemberPost").document(docId);
 		ApiFuture<DocumentSnapshot> future = docRef.get();
-		MemberPost memberPost = new MemberPost();
+		MemberPost memberPost;
 		DocumentSnapshot document = future.get();
 		if (document.exists()) {
+			LOGGER.info("member post exist!");
 			memberPost = document.toObject(MemberPost.class);
 		} else {
 			LOGGER.info("No such document member post!");

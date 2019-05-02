@@ -3,6 +3,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.regex.Matcher;
@@ -36,6 +37,7 @@ import ch.qos.logback.classic.Logger;
 import fcs.cec.opencec.entity.Journey;
 import fcs.cec.opencec.entity.Lesson;
 import fcs.cec.opencec.entity.Member;
+import fcs.cec.opencec.entity.MemberPost;
 import fcs.cec.opencec.entity.Video;
 
 public class Main {
@@ -233,17 +235,16 @@ public class Main {
 ////				dayList.add(journey);
 //		}
 		Firestore db = FirestoreOptions.getDefaultInstance().getService();
-		DocumentReference docRef = db.collection("MemberPost").document("1784461175160264_2278970332376010");
-		
-		// asynchronously retrieve the document
-		ApiFuture<DocumentSnapshot> future = docRef.get();
-		// ...
+		// asynchronously retrieve multiple documents
+		ApiFuture<QuerySnapshot> future = db.collection("MemberPost").whereEqualTo("id", "1784461175160264_2284199665186410").get();
 		// future.get() blocks on response
-		DocumentSnapshot document = future.get();
-		if (document.exists()) {
-		  System.out.println("Document data: " + document.getData());
-		} else {
-		  System.out.println("No such document!");
+		List<QueryDocumentSnapshot> documents = future.get().getDocuments();
+		if(documents.isEmpty()) {
+			System.out.println("not exist");
+			return;
+		}
+		for (DocumentSnapshot document : documents) {
+			System.out.println(document.getId() + " => " + document.toObject(MemberPost.class));
 		}
 
 	}
