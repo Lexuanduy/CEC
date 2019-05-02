@@ -40,7 +40,7 @@ public class ProfileController {
 			member = document.toObject(Member.class);
 		} else {
 			LOGGER.info("No such document member!");
-			return "";
+			return "error/error-member";
 		}
 		// get MemberPost by posterId
 		List<HashMap<String, String>> listMap = new ArrayList<>();
@@ -75,7 +75,8 @@ public class ProfileController {
 			memberPost = document.toObject(MemberPost.class);
 		} else {
 			LOGGER.info("No such document member post!");
-			return "";
+
+			return "error/error-member-post";
 		}
 
 		// get member
@@ -87,7 +88,7 @@ public class ProfileController {
 			member = documentMember.toObject(Member.class);
 		} else {
 			LOGGER.info("No such document member!");
-			return "";
+			return "error/error-member";
 		}
 
 		model.addAttribute("member", member);
