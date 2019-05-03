@@ -3,9 +3,9 @@
 	layout:decorate="~{layout/home}" xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="ISO-8859-1">
-<meta property="og:title" content="CEC Post Detail">
+<meta property="og:title" th:each="obj : ${memberPost}" data-th-attr="content=@{${memberPost.content}}">
 <meta property="og:image" th:each="obj : ${member}" data-th-attr="content=@{'//graph.facebook.com/' + ${member.id} + '/picture'}" />
-<title>CEC post detail</title>
+<!-- <title>CEC post detail</title> -->
 </head>
 <body>
 	<div layout:fragment="content">
