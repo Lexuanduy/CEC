@@ -99,7 +99,7 @@ public class LessonController {
 	@RequestMapping(value = "lesson/{id}", method = RequestMethod.GET)
 	public String lesson(Model model, @PathVariable("id") String id,
 			@CookieValue(value = "idToken", required = false) String idToken, HttpServletResponse response)
-			throws InterruptedException, ExecutionException, FirebaseAuthException, IOException {
+			throws InterruptedException, ExecutionException, IOException {
 		int idLesson = Integer.parseInt(id);
 		LOGGER.info("idLesson: " + idLesson);
 		Firestore db = FirestoreOptions.getDefaultInstance().getService();
@@ -122,8 +122,20 @@ public class LessonController {
 				return "check-idToken/check-token";
 			}
 
-			FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
-			String uid = decodedToken.getUid();
+			FirebaseToken decodedToken = null;
+			try {
+				decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
+			} catch (FirebaseAuthException e) {
+				// TODO Auto-generated catch block
+				List<HashMap<String, String>> listMap = new ArrayList<>();
+				HashMap<String, String> hashMap = new HashMap();
+				String urlLesson = "/lesson/" + String.valueOf(idLesson);
+				hashMap.put("urlLesson", urlLesson);
+				listMap.add(hashMap);
+				model.addAttribute("lesson", listMap);
+				return "check-idToken/check-token";
+			}
+			String uid = decodedToken.getUid(); 
 			// get doc id account
 			ApiFuture<QuerySnapshot> futureAccount = db.collection("Account").whereEqualTo("uid", uid).get();
 			List<QueryDocumentSnapshot> accountDocuments = futureAccount.get().getDocuments();

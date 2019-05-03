@@ -236,7 +236,7 @@ public class Main {
 //		}
 		Firestore db = FirestoreOptions.getDefaultInstance().getService();
 		// asynchronously retrieve multiple documents
-		ApiFuture<QuerySnapshot> future = db.collection("MemberPost").whereEqualTo("id", "1784461175160264_2284199665186410").get();
+		ApiFuture<QuerySnapshot> future = db.collection("MemberPost").whereEqualTo("id", "1784461175160264_2109695025793328").get();
 		// future.get() blocks on response
 		List<QueryDocumentSnapshot> documents = future.get().getDocuments();
 		if(documents.isEmpty()) {

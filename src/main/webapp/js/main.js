@@ -91,15 +91,24 @@ $('#sign-out').on('click',()=>{
 	$('#logout').on('click',()=>{
 		 firebase.auth().signOut().then(function () {
 			 // delete cookie when logout
-			 console.log("log out");
-			 document.cookie = 'idToken' + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-			 console.log("log out idToken");
-			 document.cookie = 'facebookId' + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-			 document.cookie = 'uid' + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-			 document.cookie = 'photoURL' + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-			 document.cookie = 'displayName' + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-			 document.cookie = 'numLesson' + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-		 console.log("Logout thành công");
+//			 console.log("log out");
+//			 document.cookie = 'idToken' + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+//			 console.log("log out idToken");
+//			 document.cookie = 'facebookId' + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+//			 document.cookie = 'uid' + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+//			 document.cookie = 'photoURL' + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+//			 document.cookie = 'displayName' + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+//			 document.cookie = 'numLesson' + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+//		 console.log("Logout thành công");
+			 var cookies = document.cookie.split(";");
+
+			    for (var i = 0; i < cookies.length; i++) {
+			        var cookie = cookies[i];
+			        var eqPos = cookie.indexOf("=");
+			        var name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+			        document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT"+'; path=/';
+			    }
+			    window.location.href = window.location.pathname; 
 		 $('#sign-out')[0].hidden = true;
 		 }).catch(function (error) {
 		 alert("Đã có lỗi xảy ra trong quá trình logout. Xin thử lại");
