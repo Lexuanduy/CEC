@@ -181,13 +181,14 @@
 									<script type="text/javascript">
 										function openNewLesson(num) {
 											var url = prompt("Nhập đường dẫn bài làm mới nhất cuả bài số "
-													+ num);
+													+ (num-1));
 											var strUrlCut = url.slice(8, (url
 													.indexOf("facebook") - 1));
 											var strUrlLast = url.slice((url
 													.indexOf("facebook") - 1));
 											var strHTTP = "https://m";
 											var URL = strHTTP + strUrlLast;
+											num = num -1;
 											$
 													.post(
 															"/openLockLesson?url="

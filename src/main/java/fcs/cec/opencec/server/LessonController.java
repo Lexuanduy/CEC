@@ -135,7 +135,7 @@ public class LessonController {
 				model.addAttribute("lesson", listMap);
 				return "check-idToken/check-token";
 			}
-			String uid = decodedToken.getUid(); 
+			String uid = decodedToken.getUid();
 			// get doc id account
 			ApiFuture<QuerySnapshot> futureAccount = db.collection("Account").whereEqualTo("uid", uid).get();
 			List<QueryDocumentSnapshot> accountDocuments = futureAccount.get().getDocuments();
@@ -356,19 +356,38 @@ public class LessonController {
 		LOGGER.info("numLessons: " + numLessons);
 
 		List<HashMap<String, String>> listLessonActive = new ArrayList<>();
-		for (DocumentSnapshot document : lessonDocuments) {
-			LessonMember lessonMember = document.toObject(LessonMember.class);
+		LessonMember lessonMember = new LessonMember();
+		if (lessonDocuments.isEmpty()) {
 			HashMap<String, String> hashMap = new HashMap();
-			String nameLesson = "Lesson " + String.valueOf(lessonMember.getLesson());
+			String nameLesson = "Lesson " + String.valueOf(1);
 			hashMap.put("nameLesson", nameLesson);
-			hashMap.put("keyLesson", String.valueOf(lessonMember.getLesson()));
+			hashMap.put("keyLesson", String.valueOf(1));
 			LOGGER.info("nameLesson: " + nameLesson);
-			LOGGER.info("keyLesson: " + String.valueOf(lessonMember.getLesson()));
+			LOGGER.info("keyLesson: " + String.valueOf(1));
 			listLessonActive.add(hashMap);
+		} else {
+			for (DocumentSnapshot document : lessonDocuments) {
+				lessonMember = document.toObject(LessonMember.class);
+				HashMap<String, String> hashMap = new HashMap();
+				String nameLesson = "Lesson " + String.valueOf(lessonMember.getLesson());
+				hashMap.put("nameLesson", nameLesson);
+				hashMap.put("keyLesson", String.valueOf(lessonMember.getLesson()));
+				LOGGER.info("nameLesson: " + nameLesson);
+				LOGGER.info("keyLesson: " + String.valueOf(lessonMember.getLesson()));
+				listLessonActive.add(hashMap);
+			}
+			HashMap<String, String> hashMapNext = new HashMap();
+			String nameLessonNext = "Lesson " + String.valueOf(lessonMember.getLesson() + 1);
+			hashMapNext.put("nameLesson", nameLessonNext);
+			hashMapNext.put("keyLesson", String.valueOf(lessonMember.getLesson() + 1));
+			LOGGER.info("nameLesson: " + nameLessonNext);
+			LOGGER.info("keyLesson: " + String.valueOf(lessonMember.getLesson() + 1));
+			listLessonActive.add(hashMapNext);
 		}
 
 		// get list lesson
 		List<HashMap<String, String>> listLessonLock = new ArrayList<>();
+		numLessons = numLessons + 1;
 		for (Lesson lesson : lessonList) {
 			if (Integer.parseInt(lesson.getName()) > numLessons) {
 				HashMap<String, String> hashMap = new HashMap();
