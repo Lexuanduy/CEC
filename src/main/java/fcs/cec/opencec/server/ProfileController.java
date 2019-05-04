@@ -1,12 +1,16 @@
 package fcs.cec.opencec.server;
 
 import java.io.IOException;
+import java.text.Format;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
+import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -75,16 +79,23 @@ public class ProfileController {
 		List<MemberPost> posts = queryPost.get().toObjects(MemberPost.class);
 
 		String postIdCut;
+		String urlVideo;
+		JSONObject jsonObj;
+		String dateCreate;
 		for (MemberPost memberPost : posts) {
 			HashMap<String, String> hashMap = new HashMap();
 			hashMap.put("posterId", id);
 			hashMap.put("posterName", member.getName());
-			hashMap.put("permalink", memberPost.getPermalink());
+			jsonObj = new JSONObject(memberPost.getAttachments());
+			urlVideo = "https://www.facebook.com/missybon/videos/" + jsonObj.get("url");
+			hashMap.put("permalink", urlVideo);
 			postIdCut = memberPost.getId().substring(17);
 			LOGGER.info("postIdCut: " + postIdCut);
 			hashMap.put("id", postIdCut);
 			hashMap.put("content", memberPost.getContent());
 			hashMap.put("picture", memberPost.getPicture());
+			dateCreate = convertTime(memberPost.getCreatedDate());
+			hashMap.put("dateCreate", dateCreate);
 			listMap.add(hashMap);
 		}
 		model.addAttribute("member", member);
@@ -107,6 +118,11 @@ public class ProfileController {
 		if (document.exists()) {
 			LOGGER.info("member post exist!");
 			memberPost = document.toObject(MemberPost.class);
+			JSONObject jsonObj = new JSONObject(memberPost.getAttachments());
+			String urlVideo = "https://www.facebook.com/missybon/videos/" + jsonObj.get("url");
+			String dateCreate = convertTime(memberPost.getCreatedDate());
+			memberPost.setPermalink(urlVideo);
+			memberPost.setDateCreate(dateCreate);
 		} else {
 			LOGGER.info("No such document member post!");
 			return "error/error-member-post";
@@ -126,5 +142,11 @@ public class ProfileController {
 		model.addAttribute("member", member);
 		model.addAttribute("memberPost", memberPost);
 		return "profiles/detail";
+	}
+
+	public String convertTime(long time) {
+		Date date = new Date(time);
+		Format format = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+		return format.format(date);
 	}
 }

@@ -118,7 +118,7 @@
 													th:href="@{//facebook.com/profile.php(id=${post.posterId})}"
 													class="name" th:text="${post.posterName}"></a> <a
 													th:href="${post.permalink}" 
-													target="_blank" class="date">5 tháng trước</a>
+													target="_blank" class="date" th:text="${post.dateCreate}"></a>
 											</div>
 										</div>
 										<a th:href="@{'/p/' + ${post.id}}" class="fb"> <i

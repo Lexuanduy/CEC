@@ -55,6 +55,12 @@ public class MemberPost {
 	public void setType(String type) {
 		this.type = type;
 	}
+	public String getDateCreate() {
+		return dateCreate;
+	}
+	public void setDateCreate(String dateCreate) {
+		this.dateCreate = dateCreate;
+	}
 	private String id;
 	private String posterId;
 	private String attachments;
@@ -64,4 +70,5 @@ public class MemberPost {
 	private String permalink;
 	private String picture;
 	private String type;
+	private String dateCreate;
 }

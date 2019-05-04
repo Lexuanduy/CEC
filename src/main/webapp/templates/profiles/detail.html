@@ -61,7 +61,7 @@
 																th:href="@{//facebook.com/profile.php(id=${member.id})}"
 																class="name"></a> <a
 																th:href="${memberPost.permalink}"
-																target="_blank" class="date">5 tháng trước</a>
+																target="_blank" class="date" th:text="${memberPost.dateCreate}"></a>
 														</div>
 													</div>
 												</div>

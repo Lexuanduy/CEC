@@ -9,6 +9,8 @@ import java.util.concurrent.ExecutionException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.tomcat.util.json.JSONParser;
+import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -235,18 +237,20 @@ public class Main {
 ////				dayList.add(journey);
 //		}
 		Firestore db = FirestoreOptions.getDefaultInstance().getService();
-		// asynchronously retrieve multiple documents
-		ApiFuture<QuerySnapshot> future = db.collection("MemberPost").whereEqualTo("id", "1784461175160264_2109695025793328").get();
-		// future.get() blocks on response
-		List<QueryDocumentSnapshot> documents = future.get().getDocuments();
-		if(documents.isEmpty()) {
-			System.out.println("not exist");
-			return;
+		
+		ApiFuture<QuerySnapshot> queryPost = db.collection("MemberPost").whereEqualTo("posterId", "100009083818117").get();
+		List<MemberPost> posts = queryPost.get().toObjects(MemberPost.class);
+		
+		for (MemberPost post : posts) {
+			System.out.println(post.getContent());
 		}
-		for (DocumentSnapshot document : documents) {
-			System.out.println(document.getId() + " => " + document.toObject(MemberPost.class));
+		
+		ApiFuture<QuerySnapshot> queryVideo = db.collection("Video").whereEqualTo("posterId", "100009083818117").get();
+		List<Video> videos = queryVideo.get().toObjects(Video.class);
+		
+		for (Video video : videos) {
+			System.out.println(video.getContent()); 
 		}
-
 	}
 
 }
