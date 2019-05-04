@@ -37,6 +37,7 @@ import com.google.firebase.auth.FirebaseToken;
 
 import ch.qos.logback.classic.Logger;
 import fcs.cec.opencec.entity.Journey;
+import fcs.cec.opencec.entity.JourneyDay;
 import fcs.cec.opencec.entity.Lesson;
 import fcs.cec.opencec.entity.Member;
 import fcs.cec.opencec.entity.MemberPost;
@@ -237,20 +238,47 @@ public class Main {
 ////				dayList.add(journey);
 //		}
 		Firestore db = FirestoreOptions.getDefaultInstance().getService();
-		
-		ApiFuture<QuerySnapshot> queryPost = db.collection("MemberPost").whereEqualTo("posterId", "100009083818117").get();
-		List<MemberPost> posts = queryPost.get().toObjects(MemberPost.class);
-		
-		for (MemberPost post : posts) {
-			System.out.println(post.getContent());
-		}
-		
-		ApiFuture<QuerySnapshot> queryVideo = db.collection("Video").whereEqualTo("posterId", "100009083818117").get();
-		List<Video> videos = queryVideo.get().toObjects(Video.class);
-		
-		for (Video video : videos) {
-			System.out.println(video.getContent()); 
-		}
-	}
 
+		// asynchronously retrieve multiple documents
+//		ApiFuture<QuerySnapshot> future = db.collection("JourneyDay").get();
+//		List<QueryDocumentSnapshot> documents = future.get().getDocuments();
+//		int i = 1;
+//		for (DocumentSnapshot document : documents) {
+//			String docId = document.getId();
+//			String accId = document.getString("accountId");
+////			System.out.println(accId);
+//			int stt = document.getId().indexOf(accId);
+////			System.out.println(stt);
+//			String journey = document.getId().substring(0, stt - 1);
+////			System.out.println(journey);
+//			System.out.println(document.get("journey"));
+//			System.out.println(i);
+//			i ++;
+//			if(journey.equals("3days")) {
+//				DocumentReference docRef = db.collection("JourneyDay").document(docId);
+//				ApiFuture<WriteResult> futureUpdate = docRef.update("journey", "3days");
+//			}
+//			if(journey.equals("5days")) {
+//				DocumentReference docRef = db.collection("JourneyDay").document(docId);
+//				ApiFuture<WriteResult> futureUpdate = docRef.update("journey", "5days");
+//			}
+//			if(journey.equals("7days")) {
+//				DocumentReference docRef = db.collection("JourneyDay").document(docId);
+//				ApiFuture<WriteResult> futureUpdate = docRef.update("journey", "7days");
+//			}
+//			if(journey.equals("10days")) {
+//				DocumentReference docRef = db.collection("JourneyDay").document(docId);
+//				ApiFuture<WriteResult> futureUpdate = docRef.update("journey", "10days");
+//			}
+		}
+		
+//		//asynchronously retrieve multiple documents
+//		ApiFuture<QuerySnapshot> future =
+//		    db.collection("JourneyDay").whereEqualTo("accountId", "808824516143312").get();
+//		// future.get() blocks on response
+//		List<QueryDocumentSnapshot> documents = future.get().getDocuments();
+//		for (DocumentSnapshot document : documents) {
+//		  System.out.println(document.get("memberName"));
+//		  
+//		}
 }

@@ -9,6 +9,8 @@ import java.util.concurrent.ExecutionException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.jsoup.Jsoup;
@@ -41,6 +43,8 @@ import com.google.firebase.auth.FirebaseToken;
 import fcs.cec.opencec.entity.Account;
 import fcs.cec.opencec.entity.Journey;
 import fcs.cec.opencec.entity.JourneyDay;
+import fcs.cec.opencec.entity.Lesson;
+import fcs.cec.opencec.entity.LessonMember;
 
 @Controller
 public class JourneyController {
@@ -258,7 +262,7 @@ public class JourneyController {
 				return "error/error-journey";
 			}
 			if ((Integer.parseInt(day) > 1) && (Integer.parseInt(day) < 6)) {
-				
+
 				int dayJourneyOld = dayJourney - 1;
 				String docJourneyDay = name + dayJourneyOld + facebookId;
 				LOGGER.info("doc journey day: " + docJourneyDay);
@@ -1094,7 +1098,7 @@ public class JourneyController {
 						ApiFuture<WriteResult> addedDocRef = db.collection("JourneyDay").document(docId).set(data);
 					}
 				} else {
-					LOGGER.info("No such document JourneyDay!"); 
+					LOGGER.info("No such document JourneyDay!");
 					return "error/error-journey";
 				}
 			}
@@ -1290,5 +1294,90 @@ public class JourneyController {
 				}
 			}
 		}
+	}
+
+	@RequestMapping(value = "/events/3days", method = RequestMethod.GET)
+	public String evt3days(Model model, HttpServletRequest request)
+			throws FirebaseAuthException, InterruptedException, ExecutionException {
+		Cookie[] cookies = request.getCookies();
+		String idToken = null;
+		if (cookies != null) {
+			for (Cookie cookie : cookies) {
+				if (cookie.getName().equals("idToken")) {
+					// do something
+					idToken = cookie.getValue();
+				}
+			}
+		}
+		if (idToken == null) {
+			LOGGER.info("check idToken null.");
+			return "check-idToken/check-token-events";
+		}
+		FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
+		String uid = decodedToken.getUid();
+		Firestore db = FirestoreOptions.getDefaultInstance().getService();
+		// get account id
+		ApiFuture<QuerySnapshot> future = db.collection("Account").whereEqualTo("uid", uid).get();
+		List<QueryDocumentSnapshot> documents = future.get().getDocuments();
+		String accountId = null;
+		for (DocumentSnapshot document : documents) {
+			accountId = document.getId();
+		}
+		LOGGER.info("account Id: " + accountId);
+		// get list day learned
+		ApiFuture<QuerySnapshot> futureJourneyDay = db.collection("JourneyDay").whereEqualTo("accountId", accountId)
+				.whereEqualTo("journey", "3days").whereEqualTo("status", 1).get();
+		List<QueryDocumentSnapshot> journeyDocuments = futureJourneyDay.get().getDocuments();
+		int numDays = journeyDocuments.size();
+		LOGGER.info("numDays: " + numDays);
+		List<HashMap<String, String>> listJourneyActive = new ArrayList<>();
+		JourneyDay journeyDay = new JourneyDay();
+		if (journeyDocuments.isEmpty()) {
+			HashMap<String, String> hashMap = new HashMap();
+			String nameLesson = "Day " + String.valueOf(1);
+			hashMap.put("nameLesson", nameLesson);
+			hashMap.put("keyLesson", String.valueOf(1));
+			LOGGER.info("nameLesson: " + nameLesson);
+			LOGGER.info("keyLesson: " + String.valueOf(1));
+			listJourneyActive.add(hashMap);
+		} else {
+			for (DocumentSnapshot document : journeyDocuments) {
+				journeyDay = document.toObject(JourneyDay.class);
+				HashMap<String, String> hashMap = new HashMap();
+				String nameLesson = "Day " + String.valueOf(journeyDay.getDay());
+				hashMap.put("nameLesson", nameLesson);
+				hashMap.put("keyLesson", String.valueOf(journeyDay.getDay()));
+				LOGGER.info("nameLesson: " + nameLesson);
+				LOGGER.info("keyLesson: " + String.valueOf(journeyDay.getDay()));
+				listJourneyActive.add(hashMap);
+			}
+			HashMap<String, String> hashMapNext = new HashMap();
+			String nameLessonNext = "Day " + String.valueOf(journeyDay.getDay() + 1);
+			hashMapNext.put("nameLesson", nameLessonNext);
+			hashMapNext.put("keyLesson", String.valueOf(journeyDay.getDay() + 1));
+			LOGGER.info("nameLesson: " + nameLessonNext);
+			LOGGER.info("keyLesson: " + String.valueOf(journeyDay.getDay() + 1));
+			listJourneyActive.add(hashMapNext);
+		}
+
+		// get list journey
+		List<HashMap<String, String>> listLessonLock = new ArrayList<>();
+		numDays = numDays + 1;
+		for (Journey journey : dayList) {
+			if (journey.getName().equals("3days")) {
+				if (Integer.parseInt(journey.getDay()) > numDays) {
+					HashMap<String, String> hashMap = new HashMap();
+					hashMap.put("keyLesson", journey.getName());
+					LOGGER.info("keyLesson: " + journey.getName());
+					String nameLesson = "Lesson " + journey.getName();
+					hashMap.put("nameLesson", nameLesson);
+					LOGGER.info("nameLesson: " + nameLesson);
+					listLessonLock.add(hashMap);
+				}
+			}
+		}
+		model.addAttribute("activeLessons", listJourneyActive);
+		model.addAttribute("lockLessons", listLessonLock);
+		return "altp/event-days";
 	}
 }
