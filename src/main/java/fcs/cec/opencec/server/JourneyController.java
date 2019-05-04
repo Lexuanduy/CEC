@@ -132,6 +132,7 @@ public class JourneyController {
 					Map<String, Object> data = new HashMap<>();
 					dayJourney = 2;
 					data.put("day", dayJourney);
+					data.put("journey", "3days");
 					data.put("memberId", facebookId);
 					data.put("memberName", "");
 					data.put("postId", "");
@@ -174,6 +175,7 @@ public class JourneyController {
 					if (dayJourney < 4) {
 						if (dayJourney == 3) {
 							data.put("day", 1);
+							data.put("journey", "5days");
 							data.put("memberId", facebookId);
 							data.put("memberName", "");
 							data.put("postId", "");
@@ -195,6 +197,7 @@ public class JourneyController {
 							}
 						}
 						data.put("day", dayJourney);
+						data.put("journey", "3days");
 						data.put("memberId", facebookId);
 						data.put("memberName", "");
 						data.put("postId", "");
@@ -277,6 +280,7 @@ public class JourneyController {
 					if (dayJourney < 6) {
 						if (dayJourney == 5) {
 							data.put("day", 1);
+							data.put("journey", "7days");
 							data.put("memberId", facebookId);
 							data.put("memberName", "");
 							data.put("postId", "");
@@ -298,6 +302,7 @@ public class JourneyController {
 							}
 						}
 						data.put("day", dayJourney);
+						data.put("journey", "5days");
 						data.put("memberId", facebookId);
 						data.put("memberName", "");
 						data.put("postId", "");
@@ -346,6 +351,7 @@ public class JourneyController {
 					Map<String, Object> data = new HashMap<>();
 					dayJourney = Integer.parseInt(day) + 1;
 					data.put("day", dayJourney);
+					data.put("journey", "5days");
 					data.put("memberId", facebookId);
 					data.put("memberName", "");
 					data.put("postId", "");
@@ -424,6 +430,7 @@ public class JourneyController {
 					if (dayJourney < 8) {
 						if (dayJourney == 7) {
 							data.put("day", 1);
+							data.put("journey", "10days");
 							data.put("memberId", facebookId);
 							data.put("memberName", "");
 							data.put("postId", "");
@@ -445,6 +452,7 @@ public class JourneyController {
 							}
 						}
 						data.put("day", dayJourney);
+						data.put("journey", "7days");
 						data.put("memberId", facebookId);
 						data.put("memberName", "");
 						data.put("postId", "");
@@ -493,6 +501,7 @@ public class JourneyController {
 					Map<String, Object> data = new HashMap<>();
 					dayJourney = Integer.parseInt(day) + 1;
 					data.put("day", dayJourney);
+					data.put("journey", "7days");
 					data.put("memberId", facebookId);
 					data.put("memberName", "");
 					data.put("postId", "");
@@ -570,6 +579,7 @@ public class JourneyController {
 					if (dayJourney < 11) {
 						if (dayJourney == 10) {
 							data.put("day", 1);
+							data.put("journey", "21days");
 							data.put("memberId", facebookId);
 							data.put("memberName", "");
 							data.put("postId", "");
@@ -591,6 +601,7 @@ public class JourneyController {
 							}
 						}
 						data.put("day", dayJourney);
+						data.put("journey", "10days");
 						data.put("memberId", facebookId);
 						data.put("memberName", "");
 						data.put("postId", "");
@@ -639,6 +650,7 @@ public class JourneyController {
 					Map<String, Object> data = new HashMap<>();
 					dayJourney = Integer.parseInt(day) + 1;
 					data.put("day", dayJourney);
+					data.put("journey", "10days");
 					data.put("memberId", facebookId);
 					data.put("memberName", "");
 					data.put("postId", "");
@@ -716,6 +728,7 @@ public class JourneyController {
 					if (dayJourney < 22) {
 						if (dayJourney == 21) {
 							data.put("day", 1);
+							data.put("journey", "45days");
 							data.put("memberId", facebookId);
 							data.put("memberName", "");
 							data.put("postId", "");
@@ -737,6 +750,7 @@ public class JourneyController {
 							}
 						}
 						data.put("day", dayJourney);
+						data.put("journey", "21days");
 						data.put("memberId", facebookId);
 						data.put("memberName", "");
 						data.put("postId", "");
@@ -785,6 +799,7 @@ public class JourneyController {
 					Map<String, Object> data = new HashMap<>();
 					dayJourney = Integer.parseInt(day) + 1;
 					data.put("day", dayJourney);
+					data.put("journey", "21days");
 					data.put("memberId", facebookId);
 					data.put("memberName", "");
 					data.put("postId", "");
@@ -862,6 +877,7 @@ public class JourneyController {
 					if (dayJourney < 46) {
 						if (dayJourney == 45) {
 							data.put("day", 1);
+							data.put("journey", "90days");
 							data.put("memberId", facebookId);
 							data.put("memberName", "");
 							data.put("postId", "");
@@ -883,6 +899,7 @@ public class JourneyController {
 							}
 						}
 						data.put("day", dayJourney);
+						data.put("journey", "45days");
 						data.put("memberId", facebookId);
 						data.put("memberName", "");
 						data.put("postId", "");
@@ -931,6 +948,7 @@ public class JourneyController {
 					Map<String, Object> data = new HashMap<>();
 					dayJourney = Integer.parseInt(day) + 1;
 					data.put("day", dayJourney);
+					data.put("journey", "45days");
 					data.put("memberId", facebookId);
 					data.put("memberName", "");
 					data.put("postId", "");
@@ -1007,6 +1025,7 @@ public class JourneyController {
 					// check day < 91 in 90days
 					if (dayJourney < 91) {
 						data.put("day", dayJourney);
+						data.put("journey", "90days");
 						data.put("memberId", facebookId);
 						data.put("memberName", "");
 						data.put("postId", "");
@@ -1055,6 +1074,7 @@ public class JourneyController {
 					Map<String, Object> data = new HashMap<>();
 					dayJourney = Integer.parseInt(day) + 1;
 					data.put("day", dayJourney);
+					data.put("journey", "90days");
 					data.put("memberId", facebookId);
 					data.put("memberName", "");
 					data.put("postId", "");

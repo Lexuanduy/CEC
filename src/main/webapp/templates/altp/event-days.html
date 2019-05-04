@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/home}" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>CEC - Journey days</title>
+</head>
+<body>
+<div layout:fragment="content">
+		<div class="eventInfo event-1">
+			<!-- Page Intro
+		================================================== -->
+			<section class="pageIntro">
+				<div class="container">
+					<div class="row">
+						<div class="col-auto pt-1">
+							<i class="mdi mdi-diamond icon c-1"></i>
+						</div>
+						<div class="col">
+							<h2 class="headingSecondary text-white">Ai là triệu phú</h2>
+							<p>Hàng tuần vào thứ 3 và thứ 6 sẽ gửi cho các bạn một email
+								chứa tài liệu ngày hành trình.</p>
+						</div>
+						<div class="col-auto align-self-center">
+							<a href="#" class="btn btn-primary btn-lg">Tham gia</a>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<!-- Game intro
+		================================================== -->
+			<section>
+				<div class="container">
+					<div class="eventIntro hasBorderBottom">
+						<div class="row">
+							<div class="col-md-6">
+								<h3>Cơ cấu giải thưởng</h3>
+								<ul class="hasIcon list-unstyled">
+									<li><i class="mdi mdi-numeric-1-box icon"></i> <strong>Nhất
+											tuần:</strong> Được tặng 200 Coins <br> (có thể đổi tương ứng ra
+										1 chiếc thẻ điện thoại 200 K)</li>
+									<li><i class="mdi mdi-numeric-2-box icon"></i> <strong>Nhì
+											tuần:</strong> Được tặng 100 Coins <br> (có thể đổi tương ứng ra
+										1 chiếc thẻ điện thoại 100 K)</li>
+									<li><i class="mdi mdi-numeric-3-box icon"></i> <strong>Giải
+											Ba Tuần:</strong> Được tặng 50 Coins <br> (có thể đổi tương ứng
+										ra 1 chiếc thẻ điện thoại 50 K)</li>
+									<li>
+										<p class="font-italic text-info">Bạn cũng có thể tích điểm
+											của mình để đổi lấy phần quà có giá trị lớn hơn.</p>
+									</li>
+								</ul>
+							</div>
+							<div class="col-md-6">
+								<h3>Luật chơi</h3>
+								<ul class="hasIcon list-unstyled mb-5">
+									<li><i class="mdi mdi-arrow-right icon"></i> Bạn sẽ được
+										cung cấp một video bài đọc mẫu, và một textscript. Nhiệm vụ
+										của bạn là quay lại video bạn đọc lại textscript đó làm sao
+										cho clip thú vị nhất có thể.</li>
+									<li><i class="mdi mdi-arrow-right icon"></i> Clip chiến
+										thắng là clip có nhiều tổng điểm like, cảm xúc, share,
+										comment. nhiều nhất.</li>
+								</ul>
+								<a href="" class="btn btn-primary">Tham gia</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+			
+			<section>
+				<div class="container">
+					<div class="listLesson hasBorderBottom">
+						<h2 class="headingSecondary text-center">Danh sách bài học</h2>
+						<p class="text-center textLead mb-5">We have many training
+							programs that include</p>
+
+						<div class="row">
+							<!-- start active -->
+							<!-- <c:forEach items="${lessonNames}" var="lessonName1"> -->
+							<div
+								class="col-xl-3 col-lg-3 col-md-4 col-sm-12 lessonItem active"
+								th:each="lessonActive : ${activeLessons}">
+								<div class="inner">
+									<div class="lock">
+										<span> <i class="mdi mdi-lock icon"></i>
+											<p th:text="${lessonActive.nameLesson}"></p>
+										</span>
+									</div>
+									<a th:href="@{'/lesson/' + ${lessonActive.keyLesson}}"> <span
+										class="name" th:text="${lessonActive.nameLesson}"></span>
+									</a>
+								</div>
+							</div>
+							<!-- </c:forEach> -->
+							<!-- end active -->
+							<!-- start -->
+
+
+
+							<!-- <c:forEach items="${lessonNamesNotExist}"
+								var="lessonNameNotExist"> -->
+							<div class="col-xl-3 col-lg-3 col-md-4 col-sm-12 lessonItem"
+								th:each="lessonLock : ${lockLessons}">
+								<div class="inner">
+									<!-- <div class="lock" > -->
+									<div class="lock">
+										<span class="lockMessage"> <i class="mdi mdi-lock icon"></i>
+											<p th:text="${lessonLock.nameLesson}"></p>
+										</span> <span class="unlockMessage"
+											th:data-parameter1="${lessonLock.keyLesson}"
+											onclick="openNewLesson(this.getAttribute('data-parameter1'));">
+											<i class="mdi mdi-lock-open icon"></i> Unlock this lesson
+										</span>
+									</div>
+
+									<script type="text/javascript">
+										function openNewLesson(num) {
+											var url = prompt("Nhập đường dẫn bài làm mới nhất cuả bài số "
+													+ (num-1));
+											var strUrlCut = url.slice(8, (url
+													.indexOf("facebook") - 1));
+											var strUrlLast = url.slice((url
+													.indexOf("facebook") - 1));
+											var strHTTP = "https://m";
+											var URL = strHTTP + strUrlLast;
+											num = num -1;
+											$
+													.post(
+															"/openLockLesson?url="
+																	+ URL
+																	+ "&numLesson="
+																	+ num,
+															function(data) {
+																console
+																		.log(data);
+																alert("Bài học của bạn đã được submit thành công!");
+																/* window.location.href = "/events/altp"; */
+															})
+													.fail(
+															function(xhr,
+																	status,
+																	error) {
+																if (xhr.status == 404) {
+																	Swal({
+																		position : 'center',
+																		type : 'error',
+																		title : 'Link video không đúng .Vui lòng nhập lại link video bài học của bạn!',
+																		showConfirmButton : false,
+																		timer : 2000,
+																	});
+																}
+																if (xhr.status == 400) {
+																	Swal({
+																		position : 'center',
+																		type : 'error',
+																		title : 'Link video đã tồn tại .Vui lòng nhập lại link video bài học của bạn!',
+																		showConfirmButton : false,
+																		timer : 2000,
+																	});
+																}
+																if (xhr.status == 403) {
+																	alert("error 403");
+																}
+																if (xhr.status == 405) {
+																	Swal({
+																		position : 'center',
+																		type : 'error',
+																		title : 'Đây không phải video của bạn .Vui lòng nhập lại link video bài học của bạn!',
+																		showConfirmButton : false,
+																		timer : 3000,
+																	});
+																}
+																if (xhr.status == 401) {
+																	Swal({
+																		position : 'center',
+																		title : 'Phiên bản đã hết hạn, vui lòng đăng nhập lại!',
+																		showConfirmButton : false,
+																		timer : 3000,
+																	});
+																}
+															});
+										}
+									</script>
+									<a href="#"> <strong th:text="${lessonLock.nameLesson}"></strong>
+										<span class="name" th:text="${lessonLock.nameLesson}"></span>
+									</a>
+								</div>
+							</div>
+							<!-- </c:forEach> -->
+							<!-- end -->
+						</div>
+					</div>
+				</div>
+			</section>
+			
+		</div>
+	</div>
+</body>
+</html>

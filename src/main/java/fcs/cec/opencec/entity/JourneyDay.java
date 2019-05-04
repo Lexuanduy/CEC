@@ -7,6 +7,12 @@ public class JourneyDay {
 	public void setDay(int day) {
 		this.day = day;
 	}
+	public String getJourney() {
+		return journey;
+	}
+	public void setJourney(String journey) {
+		this.journey = journey;
+	}
 	public String getMemberId() {
 		return memberId;
 	}
@@ -62,6 +68,7 @@ public class JourneyDay {
 		this.updatedAt = updatedAt;
 	}
 	private int day;
+	private String journey;
 	private String memberId;
 	private String accountId;
 	private String memberName;
