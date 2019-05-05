@@ -1386,6 +1386,90 @@ public class JourneyController {
 		return "journeys/3days";
 	}
 
+	@RequestMapping(value = "/journey/5days", method = RequestMethod.GET)
+	public String evt5days(Model model, HttpServletRequest request) throws InterruptedException, ExecutionException, FirebaseAuthException {
+		Cookie[] cookies = request.getCookies();
+		String idToken = null;
+		if (cookies != null) {
+			for (Cookie cookie : cookies) {
+				if (cookie.getName().equals("idToken")) {
+					// do something
+					idToken = cookie.getValue();
+				}
+			}
+		}
+		if (idToken == null) {
+			LOGGER.info("check idToken null.");
+			return "check-idToken/check-token-events";
+		}
+		FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
+		String uid = decodedToken.getUid();
+		Firestore db = FirestoreOptions.getDefaultInstance().getService();
+		// get account id
+		ApiFuture<QuerySnapshot> future = db.collection("Account").whereEqualTo("uid", uid).get();
+		List<QueryDocumentSnapshot> documents = future.get().getDocuments();
+		String accountId = null;
+		for (DocumentSnapshot document : documents) {
+			accountId = document.getId();
+		}
+		LOGGER.info("account Id: " + accountId);
+		// get list day learned
+		ApiFuture<QuerySnapshot> futureJourneyDay = db.collection("JourneyDay").whereEqualTo("accountId", accountId)
+				.whereEqualTo("journey", "3days").whereEqualTo("status", 1).get();
+		List<QueryDocumentSnapshot> journeyDocuments = futureJourneyDay.get().getDocuments();
+		int numDays = journeyDocuments.size();
+		LOGGER.info("numDays: " + numDays);
+		List<HashMap<String, String>> listJourneyActive = new ArrayList<>();
+		JourneyDay journeyDay = new JourneyDay();
+		if (journeyDocuments.isEmpty()) {
+			HashMap<String, String> hashMap = new HashMap();
+			String nameDay = "Day " + String.valueOf(1);
+			hashMap.put("nameDay", nameDay);
+			hashMap.put("keyDay", String.valueOf(1));
+			LOGGER.info("nameDay: " + nameDay);
+			LOGGER.info("keyDay: " + String.valueOf(1));
+			listJourneyActive.add(hashMap);
+		} else {
+			for (DocumentSnapshot document : journeyDocuments) {
+				journeyDay = document.toObject(JourneyDay.class);
+				HashMap<String, String> hashMap = new HashMap();
+				String nameDay = "Day " + String.valueOf(journeyDay.getDay());
+				hashMap.put("nameDay", nameDay);
+				hashMap.put("keyDay", String.valueOf(journeyDay.getDay()));
+				LOGGER.info("nameDay: " + nameDay);
+				LOGGER.info("keyDay: " + String.valueOf(journeyDay.getDay()));
+				listJourneyActive.add(hashMap);
+			}
+			HashMap<String, String> hashMapNext = new HashMap();
+			String nameDayNext = "Day " + String.valueOf(journeyDay.getDay() + 1);
+			hashMapNext.put("nameDay", nameDayNext);
+			hashMapNext.put("keyDay", String.valueOf(journeyDay.getDay() + 1));
+			LOGGER.info("nameDay: " + nameDayNext);
+			LOGGER.info("keyDay: " + String.valueOf(journeyDay.getDay() + 1));
+			listJourneyActive.add(hashMapNext);
+		}
+
+		// get list journey
+		List<HashMap<String, String>> listDayLock = new ArrayList<>();
+		numDays = numDays + 1;
+		for (Journey journey : dayList) {
+			if (journey.getName().equals("5days")) {
+				if (Integer.parseInt(journey.getDay()) > numDays) {
+					HashMap<String, String> hashMap = new HashMap();
+					hashMap.put("keyDay", journey.getDay());
+					LOGGER.info("keyDay: " + journey.getDay());
+					String nameDay = "Day " + journey.getDay();
+					hashMap.put("nameDay", nameDay);
+					LOGGER.info("nameDay: " + nameDay);
+					listDayLock.add(hashMap);
+				}
+			}
+		}
+		model.addAttribute("activeDays", listJourneyActive);
+		model.addAttribute("lockDays", listDayLock);
+		return "journeys/5days";
+	}
+
 	@RequestMapping(value = "openLockDay", method = RequestMethod.POST)
 	public void checkOldDay(Model model, @RequestParam String url,
 			@CookieValue(value = "idToken", required = true) String idToken, @RequestParam String journey,
@@ -1473,7 +1557,7 @@ public class JourneyController {
 				if (!documentJourneyDay.exists()) {
 					Map<String, Object> data = new HashMap<>();
 					data.put("day", Integer.parseInt(numDay));
-					data.put("journey", journey+"days");
+					data.put("journey", journey + "days");
 					data.put("memberId", facebookId);
 					data.put("memberName", "");
 					data.put("postId", "");
@@ -1512,7 +1596,7 @@ public class JourneyController {
 				} else {
 					System.out.println("No such document account!");
 				}
-				
+
 				if (journeyName.equals("3") && numDay.equals("3")) {
 					LOGGER.info("3days3");
 					response.setStatus(200);
