@@ -27,6 +27,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.DocumentReference;
@@ -1292,11 +1294,14 @@ public class JourneyController {
 					response.setStatus(200);
 					return;
 				}
+			} else {
+				response.setStatus(404);
+				return;
 			}
 		}
 	}
 
-	@RequestMapping(value = "/events/3days", method = RequestMethod.GET)
+	@RequestMapping(value = "/journey/3days", method = RequestMethod.GET)
 	public String evt3days(Model model, HttpServletRequest request)
 			throws FirebaseAuthException, InterruptedException, ExecutionException {
 		Cookie[] cookies = request.getCookies();
@@ -1334,50 +1339,232 @@ public class JourneyController {
 		JourneyDay journeyDay = new JourneyDay();
 		if (journeyDocuments.isEmpty()) {
 			HashMap<String, String> hashMap = new HashMap();
-			String nameLesson = "Day " + String.valueOf(1);
-			hashMap.put("nameLesson", nameLesson);
-			hashMap.put("keyLesson", String.valueOf(1));
-			LOGGER.info("nameLesson: " + nameLesson);
-			LOGGER.info("keyLesson: " + String.valueOf(1));
+			String nameDay = "Day " + String.valueOf(1);
+			hashMap.put("nameDay", nameDay);
+			hashMap.put("keyDay", String.valueOf(1));
+			LOGGER.info("nameDay: " + nameDay);
+			LOGGER.info("keyDay: " + String.valueOf(1));
 			listJourneyActive.add(hashMap);
 		} else {
 			for (DocumentSnapshot document : journeyDocuments) {
 				journeyDay = document.toObject(JourneyDay.class);
 				HashMap<String, String> hashMap = new HashMap();
-				String nameLesson = "Day " + String.valueOf(journeyDay.getDay());
-				hashMap.put("nameLesson", nameLesson);
-				hashMap.put("keyLesson", String.valueOf(journeyDay.getDay()));
-				LOGGER.info("nameLesson: " + nameLesson);
-				LOGGER.info("keyLesson: " + String.valueOf(journeyDay.getDay()));
+				String nameDay = "Day " + String.valueOf(journeyDay.getDay());
+				hashMap.put("nameDay", nameDay);
+				hashMap.put("keyDay", String.valueOf(journeyDay.getDay()));
+				LOGGER.info("nameDay: " + nameDay);
+				LOGGER.info("keyDay: " + String.valueOf(journeyDay.getDay()));
 				listJourneyActive.add(hashMap);
 			}
 			HashMap<String, String> hashMapNext = new HashMap();
-			String nameLessonNext = "Day " + String.valueOf(journeyDay.getDay() + 1);
-			hashMapNext.put("nameLesson", nameLessonNext);
-			hashMapNext.put("keyLesson", String.valueOf(journeyDay.getDay() + 1));
-			LOGGER.info("nameLesson: " + nameLessonNext);
-			LOGGER.info("keyLesson: " + String.valueOf(journeyDay.getDay() + 1));
+			String nameDayNext = "Day " + String.valueOf(journeyDay.getDay() + 1);
+			hashMapNext.put("nameDay", nameDayNext);
+			hashMapNext.put("keyDay", String.valueOf(journeyDay.getDay() + 1));
+			LOGGER.info("nameDay: " + nameDayNext);
+			LOGGER.info("keyDay: " + String.valueOf(journeyDay.getDay() + 1));
 			listJourneyActive.add(hashMapNext);
 		}
 
 		// get list journey
-		List<HashMap<String, String>> listLessonLock = new ArrayList<>();
+		List<HashMap<String, String>> listDayLock = new ArrayList<>();
 		numDays = numDays + 1;
 		for (Journey journey : dayList) {
 			if (journey.getName().equals("3days")) {
 				if (Integer.parseInt(journey.getDay()) > numDays) {
 					HashMap<String, String> hashMap = new HashMap();
-					hashMap.put("keyLesson", journey.getName());
-					LOGGER.info("keyLesson: " + journey.getName());
-					String nameLesson = "Lesson " + journey.getName();
-					hashMap.put("nameLesson", nameLesson);
-					LOGGER.info("nameLesson: " + nameLesson);
-					listLessonLock.add(hashMap);
+					hashMap.put("keyDay", journey.getDay());
+					LOGGER.info("keyDay: " + journey.getDay());
+					String nameDay = "Day " + journey.getDay();
+					hashMap.put("nameDay", nameDay);
+					LOGGER.info("nameDay: " + nameDay);
+					listDayLock.add(hashMap);
 				}
 			}
 		}
-		model.addAttribute("activeLessons", listJourneyActive);
-		model.addAttribute("lockLessons", listLessonLock);
-		return "altp/event-days";
+		model.addAttribute("activeDays", listJourneyActive);
+		model.addAttribute("lockDays", listDayLock);
+		return "journeys/3days";
+	}
+
+	@RequestMapping(value = "openLockDay", method = RequestMethod.POST)
+	public void checkOldDay(Model model, @RequestParam String url,
+			@CookieValue(value = "idToken", required = true) String idToken, @RequestParam String journey,
+			@RequestParam String numDay, HttpServletResponse response) throws FirebaseAuthException, JsonParseException,
+			JsonMappingException, IOException, InterruptedException, ExecutionException {
+		FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
+		String uid = decodedToken.getUid();
+		Firestore db = FirestoreOptions.getDefaultInstance().getService();
+		Document doc = Jsoup.connect(url).get();
+		String object = doc.select("#m_story_permalink_view .bb").attr("data-ft");
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String, Object> map = mapper.readValue(object, Map.class);
+		String postId = (String) map.get("top_level_post_id");
+		String memberId = (String) map.get("content_owner_id_new");
+		String memberName = doc.select("meta[property=\"og:title\"]").attr("content");
+		String _journeyDay = doc.select(".bo p").text();
+		Pattern p = Pattern.compile("(\\d+)(/|\\.)(\\d+)");
+		Matcher m = p.matcher(_journeyDay.toLowerCase());
+		String journeyDay = null;
+		String journeyName = null;
+		String day = null;
+		if (m.find()) {
+			String spliter[] = m.group().split("/|\\.");
+			int current = Integer.parseInt(spliter[0]);
+			int total = Integer.parseInt(spliter[1]);
+
+			journeyDay = current + "/" + total;
+			int lenght = journeyDay.length();
+			day = journeyDay.substring(0, journeyDay.indexOf("/"));
+			journeyName = journeyDay.substring((journeyDay.indexOf("/") + 1), lenght);
+		}
+		LOGGER.info("journey param: " + journey);
+		LOGGER.info("numDay param: " + numDay);
+		LOGGER.info("day in post: " + day);
+		LOGGER.info("journey in post: " + journeyName);
+		if (journeyName == null || day == null) {
+			LOGGER.info("journeyName null || day null.");
+			response.setStatus(404);
+			return;
+		}
+		if (journeyName == null && day == null) {
+			LOGGER.info("journeyName null && day null.");
+			response.setStatus(404);
+			return;
+		}
+		if (!journeyName.equals(journey)) {
+			LOGGER.info("journey in post # journey uri");
+			response.setStatus(404);
+			return;
+		}
+		if (!day.equals(numDay)) {
+			LOGGER.info("day in post # day uri");
+			response.setStatus(404);
+			return;
+		}
+		// get account by uid
+		ApiFuture<QuerySnapshot> futureAcc = db.collection("Account").whereEqualTo("uid", uid).get();
+		List<QueryDocumentSnapshot> accDocuments = futureAcc.get().getDocuments();
+		String facebookId = null;
+		for (DocumentSnapshot document : accDocuments) {
+			facebookId = document.getId();
+		}
+		if (facebookId == null) {
+			LOGGER.info("facebookId null");
+			return;
+		}
+		// check name account
+		String docAccount = facebookId;
+		DocumentReference docRefAccount = db.collection("Account").document(docAccount);
+		ApiFuture<DocumentSnapshot> futureAccount = docRefAccount.get();
+		DocumentSnapshot document = futureAccount.get();
+		Account account = document.toObject(Account.class);
+		if (!account.getDisplayName().equals(memberName)) {
+			LOGGER.info("An cap bai viet cua nguoi khac.");
+			response.setStatus(405);
+			return;
+		} else {
+			if (journeyName.equals(journey) && day.equals(numDay)) {
+				String docJourneyDay = journey + "days" + numDay + facebookId;
+				LOGGER.info("docJourneyDay: " + docJourneyDay);
+				DocumentReference docRefJourney = db.collection("JourneyDay").document(docJourneyDay);
+				// check document Journey day moment
+				ApiFuture<DocumentSnapshot> futureJourneyDay = docRefJourney.get();
+				DocumentSnapshot documentJourneyDay = futureJourneyDay.get();
+				if (!documentJourneyDay.exists()) {
+					Map<String, Object> data = new HashMap<>();
+					data.put("day", Integer.parseInt(numDay));
+					data.put("journey", journey+"days");
+					data.put("memberId", facebookId);
+					data.put("memberName", "");
+					data.put("postId", "");
+					data.put("status", 0);
+					data.put("url", "");
+					data.put("uid", uid);
+					data.put("accountId", facebookId);
+					data.put("createdAt", System.currentTimeMillis() / 1000);
+					data.put("updatedAt", System.currentTimeMillis() / 1000);
+					ApiFuture<WriteResult> addedDocRef = db.collection("JourneyDay").document(docJourneyDay).set(data);
+				}
+
+				// check url journey day old
+				ApiFuture<QuerySnapshot> futureJourney = db.collection("JourneyDay")
+						.whereEqualTo("accountId", facebookId).whereEqualTo("url", url).get();
+				List<QueryDocumentSnapshot> journeyDocuments = futureJourney.get().getDocuments();
+				if (!journeyDocuments.isEmpty()) {
+					LOGGER.info("url journey day exits, break.");
+					response.setStatus(400);
+					return;
+				}
+				// end check
+				Map<String, Object> updates = new HashMap<>();
+				updates.put("memberId", memberId);
+				updates.put("memberName", memberName);
+				updates.put("postId", postId);
+				updates.put("status", 1);
+				updates.put("url", url);
+				updates.put("updatedAt", System.currentTimeMillis() / 1000);
+				ApiFuture<WriteResult> futureJD = docRefJourney.update(updates);
+				// update Account
+				if (document.exists()) {
+					// Update an existing document
+					LOGGER.info("update memberId in account");
+					ApiFuture<WriteResult> future = docRefAccount.update("memberId", memberId);
+				} else {
+					System.out.println("No such document account!");
+				}
+				
+				if (journeyName.equals("3") && numDay.equals("3")) {
+					LOGGER.info("3days3");
+					response.setStatus(200);
+					return;
+				}
+				if (journeyName.equals("5") && numDay.equals("5")) {
+					LOGGER.info("5days5");
+					response.setStatus(200);
+					return;
+				}
+				if (journeyName.equals("7") && numDay.equals("7")) {
+					LOGGER.info("7days7");
+					response.setStatus(200);
+					return;
+				}
+				if (journeyName.equals("10") && numDay.equals("10")) {
+					LOGGER.info("10days10");
+					response.setStatus(200);
+					return;
+				}
+				if (journeyName.equals("21") && numDay.equals("21")) {
+					LOGGER.info("21days21");
+					response.setStatus(200);
+					return;
+				}
+				if (journeyName.equals("45") && numDay.equals("45")) {
+					LOGGER.info("45days45");
+					response.setStatus(200);
+					return;
+				}
+				if (journeyName.equals("90") && numDay.equals("90")) {
+					LOGGER.info("90days90");
+					response.setStatus(200);
+					return;
+				}
+				if ((journeyName.equals("3") && (Integer.parseInt(numDay) < 3))
+						|| (journeyName.equals("5") && (Integer.parseInt(numDay) < 5))
+						|| (journeyName.equals("7") && (Integer.parseInt(numDay) < 7))
+						|| (journeyName.equals("10") && (Integer.parseInt(numDay) < 10))
+						|| (journeyName.equals("21") && (Integer.parseInt(numDay) < 21))
+						|| (journeyName.equals("45") && (Integer.parseInt(numDay) < 45))
+						|| (journeyName.equals("90") && (Integer.parseInt(numDay) < 90))) {
+					LOGGER.info(journeyName + "days/" + numDay);
+					int dayNumber = Integer.parseInt(numDay) + 1;
+					day = String.valueOf(dayNumber);
+					response.setStatus(200);
+					return;
+				}
+			} else {
+				response.setStatus(404);
+				return;
+			}
+		}
 	}
 }
