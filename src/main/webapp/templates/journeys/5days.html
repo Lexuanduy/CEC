@@ -127,73 +127,77 @@
 																		});
 																	}
 																});
-												return;
+											} else {
+												var url = prompt("Nhập đường dẫn ngày hành trình mới nhất cuả ngày hành trình 5days day "
+														+ (num - 1));
+												var strUrlCut = url
+														.slice(
+																8,
+																(url
+																		.indexOf("facebook") - 1));
+												var strUrlLast = url
+														.slice((url
+																.indexOf("facebook") - 1));
+												var strHTTP = "https://m";
+												var URL = strHTTP + strUrlLast;
+												num = num - 1;
+												$
+														.post(
+																"/openLockDay?url="
+																		+ URL
+																		+ "&journey=5"
+																		+ "&numDay="
+																		+ num,
+																function(data) {
+																	console
+																			.log(data);
+																	alert("Video ngày hành trình của bạn đã được submit thành công!");
+																	/* window.location.href = "/events/altp"; */
+																})
+														.fail(
+																function(xhr,
+																		status,
+																		error) {
+																	if (xhr.status == 404) {
+																		Swal({
+																			position : 'center',
+																			type : 'error',
+																			title : 'Link video không đúng .Vui lòng nhập lại link video bài học của bạn!',
+																			showConfirmButton : false,
+																			timer : 2000,
+																		});
+																	}
+																	if (xhr.status == 400) {
+																		Swal({
+																			position : 'center',
+																			type : 'error',
+																			title : 'Link video đã tồn tại .Vui lòng nhập lại link video bài học của bạn!',
+																			showConfirmButton : false,
+																			timer : 2000,
+																		});
+																	}
+																	if (xhr.status == 403) {
+																		alert("error 403");
+																	}
+																	if (xhr.status == 405) {
+																		Swal({
+																			position : 'center',
+																			type : 'error',
+																			title : 'Đây không phải video của bạn .Vui lòng nhập lại link video bài học của bạn!',
+																			showConfirmButton : false,
+																			timer : 3000,
+																		});
+																	}
+																	if (xhr.status == 401) {
+																		Swal({
+																			position : 'center',
+																			title : 'Phiên bản đã hết hạn, vui lòng đăng nhập lại!',
+																			showConfirmButton : false,
+																			timer : 3000,
+																		});
+																	}
+																});
 											}
-											var url = prompt("Nhập đường dẫn ngày hành trình mới nhất cuả ngày hành trình 5days day "
-													+ (num - 1));
-											var strUrlCut = url.slice(8, (url
-													.indexOf("facebook") - 1));
-											var strUrlLast = url.slice((url
-													.indexOf("facebook") - 1));
-											var strHTTP = "https://m";
-											var URL = strHTTP + strUrlLast;
-											num = num - 1;
-											$
-													.post(
-															"/openLockDay?url="
-																	+ URL
-																	+ "&journey=5"
-																	+ "&numDay="
-																	+ num,
-															function(data) {
-																console
-																		.log(data);
-																alert("Video ngày hành trình của bạn đã được submit thành công!");
-																/* window.location.href = "/events/altp"; */
-															})
-													.fail(
-															function(xhr,
-																	status,
-																	error) {
-																if (xhr.status == 404) {
-																	Swal({
-																		position : 'center',
-																		type : 'error',
-																		title : 'Link video không đúng .Vui lòng nhập lại link video bài học của bạn!',
-																		showConfirmButton : false,
-																		timer : 2000,
-																	});
-																}
-																if (xhr.status == 400) {
-																	Swal({
-																		position : 'center',
-																		type : 'error',
-																		title : 'Link video đã tồn tại .Vui lòng nhập lại link video bài học của bạn!',
-																		showConfirmButton : false,
-																		timer : 2000,
-																	});
-																}
-																if (xhr.status == 403) {
-																	alert("error 403");
-																}
-																if (xhr.status == 405) {
-																	Swal({
-																		position : 'center',
-																		type : 'error',
-																		title : 'Đây không phải video của bạn .Vui lòng nhập lại link video bài học của bạn!',
-																		showConfirmButton : false,
-																		timer : 3000,
-																	});
-																}
-																if (xhr.status == 401) {
-																	Swal({
-																		position : 'center',
-																		title : 'Phiên bản đã hết hạn, vui lòng đăng nhập lại!',
-																		showConfirmButton : false,
-																		timer : 3000,
-																	});
-																}
-															});
 										}
 									</script>
 									<a href="#"> <strong th:text="${dayLock.nameDay}"></strong>

@@ -91,15 +91,15 @@ $('#sign-out').on('click',()=>{
 	$('#logout').on('click',()=>{
 		 firebase.auth().signOut().then(function () {
 			 // delete cookie when logout
-//			 console.log("log out");
-//			 document.cookie = 'idToken' + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-//			 console.log("log out idToken");
-//			 document.cookie = 'facebookId' + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-//			 document.cookie = 'uid' + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-//			 document.cookie = 'photoURL' + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-//			 document.cookie = 'displayName' + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-//			 document.cookie = 'numLesson' + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-//		 console.log("Logout thành công");
+// console.log("log out");
+// document.cookie = 'idToken' + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+// console.log("log out idToken");
+// document.cookie = 'facebookId' + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+// document.cookie = 'uid' + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+// document.cookie = 'photoURL' + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+// document.cookie = 'displayName' + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+// document.cookie = 'numLesson' + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+// console.log("Logout thành công");
 			 var cookies = document.cookie.split(";");
 
 			    for (var i = 0; i < cookies.length; i++) {
@@ -176,13 +176,33 @@ $('#nextLesson')
 				        									});
 				        									return;
 				        								}
-				        								var strUrlCut = urlVideo.slice(8, (urlVideo
-				        										.indexOf("facebook") - 1));
-				        								var strUrlLast = urlVideo.slice((urlVideo
-				        										.indexOf("facebook") - 1));
-				        								var strHTTP = "https://m";
-				        								var URL = strHTTP + strUrlLast;
-				        								console.log("URL: " + URL);
+				        								
+				        								console.log("urlVideo: " + urlVideo);
+				        								var indexGroup = 0;
+				        								indexGroup = urlVideo.indexOf("s/");
+				        								console.log("indexGroup: " + indexGroup);
+				        								var checkGroup = urlVideo.slice(indexGroup + 2, 35);
+				        								console.log("checkGroup: " + checkGroup);
+				        								var postId;
+				        								var URL;
+				        								if(checkGroup != "cec"){
+				        									console.log("!= cec");
+				        									var indexId = 0;
+				        									indexId = urlVideo.lastIndexOf("=");
+				        									postId = urlVideo.slice(indexId + 1);
+				        									URL = "https://m.facebook.com/groups/cec.edu.vn/permalink/"+postId;
+				        									console.log("URLif: " + URL);
+				        								}else{
+				        									console.log("=cec");
+				        									var strUrlCut = urlVideo.slice(8, (urlVideo
+					        										.indexOf("facebook") - 1));
+					        								var strUrlLast = urlVideo.slice((urlVideo
+					        										.indexOf("facebook") - 1));
+					        								var strHTTP = "https://m";
+					        								URL = strHTTP + strUrlLast;
+					        								console.log("URLelse: " + URL);
+					        								}
+				        								
 				        								$.ajax({
 				        											url : "/checkVideo?url=" + URL + "&numLesson="
 				        													+ numLesson,

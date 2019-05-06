@@ -1125,11 +1125,18 @@ public class JourneyController {
 		String uid = decodedToken.getUid();
 		Firestore db = FirestoreOptions.getDefaultInstance().getService();
 		Document doc = Jsoup.connect(url).get();
-		String object = doc.select("#m_story_permalink_view .bb").attr("data-ft");
-		ObjectMapper mapper = new ObjectMapper();
-		Map<String, Object> map = mapper.readValue(object, Map.class);
-		String postId = (String) map.get("top_level_post_id");
-		String memberId = (String) map.get("content_owner_id_new");
+		int begin = doc.html().indexOf("content_owner_id_new&quot;:&quot;")+"content_owner_id_new&quot;:&quot;".length();
+		int end =   doc.html().indexOf("&quot;",begin);
+		int last = url.lastIndexOf("=");
+		String postId = url.substring(last + 1);
+		String memberId = doc.html().substring(begin, end);
+		System.out.println(postId);
+		System.out.println(memberId);
+//		String object = doc.select("#m_story_permalink_view .bb").attr("data-ft");
+//		ObjectMapper mapper = new ObjectMapper();
+//		Map<String, Object> map = mapper.readValue(object, Map.class);
+//		String postId = (String) map.get("top_level_post_id");
+//		String memberId = (String) map.get("content_owner_id_new");
 		String memberName = doc.select("meta[property=\"og:title\"]").attr("content");
 		String _journeyDay = doc.select(".bo p").text();
 		Pattern p = Pattern.compile("(\\d+)(/|\\.)(\\d+)");
@@ -1356,13 +1363,15 @@ public class JourneyController {
 				LOGGER.info("keyDay: " + String.valueOf(journeyDay.getDay()));
 				listJourneyActive.add(hashMap);
 			}
-			HashMap<String, String> hashMapNext = new HashMap();
-			String nameDayNext = "Day " + String.valueOf(journeyDay.getDay() + 1);
-			hashMapNext.put("nameDay", nameDayNext);
-			hashMapNext.put("keyDay", String.valueOf(journeyDay.getDay() + 1));
-			LOGGER.info("nameDay: " + nameDayNext);
-			LOGGER.info("keyDay: " + String.valueOf(journeyDay.getDay() + 1));
-			listJourneyActive.add(hashMapNext);
+			if (journeyDay.getDay() <= 2) {
+				HashMap<String, String> hashMapNext = new HashMap();
+				String nameDayNext = "Day " + String.valueOf(journeyDay.getDay() + 1);
+				hashMapNext.put("nameDay", nameDayNext);
+				hashMapNext.put("keyDay", String.valueOf(journeyDay.getDay() + 1));
+				LOGGER.info("nameDay: " + nameDayNext);
+				LOGGER.info("keyDay: " + String.valueOf(journeyDay.getDay() + 1));
+				listJourneyActive.add(hashMapNext);
+			}
 		}
 
 		// get list journey
@@ -1387,7 +1396,8 @@ public class JourneyController {
 	}
 
 	@RequestMapping(value = "/journey/5days", method = RequestMethod.GET)
-	public String evt5days(Model model, HttpServletRequest request) throws InterruptedException, ExecutionException, FirebaseAuthException {
+	public String evt5days(Model model, HttpServletRequest request)
+			throws InterruptedException, ExecutionException, FirebaseAuthException {
 		Cookie[] cookies = request.getCookies();
 		String idToken = null;
 		if (cookies != null) {
@@ -1421,33 +1431,48 @@ public class JourneyController {
 		LOGGER.info("numDays: " + numDays);
 		List<HashMap<String, String>> listJourneyActive = new ArrayList<>();
 		JourneyDay journeyDay = new JourneyDay();
-//		if (journeyDocuments.isEmpty()) {
-//			HashMap<String, String> hashMap = new HashMap();
-//			String nameDay = "Day " + String.valueOf(1);
-//			hashMap.put("nameDay", nameDay);
-//			hashMap.put("keyDay", String.valueOf(1));
-//			LOGGER.info("nameDay: " + nameDay);
-//			LOGGER.info("keyDay: " + String.valueOf(1));
-//			listJourneyActive.add(hashMap);
-//		} else {
+		if (journeyDocuments.isEmpty()) {
+			// det 3days day3 check status
+			String docId3days3 = "3days3" + accountId;
+			LOGGER.info("docId3days3: " + docId3days3);
+			DocumentReference docRef = db.collection("JourneyDay").document(docId3days3);
+			ApiFuture<DocumentSnapshot> future3days2 = docRef.get();
+			DocumentSnapshot document = future3days2.get();
+			if (document.exists()) {
+				LOGGER.info("check status 3days day 3");
+				journeyDay = document.toObject(JourneyDay.class);
+				if (journeyDay.getStatus() == 1) {
+					HashMap<String, String> hashMap = new HashMap();
+					numDays = 1;
+					String nameDay = "Day " + String.valueOf(1);
+					hashMap.put("nameDay", nameDay);
+					hashMap.put("keyDay", String.valueOf(1));
+					LOGGER.info("nameDay: " + nameDay);
+					LOGGER.info("keyDay: " + String.valueOf(1));
+					listJourneyActive.add(hashMap);
+				}
+			} else {
+				LOGGER.info("doc 3days day 3 not exist.");
+			}
+		} else {
 			for (DocumentSnapshot document : journeyDocuments) {
 				journeyDay = document.toObject(JourneyDay.class);
 				HashMap<String, String> hashMap = new HashMap();
 				String nameDay = "Day " + String.valueOf(journeyDay.getDay());
 				hashMap.put("nameDay", nameDay);
 				hashMap.put("keyDay", String.valueOf(journeyDay.getDay()));
-				LOGGER.info("nameDay: " + nameDay);
+				LOGGER.info("nameDay: " + nameDay); 
 				LOGGER.info("keyDay: " + String.valueOf(journeyDay.getDay()));
 				listJourneyActive.add(hashMap);
 			}
-			HashMap<String, String> hashMapNext = new HashMap();
-			String nameDayNext = "Day " + String.valueOf(journeyDay.getDay() + 1);
-			hashMapNext.put("nameDay", nameDayNext);
-			hashMapNext.put("keyDay", String.valueOf(journeyDay.getDay() + 1));
-			LOGGER.info("nameDay: " + nameDayNext);
-			LOGGER.info("keyDay: " + String.valueOf(journeyDay.getDay() + 1));
-			listJourneyActive.add(hashMapNext);
-//		}
+//			HashMap<String, String> hashMapNext = new HashMap();
+//			String nameDayNext = "Day " + String.valueOf(journeyDay.getDay() + 1);
+//			hashMapNext.put("nameDay", nameDayNext);
+//			hashMapNext.put("keyDay", String.valueOf(journeyDay.getDay() + 1));
+//			LOGGER.info("nameDay: " + nameDayNext);
+//			LOGGER.info("keyDay: " + String.valueOf(journeyDay.getDay() + 1));
+//			listJourneyActive.add(hashMapNext);
+		}
 
 		// get list journey
 		List<HashMap<String, String>> listDayLock = new ArrayList<>();

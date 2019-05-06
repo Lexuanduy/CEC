@@ -36,6 +36,7 @@ import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseToken;
 
 import ch.qos.logback.classic.Logger;
+import fcs.cec.opencec.entity.Account;
 import fcs.cec.opencec.entity.Journey;
 import fcs.cec.opencec.entity.JourneyDay;
 import fcs.cec.opencec.entity.Lesson;
@@ -237,7 +238,6 @@ public class Main {
 //				journey = new Journey(journeyName, day, pdf, video);
 ////				dayList.add(journey);
 //		}
-		Firestore db = FirestoreOptions.getDefaultInstance().getService();
 
 		// asynchronously retrieve multiple documents
 //		ApiFuture<QuerySnapshot> future = db.collection("JourneyDay").get();
@@ -270,8 +270,55 @@ public class Main {
 //				DocumentReference docRef = db.collection("JourneyDay").document(docId);
 //				ApiFuture<WriteResult> futureUpdate = docRef.update("journey", "10days");
 //			}
-		}
 		
+		
+		
+//		String url = "https://m.facebook.com/groups/1784461175160264?view=permalink&id=2287611658178544";
+		String url = "https://m.facebook.com/groups/cec.edu.vn/permalink/2287611658178544/";
+		Document doc = Jsoup.connect(url).get();
+//		System.out.println(doc.html());
+		String lessonHashtag = doc.select(".bo .bt").text();
+//		System.out.println(lessonHashtag);
+		int lessonCheckNow = 0;
+		// check lesson by DK
+		if (lessonHashtag.toLowerCase().contains("les")) {
+			Pattern p = Pattern.compile("(\\d+)");
+			Matcher m = p.matcher(lessonHashtag.toLowerCase());
+			if (m.find()) {
+				lessonCheckNow = Integer.parseInt(m.group());
+			}
+		}
+		System.out.println("Find lesson number: " + lessonCheckNow);
+		
+		int begin = doc.html().indexOf("content_owner_id_new&quot;:&quot;")
+				+ "content_owner_id_new&quot;:&quot;".length();
+		int end = doc.html().indexOf("&quot;", begin);
+		String memberId = doc.html().substring(begin, end);
+		System.out.println("memberId: " + memberId);
+		String memberName = doc.select("meta[property=\"og:title\"]").attr("content");
+		String urlContent = doc.select("meta[property=\"og:url\"]").attr("content");
+		int last = urlContent.lastIndexOf("=");
+		String postId = urlContent.substring(last + 1);
+		System.out.println("memberName: " + memberName);
+		System.out.println("postId: " + postId);
+//		Find lesson number: 3
+//		memberId: 100015301780946
+//		memberName: Duy Lê
+//		postId: 2287572944849082
+
+//		System.out.println(doc.html());
+//		Document doc = Jsoup.connect(url).get();
+//		LOGGER.info("Find lesson number: " + lessonCheckNow);
+//		int begin = doc.html().indexOf("content_owner_id_new&quot;:&quot;")+"content_owner_id_new&quot;:&quot;".length();
+//		int end =   doc.html().indexOf("&quot;",begin);
+//		int last = url.lastIndexOf("=");
+//		String postId = url.substring(last + 1);
+//		String memberId = doc.html().substring(begin, end);
+//		String memberName = doc.select("meta[property=\"og:title\"]").attr("content");
+//		LOGGER.info(postId);
+//		LOGGER.info(memberId);
+//		LOGGER.info(memberName);
+
 //		//asynchronously retrieve multiple documents
 //		ApiFuture<QuerySnapshot> future =
 //		    db.collection("JourneyDay").whereEqualTo("accountId", "808824516143312").get();
@@ -281,4 +328,5 @@ public class Main {
 //		  System.out.println(document.get("memberName"));
 //		  
 //		}
+	}
 }
