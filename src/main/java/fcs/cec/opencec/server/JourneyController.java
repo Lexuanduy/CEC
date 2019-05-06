@@ -1415,21 +1415,21 @@ public class JourneyController {
 		LOGGER.info("account Id: " + accountId);
 		// get list day learned
 		ApiFuture<QuerySnapshot> futureJourneyDay = db.collection("JourneyDay").whereEqualTo("accountId", accountId)
-				.whereEqualTo("journey", "3days").whereEqualTo("status", 1).get();
+				.whereEqualTo("journey", "5days").whereEqualTo("status", 1).get();
 		List<QueryDocumentSnapshot> journeyDocuments = futureJourneyDay.get().getDocuments();
 		int numDays = journeyDocuments.size();
 		LOGGER.info("numDays: " + numDays);
 		List<HashMap<String, String>> listJourneyActive = new ArrayList<>();
 		JourneyDay journeyDay = new JourneyDay();
-		if (journeyDocuments.isEmpty()) {
-			HashMap<String, String> hashMap = new HashMap();
-			String nameDay = "Day " + String.valueOf(1);
-			hashMap.put("nameDay", nameDay);
-			hashMap.put("keyDay", String.valueOf(1));
-			LOGGER.info("nameDay: " + nameDay);
-			LOGGER.info("keyDay: " + String.valueOf(1));
-			listJourneyActive.add(hashMap);
-		} else {
+//		if (journeyDocuments.isEmpty()) {
+//			HashMap<String, String> hashMap = new HashMap();
+//			String nameDay = "Day " + String.valueOf(1);
+//			hashMap.put("nameDay", nameDay);
+//			hashMap.put("keyDay", String.valueOf(1));
+//			LOGGER.info("nameDay: " + nameDay);
+//			LOGGER.info("keyDay: " + String.valueOf(1));
+//			listJourneyActive.add(hashMap);
+//		} else {
 			for (DocumentSnapshot document : journeyDocuments) {
 				journeyDay = document.toObject(JourneyDay.class);
 				HashMap<String, String> hashMap = new HashMap();
@@ -1447,11 +1447,11 @@ public class JourneyController {
 			LOGGER.info("nameDay: " + nameDayNext);
 			LOGGER.info("keyDay: " + String.valueOf(journeyDay.getDay() + 1));
 			listJourneyActive.add(hashMapNext);
-		}
+//		}
 
 		// get list journey
 		List<HashMap<String, String>> listDayLock = new ArrayList<>();
-		numDays = numDays + 1;
+//		numDays = numDays + 1;
 		for (Journey journey : dayList) {
 			if (journey.getName().equals("5days")) {
 				if (Integer.parseInt(journey.getDay()) > numDays) {
