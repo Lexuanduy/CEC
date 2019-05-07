@@ -57,6 +57,17 @@
 
 									<script type="text/javascript">
 										function openNewDay(num) {
+											var idToken = getCookie('idToken');
+											console.log("idToken: " + idToken);
+											if (idToken === undefined) {
+												Swal({
+													position : 'center',
+													title : 'Vui lòng đăng nhập trước khi mở ngày hành trình mới!',
+													showConfirmButton : false,
+													timer : 2000,
+												});
+												return;
+											}
 											var urlVideo = prompt("Nhập đường dẫn ngày hành trình mới nhất cuả ngày hành trình 3days day "
 													+ (num-1));
 											

@@ -19,7 +19,6 @@ firebase.auth().onAuthStateChanged(function (user) {
     if (user) {
         $('#sign-out')[0].hidden = false;
         document.getElementById("photoURL").src = getCookie('photoURL');
-		
     } else {
         $('#sign-in')[0].hidden = false;
         $('#sign-in').on('click', () => {
@@ -67,7 +66,7 @@ firebase.auth().onAuthStateChanged(function (user) {
                 	'idToken=' + accessToken + 
                 	'; expires=' + now.toUTCString() + 
                 	'; path=/';
-                
+                window.location.href = window.location.pathname;
 // $('#displayName').html() = user.displayName;
             }).catch(function (error) {
                 var errorCode = error.code;

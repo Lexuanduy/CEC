@@ -1317,30 +1317,11 @@ public class JourneyController {
 				}
 			}
 		}
-		if (idToken == null) {
-			LOGGER.info("check idToken null.");
-			return "check-idToken/check-token-events";
-		}
-		FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
-		String uid = decodedToken.getUid();
-		Firestore db = FirestoreOptions.getDefaultInstance().getService();
-		// get account id
-		ApiFuture<QuerySnapshot> future = db.collection("Account").whereEqualTo("uid", uid).get();
-		List<QueryDocumentSnapshot> documents = future.get().getDocuments();
-		String accountId = null;
-		for (DocumentSnapshot document : documents) {
-			accountId = document.getId();
-		}
-		LOGGER.info("account Id: " + accountId);
-		// get list day learned
-		ApiFuture<QuerySnapshot> futureJourneyDay = db.collection("JourneyDay").whereEqualTo("accountId", accountId)
-				.whereEqualTo("journey", "3days").whereEqualTo("status", 1).get();
-		List<QueryDocumentSnapshot> journeyDocuments = futureJourneyDay.get().getDocuments();
-		int numDays = journeyDocuments.size();
-		LOGGER.info("numDays: " + numDays);
 		List<HashMap<String, String>> listJourneyActive = new ArrayList<>();
-		JourneyDay journeyDay = new JourneyDay();
-		if (journeyDocuments.isEmpty()) {
+		List<HashMap<String, String>> listDayLock = new ArrayList<>();
+		if (idToken == null) {
+//			LOGGER.info("check idToken null.");
+//			return "check-idToken/check-token-events";
 			HashMap<String, String> hashMap = new HashMap();
 			String nameDay = "Day " + String.valueOf(1);
 			hashMap.put("nameDay", nameDay);
@@ -1348,44 +1329,89 @@ public class JourneyController {
 			LOGGER.info("nameDay: " + nameDay);
 			LOGGER.info("keyDay: " + String.valueOf(1));
 			listJourneyActive.add(hashMap);
-		} else {
-			for (DocumentSnapshot document : journeyDocuments) {
-				journeyDay = document.toObject(JourneyDay.class);
-				HashMap<String, String> hashMap = new HashMap();
-				String nameDay = "Day " + String.valueOf(journeyDay.getDay());
-				hashMap.put("nameDay", nameDay);
-				hashMap.put("keyDay", String.valueOf(journeyDay.getDay()));
-				LOGGER.info("nameDay: " + nameDay);
-				LOGGER.info("keyDay: " + String.valueOf(journeyDay.getDay()));
-				listJourneyActive.add(hashMap);
-			}
-			if (journeyDay.getDay() <= 2) {
-				HashMap<String, String> hashMapNext = new HashMap();
-				String nameDayNext = "Day " + String.valueOf(journeyDay.getDay() + 1);
-				hashMapNext.put("nameDay", nameDayNext);
-				hashMapNext.put("keyDay", String.valueOf(journeyDay.getDay() + 1));
-				LOGGER.info("nameDay: " + nameDayNext);
-				LOGGER.info("keyDay: " + String.valueOf(journeyDay.getDay() + 1));
-				listJourneyActive.add(hashMapNext);
-			}
-		}
-
-		// get list journey
-		List<HashMap<String, String>> listDayLock = new ArrayList<>();
-		numDays = numDays + 1;
-		for (Journey journey : dayList) {
-			if (journey.getName().equals("3days")) {
-				if (Integer.parseInt(journey.getDay()) > numDays) {
-					HashMap<String, String> hashMap = new HashMap();
-					hashMap.put("keyDay", journey.getDay());
-					LOGGER.info("keyDay: " + journey.getDay());
-					String nameDay = "Day " + journey.getDay();
-					hashMap.put("nameDay", nameDay);
-					LOGGER.info("nameDay: " + nameDay);
-					listDayLock.add(hashMap);
+			
+			for (Journey journey : dayList) {
+				if (journey.getName().equals("3days")) {
+					if (Integer.parseInt(journey.getDay()) > 1) {
+						HashMap<String, String> hashMapLock = new HashMap();
+						hashMapLock.put("keyDay", journey.getDay());
+						LOGGER.info("keyDay: " + journey.getDay());
+						String nameDayLock = "Day " + journey.getDay();
+						hashMapLock.put("nameDay", nameDayLock);
+						LOGGER.info("nameDay: " + nameDayLock);
+						listDayLock.add(hashMapLock);
+					}
 				}
 			}
 		}
+		else {
+			FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
+			String uid = decodedToken.getUid();
+			Firestore db = FirestoreOptions.getDefaultInstance().getService();
+			// get account id
+			ApiFuture<QuerySnapshot> future = db.collection("Account").whereEqualTo("uid", uid).get();
+			List<QueryDocumentSnapshot> documents = future.get().getDocuments();
+			String accountId = null;
+			for (DocumentSnapshot document : documents) {
+				accountId = document.getId();
+			}
+			LOGGER.info("account Id: " + accountId);
+			// get list day learned
+			ApiFuture<QuerySnapshot> futureJourneyDay = db.collection("JourneyDay").whereEqualTo("accountId", accountId)
+					.whereEqualTo("journey", "3days").whereEqualTo("status", 1).get();
+			List<QueryDocumentSnapshot> journeyDocuments = futureJourneyDay.get().getDocuments();
+			int numDays = journeyDocuments.size();
+			LOGGER.info("numDays: " + numDays);
+			
+			JourneyDay journeyDay = new JourneyDay();
+			if (journeyDocuments.isEmpty()) {
+				HashMap<String, String> hashMap = new HashMap();
+				String nameDay = "Day " + String.valueOf(1);
+				hashMap.put("nameDay", nameDay);
+				hashMap.put("keyDay", String.valueOf(1));
+				LOGGER.info("nameDay: " + nameDay);
+				LOGGER.info("keyDay: " + String.valueOf(1));
+				listJourneyActive.add(hashMap);
+			} else {
+				for (DocumentSnapshot document : journeyDocuments) {
+					journeyDay = document.toObject(JourneyDay.class);
+					HashMap<String, String> hashMap = new HashMap();
+					String nameDay = "Day " + String.valueOf(journeyDay.getDay());
+					hashMap.put("nameDay", nameDay);
+					hashMap.put("keyDay", String.valueOf(journeyDay.getDay()));
+					LOGGER.info("nameDay: " + nameDay);
+					LOGGER.info("keyDay: " + String.valueOf(journeyDay.getDay()));
+					listJourneyActive.add(hashMap);
+				}
+				if (journeyDay.getDay() <= 2) {
+					HashMap<String, String> hashMapNext = new HashMap();
+					String nameDayNext = "Day " + String.valueOf(journeyDay.getDay() + 1);
+					hashMapNext.put("nameDay", nameDayNext);
+					hashMapNext.put("keyDay", String.valueOf(journeyDay.getDay() + 1));
+					LOGGER.info("nameDay: " + nameDayNext);
+					LOGGER.info("keyDay: " + String.valueOf(journeyDay.getDay() + 1));
+					listJourneyActive.add(hashMapNext);
+				}
+			}
+
+			// get list journey
+			numDays = numDays + 1;
+			for (Journey journey : dayList) {
+				if (journey.getName().equals("3days")) {
+					if (Integer.parseInt(journey.getDay()) > numDays) {
+						HashMap<String, String> hashMap = new HashMap();
+						hashMap.put("keyDay", journey.getDay());
+						LOGGER.info("keyDay: " + journey.getDay());
+						String nameDay = "Day " + journey.getDay();
+						hashMap.put("nameDay", nameDay);
+						LOGGER.info("nameDay: " + nameDay);
+						listDayLock.add(hashMap);
+					}
+				}
+			}
+		}
+		
+		
 		model.addAttribute("activeDays", listJourneyActive);
 		model.addAttribute("lockDays", listDayLock);
 		return "journeys/3days";
@@ -1404,88 +1430,105 @@ public class JourneyController {
 				}
 			}
 		}
-		if (idToken == null) {
-			LOGGER.info("check idToken null.");
-			return "check-idToken/check-token-events";
-		}
-		FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
-		String uid = decodedToken.getUid();
-		Firestore db = FirestoreOptions.getDefaultInstance().getService();
-		// get account id
-		ApiFuture<QuerySnapshot> future = db.collection("Account").whereEqualTo("uid", uid).get();
-		List<QueryDocumentSnapshot> documents = future.get().getDocuments();
-		String accountId = null;
-		for (DocumentSnapshot document : documents) {
-			accountId = document.getId();
-		}
-		LOGGER.info("account Id: " + accountId);
-		// get list day learned
-		ApiFuture<QuerySnapshot> futureJourneyDay = db.collection("JourneyDay").whereEqualTo("accountId", accountId)
-				.whereEqualTo("journey", "5days").whereEqualTo("status", 1).get();
-		List<QueryDocumentSnapshot> journeyDocuments = futureJourneyDay.get().getDocuments();
-		int numDays = journeyDocuments.size();
-		LOGGER.info("numDays: " + numDays);
 		List<HashMap<String, String>> listJourneyActive = new ArrayList<>();
-		JourneyDay journeyDay = new JourneyDay();
-		if (journeyDocuments.isEmpty()) {
-			// det 3days day3 check status
-			String docId3days3 = "3days3" + accountId;
-			LOGGER.info("docId3days3: " + docId3days3);
-			DocumentReference docRef = db.collection("JourneyDay").document(docId3days3);
-			ApiFuture<DocumentSnapshot> future3days2 = docRef.get();
-			DocumentSnapshot document = future3days2.get();
-			if (document.exists()) {
-				LOGGER.info("check status 3days day 3");
-				journeyDay = document.toObject(JourneyDay.class);
-				if (journeyDay.getStatus() == 1) {
-					HashMap<String, String> hashMap = new HashMap();
-					numDays = 1;
-					String nameDay = "Day " + String.valueOf(1);
-					hashMap.put("nameDay", nameDay);
-					hashMap.put("keyDay", String.valueOf(1));
-					LOGGER.info("nameDay: " + nameDay);
-					LOGGER.info("keyDay: " + String.valueOf(1));
-					listJourneyActive.add(hashMap);
+		List<HashMap<String, String>> listDayLock = new ArrayList<>();
+		if (idToken == null) {
+//			LOGGER.info("check idToken null.");
+//			return "check-idToken/check-token-events";
+			for (Journey journey : dayList) {
+				if (journey.getName().equals("5days")) {
+					if (Integer.parseInt(journey.getDay()) > 0) {
+						HashMap<String, String> hashMap = new HashMap();
+						hashMap.put("keyDay", journey.getDay());
+						LOGGER.info("keyDay: " + journey.getDay());
+						String nameDay = "Day " + journey.getDay();
+						hashMap.put("nameDay", nameDay);
+						LOGGER.info("nameDay: " + nameDay);
+						listDayLock.add(hashMap);
+					}
+				}
+			}
+		}
+		else {
+			FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
+			String uid = decodedToken.getUid();
+			Firestore db = FirestoreOptions.getDefaultInstance().getService();
+			// get account id
+			ApiFuture<QuerySnapshot> future = db.collection("Account").whereEqualTo("uid", uid).get();
+			List<QueryDocumentSnapshot> documents = future.get().getDocuments();
+			String accountId = null;
+			for (DocumentSnapshot document : documents) {
+				accountId = document.getId();
+			}
+			LOGGER.info("account Id: " + accountId);
+			// get list day learned
+			ApiFuture<QuerySnapshot> futureJourneyDay = db.collection("JourneyDay").whereEqualTo("accountId", accountId)
+					.whereEqualTo("journey", "5days").whereEqualTo("status", 1).get();
+			List<QueryDocumentSnapshot> journeyDocuments = futureJourneyDay.get().getDocuments();
+			int numDays = journeyDocuments.size();
+			LOGGER.info("numDays: " + numDays);
+			
+			JourneyDay journeyDay = new JourneyDay();
+			if (journeyDocuments.isEmpty()) {
+				// det 3days day3 check status
+				String docId3days3 = "3days3" + accountId;
+				LOGGER.info("docId3days3: " + docId3days3);
+				DocumentReference docRef = db.collection("JourneyDay").document(docId3days3);
+				ApiFuture<DocumentSnapshot> future3days2 = docRef.get();
+				DocumentSnapshot document = future3days2.get();
+				if (document.exists()) {
+					LOGGER.info("check status 3days day 3");
+					journeyDay = document.toObject(JourneyDay.class);
+					if (journeyDay.getStatus() == 1) {
+						HashMap<String, String> hashMap = new HashMap();
+						numDays = 1;
+						String nameDay = "Day " + String.valueOf(1);
+						hashMap.put("nameDay", nameDay);
+						hashMap.put("keyDay", String.valueOf(1));
+						LOGGER.info("nameDay: " + nameDay);
+						LOGGER.info("keyDay: " + String.valueOf(1));
+						listJourneyActive.add(hashMap);
+					}
+				} else {
+					LOGGER.info("doc 3days day 3 not exist.");
 				}
 			} else {
-				LOGGER.info("doc 3days day 3 not exist.");
-			}
-		} else {
-			for (DocumentSnapshot document : journeyDocuments) {
-				journeyDay = document.toObject(JourneyDay.class);
-				HashMap<String, String> hashMap = new HashMap();
-				String nameDay = "Day " + String.valueOf(journeyDay.getDay());
-				hashMap.put("nameDay", nameDay);
-				hashMap.put("keyDay", String.valueOf(journeyDay.getDay()));
-				LOGGER.info("nameDay: " + nameDay); 
-				LOGGER.info("keyDay: " + String.valueOf(journeyDay.getDay()));
-				listJourneyActive.add(hashMap);
-			}
-			HashMap<String, String> hashMapNext = new HashMap();
-			String nameDayNext = "Day " + String.valueOf(journeyDay.getDay() + 1);
-			hashMapNext.put("nameDay", nameDayNext);
-			hashMapNext.put("keyDay", String.valueOf(journeyDay.getDay() + 1));
-			LOGGER.info("nameDay: " + nameDayNext);
-			LOGGER.info("keyDay: " + String.valueOf(journeyDay.getDay() + 1));
-			listJourneyActive.add(hashMapNext);
-		}
-
-		// get list journey
-		List<HashMap<String, String>> listDayLock = new ArrayList<>();
-		numDays = numDays + 1;
-		for (Journey journey : dayList) {
-			if (journey.getName().equals("5days")) {
-				if (Integer.parseInt(journey.getDay()) > numDays) {
+				for (DocumentSnapshot document : journeyDocuments) {
+					journeyDay = document.toObject(JourneyDay.class);
 					HashMap<String, String> hashMap = new HashMap();
-					hashMap.put("keyDay", journey.getDay());
-					LOGGER.info("keyDay: " + journey.getDay());
-					String nameDay = "Day " + journey.getDay();
+					String nameDay = "Day " + String.valueOf(journeyDay.getDay());
 					hashMap.put("nameDay", nameDay);
-					LOGGER.info("nameDay: " + nameDay);
-					listDayLock.add(hashMap);
+					hashMap.put("keyDay", String.valueOf(journeyDay.getDay()));
+					LOGGER.info("nameDay: " + nameDay); 
+					LOGGER.info("keyDay: " + String.valueOf(journeyDay.getDay()));
+					listJourneyActive.add(hashMap);
+				}
+				HashMap<String, String> hashMapNext = new HashMap();
+				String nameDayNext = "Day " + String.valueOf(journeyDay.getDay() + 1);
+				hashMapNext.put("nameDay", nameDayNext);
+				hashMapNext.put("keyDay", String.valueOf(journeyDay.getDay() + 1));
+				LOGGER.info("nameDay: " + nameDayNext);
+				LOGGER.info("keyDay: " + String.valueOf(journeyDay.getDay() + 1));
+				listJourneyActive.add(hashMapNext);
+			}
+
+			// get list journey
+			numDays = numDays + 1;
+			for (Journey journey : dayList) {
+				if (journey.getName().equals("5days")) {
+					if (Integer.parseInt(journey.getDay()) > numDays) {
+						HashMap<String, String> hashMap = new HashMap();
+						hashMap.put("keyDay", journey.getDay());
+						LOGGER.info("keyDay: " + journey.getDay());
+						String nameDay = "Day " + journey.getDay();
+						hashMap.put("nameDay", nameDay);
+						LOGGER.info("nameDay: " + nameDay);
+						listDayLock.add(hashMap);
+					}
 				}
 			}
 		}
+		
 		model.addAttribute("activeDays", listJourneyActive);
 		model.addAttribute("lockDays", listDayLock);
 		return "journeys/5days";

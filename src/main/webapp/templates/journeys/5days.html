@@ -29,7 +29,7 @@
 											<p th:text="${dayActive.nameDay}"></p>
 										</span>
 									</div>
-									<a th:href="@{'/journey/3days/' + ${dayActive.keyDay}}"> <span
+									<a th:href="@{'/journey/5days/' + ${dayActive.keyDay}}"> <span
 										class="name" th:text="${dayActive.nameDay}"></span>
 									</a>
 								</div>
@@ -58,6 +58,17 @@
 
 									<script type="text/javascript">
 										function openNewDay(num) {
+											var idToken = getCookie('idToken');
+											console.log("idToken: " + idToken);
+											if (idToken === undefined) {
+												Swal({
+													position : 'center',
+													title : 'Vui lòng đăng nhập trước khi mở ngày hành trình mới!',
+													showConfirmButton : false,
+													timer : 2000,
+												});
+												return;
+											}
 											if (num == 1) {
 												var urlVideo = prompt("Nhập đường dẫn ngày hành trình mới nhất cuả ngày hành trình 3days day " + 3);
 												
