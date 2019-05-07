@@ -1461,18 +1461,18 @@ public class JourneyController {
 				LOGGER.info("keyDay: " + String.valueOf(journeyDay.getDay()));
 				listJourneyActive.add(hashMap);
 			}
-//			HashMap<String, String> hashMapNext = new HashMap();
-//			String nameDayNext = "Day " + String.valueOf(journeyDay.getDay() + 1);
-//			hashMapNext.put("nameDay", nameDayNext);
-//			hashMapNext.put("keyDay", String.valueOf(journeyDay.getDay() + 1));
-//			LOGGER.info("nameDay: " + nameDayNext);
-//			LOGGER.info("keyDay: " + String.valueOf(journeyDay.getDay() + 1));
-//			listJourneyActive.add(hashMapNext);
+			HashMap<String, String> hashMapNext = new HashMap();
+			String nameDayNext = "Day " + String.valueOf(journeyDay.getDay() + 1);
+			hashMapNext.put("nameDay", nameDayNext);
+			hashMapNext.put("keyDay", String.valueOf(journeyDay.getDay() + 1));
+			LOGGER.info("nameDay: " + nameDayNext);
+			LOGGER.info("keyDay: " + String.valueOf(journeyDay.getDay() + 1));
+			listJourneyActive.add(hashMapNext);
 		}
 
 		// get list journey
 		List<HashMap<String, String>> listDayLock = new ArrayList<>();
-//		numDays = numDays + 1;
+		numDays = numDays + 1;
 		for (Journey journey : dayList) {
 			if (journey.getName().equals("5days")) {
 				if (Integer.parseInt(journey.getDay()) > numDays) {
