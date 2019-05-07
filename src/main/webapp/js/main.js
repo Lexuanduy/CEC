@@ -363,13 +363,33 @@ $('#nextDay')
 		        									});
 		        									return;
 		        								}
-		        								var strUrlCut = urlVideo.slice(8, (urlVideo
-		        										.indexOf("facebook") - 1));
-		        								var strUrlLast = urlVideo.slice((urlVideo
-		        										.indexOf("facebook") - 1));
-		        								var strHTTP = "https://m";
-		        								var URL = strHTTP + strUrlLast;
-		        								console.log("URL: " + URL);
+		        								
+		        								console.log("urlVideo: " + urlVideo);
+		        								var indexGroup = 0;
+		        								indexGroup = urlVideo.indexOf("s/");
+		        								console.log("indexGroup: " + indexGroup);
+		        								var checkGroup = urlVideo.slice(indexGroup + 2, 35);
+		        								console.log("checkGroup: " + checkGroup);
+		        								var postId;
+		        								var URL;
+		        								if(checkGroup != "cec"){
+		        									console.log("!= cec");
+		        									var indexId = 0;
+		        									indexId = urlVideo.lastIndexOf("=");
+		        									postId = urlVideo.slice(indexId + 1);
+		        									URL = "https://m.facebook.com/groups/cec.edu.vn/permalink/"+postId;
+		        									console.log("URLif: " + URL);
+		        								}else{
+		        									console.log("=cec");
+		        									var strUrlCut = urlVideo.slice(8, (urlVideo
+			        										.indexOf("facebook") - 1));
+			        								var strUrlLast = urlVideo.slice((urlVideo
+			        										.indexOf("facebook") - 1));
+			        								var strHTTP = "https://m";
+			        								URL = strHTTP + strUrlLast;
+			        								console.log("URLelse: " + URL);
+			        								}
+		        								
 		        								$.ajax({
 		        									url : "/checkJourneyDay?url=" + URL + "&journey="
 													+ journeyName + "&numDay=" + numDay,
