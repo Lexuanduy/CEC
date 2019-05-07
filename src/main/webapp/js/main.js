@@ -67,7 +67,6 @@ firebase.auth().onAuthStateChanged(function (user) {
                 	'; expires=' + now.toUTCString() + 
                 	'; path=/';
                 window.location.href = window.location.pathname;
-// $('#displayName').html() = user.displayName;
             }).catch(function (error) {
                 var errorCode = error.code;
                 var errorMessage = error.message;
