@@ -180,6 +180,17 @@
 
 									<script type="text/javascript">
 										function openNewLesson(num) {
+											var idToken = getCookie('idToken');
+											console.log("idToken: " + idToken);
+											if (idToken === undefined) {
+												Swal({
+													position : 'center',
+													title : 'Vui lòng đăng nhập trước khi mở bài học mới!',
+													showConfirmButton : false,
+													timer : 2000,
+												});
+												return;
+											}
 											var urlVideo = prompt("Nhập đường dẫn bài làm mới nhất cuả bài số "
 													+ (num-1));
 											/* var strUrlCut = url.slice(8, (url
@@ -227,7 +238,7 @@
 																console
 																		.log(data);
 																alert("Bài học của bạn đã được submit thành công!");
-																/* window.location.href = "/events/altp"; */
+																window.location.href = "/events/altp";
 															})
 													.fail(
 															function(xhr,

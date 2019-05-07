@@ -337,74 +337,96 @@ public class LessonController {
 				}
 			}
 		}
-
-		if (idToken == null) {
-			LOGGER.info("check idToken null.");
-			return "check-idToken/check-token-events";
-		}
-
-		FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
-		String uid = decodedToken.getUid();
-		Firestore db = FirestoreOptions.getDefaultInstance().getService();
-		// get account id
-		ApiFuture<QuerySnapshot> future = db.collection("Account").whereEqualTo("uid", uid).get();
-		List<QueryDocumentSnapshot> documents = future.get().getDocuments();
-		String accountId = null;
-		for (DocumentSnapshot document : documents) {
-			accountId = document.getId();
-		}
-		LOGGER.info("account Id: " + accountId);
-		// get list lesson learned
-		ApiFuture<QuerySnapshot> futureLesson = db.collection("LessonMember").whereEqualTo("accountId", accountId)
-				.whereEqualTo("status", 1).get();
-		List<QueryDocumentSnapshot> lessonDocuments = futureLesson.get().getDocuments();
-		int numLessons = lessonDocuments.size();
-		LOGGER.info("numLessons: " + numLessons);
-
 		List<HashMap<String, String>> listLessonActive = new ArrayList<>();
-		LessonMember lessonMember = new LessonMember();
-		if (lessonDocuments.isEmpty()) {
-			HashMap<String, String> hashMap = new HashMap();
-			String nameLesson = "Lesson " + String.valueOf(1);
-			hashMap.put("nameLesson", nameLesson);
-			hashMap.put("keyLesson", String.valueOf(1));
-			LOGGER.info("nameLesson: " + nameLesson);
+		List<HashMap<String, String>> listLessonLock = new ArrayList<>();
+		if (idToken == null) {
+//			LOGGER.info("check idToken null.");
+//			return "check-idToken/check-token-events";
+			HashMap<String, String> hashMapActive = new HashMap();
+			String nameLessonActive = "Lesson " + String.valueOf(1);
+			hashMapActive.put("nameLesson", nameLessonActive);
+			hashMapActive.put("keyLesson", String.valueOf(1));
+			LOGGER.info("nameLesson: " + nameLessonActive);
 			LOGGER.info("keyLesson: " + String.valueOf(1));
-			listLessonActive.add(hashMap);
-		} else {
-			for (DocumentSnapshot document : lessonDocuments) {
-				lessonMember = document.toObject(LessonMember.class);
-				HashMap<String, String> hashMap = new HashMap();
-				String nameLesson = "Lesson " + String.valueOf(lessonMember.getLesson());
-				hashMap.put("nameLesson", nameLesson);
-				hashMap.put("keyLesson", String.valueOf(lessonMember.getLesson()));
-				LOGGER.info("nameLesson: " + nameLesson);
-				LOGGER.info("keyLesson: " + String.valueOf(lessonMember.getLesson()));
-				listLessonActive.add(hashMap);
+			listLessonActive.add(hashMapActive);
+			
+			for (Lesson lesson : lessonList) {
+				if (Integer.parseInt(lesson.getName()) > 1) {
+					HashMap<String, String> hashMapLock = new HashMap();
+					hashMapLock.put("keyLesson", lesson.getName());
+					LOGGER.info("keyLesson: " + lesson.getName());
+					String nameLessonLock = "Lesson " + lesson.getName();
+					hashMapLock.put("nameLesson", nameLessonLock);
+					LOGGER.info("nameLesson: " + nameLessonLock);
+					listLessonLock.add(hashMapLock);
+				}
 			}
-			HashMap<String, String> hashMapNext = new HashMap();
-			String nameLessonNext = "Lesson " + String.valueOf(lessonMember.getLesson() + 1);
-			hashMapNext.put("nameLesson", nameLessonNext);
-			hashMapNext.put("keyLesson", String.valueOf(lessonMember.getLesson() + 1));
-			LOGGER.info("nameLesson: " + nameLessonNext);
-			LOGGER.info("keyLesson: " + String.valueOf(lessonMember.getLesson() + 1));
-			listLessonActive.add(hashMapNext);
+		}else {
+			FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
+			String uid = decodedToken.getUid();
+			Firestore db = FirestoreOptions.getDefaultInstance().getService();
+			// get account id
+			ApiFuture<QuerySnapshot> future = db.collection("Account").whereEqualTo("uid", uid).get();
+			List<QueryDocumentSnapshot> documents = future.get().getDocuments();
+			String accountId = null;
+			for (DocumentSnapshot document : documents) {
+				accountId = document.getId();
+			}
+			LOGGER.info("account Id: " + accountId);
+			// get list lesson learned
+			ApiFuture<QuerySnapshot> futureLesson = db.collection("LessonMember").whereEqualTo("accountId", accountId)
+					.whereEqualTo("status", 1).get();
+			List<QueryDocumentSnapshot> lessonDocuments = futureLesson.get().getDocuments();
+			int numLessons = lessonDocuments.size();
+			LOGGER.info("numLessons: " + numLessons);
+
+//			listLessonActive = new ArrayList<>();
+			LessonMember lessonMember = new LessonMember();
+			if (lessonDocuments.isEmpty()) {
+				HashMap<String, String> hashMap = new HashMap();
+				String nameLesson = "Lesson " + String.valueOf(1);
+				hashMap.put("nameLesson", nameLesson);
+				hashMap.put("keyLesson", String.valueOf(1));
+				LOGGER.info("nameLesson: " + nameLesson);
+				LOGGER.info("keyLesson: " + String.valueOf(1));
+				listLessonActive.add(hashMap);
+			} else {
+				for (DocumentSnapshot document : lessonDocuments) {
+					lessonMember = document.toObject(LessonMember.class);
+					HashMap<String, String> hashMap = new HashMap();
+					String nameLesson = "Lesson " + String.valueOf(lessonMember.getLesson());
+					hashMap.put("nameLesson", nameLesson);
+					hashMap.put("keyLesson", String.valueOf(lessonMember.getLesson()));
+					LOGGER.info("nameLesson: " + nameLesson);
+					LOGGER.info("keyLesson: " + String.valueOf(lessonMember.getLesson()));
+					listLessonActive.add(hashMap);
+				}
+				HashMap<String, String> hashMapNext = new HashMap();
+				String nameLessonNext = "Lesson " + String.valueOf(lessonMember.getLesson() + 1);
+				hashMapNext.put("nameLesson", nameLessonNext);
+				hashMapNext.put("keyLesson", String.valueOf(lessonMember.getLesson() + 1));
+				LOGGER.info("nameLesson: " + nameLessonNext);
+				LOGGER.info("keyLesson: " + String.valueOf(lessonMember.getLesson() + 1));
+				listLessonActive.add(hashMapNext);
+			}
+
+			// get list lesson
+//			listLessonLock = new ArrayList<>();
+			numLessons = numLessons + 1;
+			for (Lesson lesson : lessonList) {
+				if (Integer.parseInt(lesson.getName()) > numLessons) {
+					HashMap<String, String> hashMap = new HashMap();
+					hashMap.put("keyLesson", lesson.getName());
+					LOGGER.info("keyLesson: " + lesson.getName());
+					String nameLesson = "Lesson " + lesson.getName();
+					hashMap.put("nameLesson", nameLesson);
+					LOGGER.info("nameLesson: " + nameLesson);
+					listLessonLock.add(hashMap);
+				}
+			}
 		}
 
-		// get list lesson
-		List<HashMap<String, String>> listLessonLock = new ArrayList<>();
-		numLessons = numLessons + 1;
-		for (Lesson lesson : lessonList) {
-			if (Integer.parseInt(lesson.getName()) > numLessons) {
-				HashMap<String, String> hashMap = new HashMap();
-				hashMap.put("keyLesson", lesson.getName());
-				LOGGER.info("keyLesson: " + lesson.getName());
-				String nameLesson = "Lesson " + lesson.getName();
-				hashMap.put("nameLesson", nameLesson);
-				LOGGER.info("nameLesson: " + nameLesson);
-				listLessonLock.add(hashMap);
-			}
-		}
+		
 
 		model.addAttribute("activeLessons", listLessonActive);
 		model.addAttribute("lockLessons", listLessonLock);
