@@ -284,7 +284,7 @@ $('#nextDay')
 					var indexDay = journeyDay.indexOf("/")*1;  
 					var journey = journeyDay.slice(0,indexDay);
 					var journeyName = (journeyDay.slice(0,indexDay)).slice(0,1); 
-					console.log("journey: " + journey);
+					console.log("journey: " + journeyName);
 					indexDay = indexDay + 1;
 					var day = journeyDay.slice(indexDay);
 					console.log("day: " + day);
@@ -389,6 +389,7 @@ $('#nextDay')
 			        								URL = strHTTP + strUrlLast;
 			        								console.log("URLelse: " + URL);
 			        								}
+		        								console.log("journey: " + journeyName);
 		        								
 		        								$.ajax({
 		        									url : "/checkJourneyDay?url=" + URL + "&journey="

@@ -232,7 +232,6 @@ public class LessonController {
 		String uid = decodedToken.getUid();
 		Firestore db = FirestoreOptions.getDefaultInstance().getService();
 		Document doc = Jsoup.connect(url).get();
-		LOGGER.info(doc.html());
 		String lessonHashtag = doc.select(".bo .bt").text();
 		int lessonCheckNow = 0;
 		// check lesson by DK
@@ -244,7 +243,6 @@ public class LessonController {
 			}
 		}
 		LOGGER.info("Find lesson number: " + lessonCheckNow);
-		// new
 		int begin = doc.html().indexOf("content_owner_id_new&quot;:&quot;")
 				+ "content_owner_id_new&quot;:&quot;".length();
 		int end = doc.html().indexOf("&quot;", begin);
@@ -256,14 +254,7 @@ public class LessonController {
 		String postId = urlContent.substring(last + 1);
 		LOGGER.info("postId: " + postId);
 		LOGGER.info("memberName: " + memberName);
-		// end new
-//		String object = doc.select("#m_story_permalink_view .bb").attr("data-ft");
-//		ObjectMapper mapper = new ObjectMapper();
-//		Map<String, Object> map = mapper.readValue(object, Map.class);
-//		String postId = (String) map.get("top_level_post_id");
-//		String memberId = (String) map.get("content_owner_id_new");
-//		String memberName = doc.select("meta[property=\"og:title\"]").attr("content");
-//		LOGGER.info("memberName: " + memberName);
+		
 		// get account by uid
 		ApiFuture<QuerySnapshot> futureAcc = db.collection("Account").whereEqualTo("uid", uid).get();
 		List<QueryDocumentSnapshot> accDocuments = futureAcc.get().getDocuments();
@@ -441,13 +432,17 @@ public class LessonController {
 			}
 		}
 		LOGGER.info("Find lesson number: " + lessonCheckNow);
-		//
-		String object = doc.select("#m_story_permalink_view .bb").attr("data-ft");
-		ObjectMapper mapper = new ObjectMapper();
-		Map<String, Object> map = mapper.readValue(object, Map.class);
-		String postId = (String) map.get("top_level_post_id");
-		String memberId = (String) map.get("content_owner_id_new");
+		int begin = doc.html().indexOf("content_owner_id_new&quot;:&quot;")
+				+ "content_owner_id_new&quot;:&quot;".length();
+		int end = doc.html().indexOf("&quot;", begin);
+		String memberId = doc.html().substring(begin, end);
+		LOGGER.info("memberId: " + memberId);
 		String memberName = doc.select("meta[property=\"og:title\"]").attr("content");
+		String urlContent = doc.select("meta[property=\"og:url\"]").attr("content");
+		int last = urlContent.lastIndexOf("=");
+		String postId = urlContent.substring(last + 1);
+		LOGGER.info("postId: " + postId);
+		LOGGER.info("memberName: " + memberName);
 		// get account by uid
 		ApiFuture<QuerySnapshot> futureAcc = db.collection("Account").whereEqualTo("uid", uid).get();
 		List<QueryDocumentSnapshot> accDocuments = futureAcc.get().getDocuments();

@@ -1500,11 +1500,15 @@ public class JourneyController {
 		String uid = decodedToken.getUid();
 		Firestore db = FirestoreOptions.getDefaultInstance().getService();
 		Document doc = Jsoup.connect(url).get();
-		String object = doc.select("#m_story_permalink_view .bb").attr("data-ft");
-		ObjectMapper mapper = new ObjectMapper();
-		Map<String, Object> map = mapper.readValue(object, Map.class);
-		String postId = (String) map.get("top_level_post_id");
-		String memberId = (String) map.get("content_owner_id_new");
+		int begin = doc.html().indexOf("content_owner_id_new&quot;:&quot;")
+				+ "content_owner_id_new&quot;:&quot;".length();
+		int end = doc.html().indexOf("&quot;", begin);
+		String urlContent = doc.select("meta[property=\"og:url\"]").attr("content");
+		int last = urlContent.lastIndexOf("=");
+		String postId = urlContent.substring(last + 1);
+		String memberId = doc.html().substring(begin, end);
+		LOGGER.info("postId: " + postId);
+		LOGGER.info("memberId: " + memberId);
 		String memberName = doc.select("meta[property=\"og:title\"]").attr("content");
 		String _journeyDay = doc.select(".bo p").text();
 		Pattern p = Pattern.compile("(\\d+)(/|\\.)(\\d+)");
@@ -1522,10 +1526,11 @@ public class JourneyController {
 			day = journeyDay.substring(0, journeyDay.indexOf("/"));
 			journeyName = journeyDay.substring((journeyDay.indexOf("/") + 1), lenght);
 		}
+		LOGGER.info("day: " + day);
+		LOGGER.info("journeyName: " + journeyName);
+		LOGGER.info("memberName: " + memberName);
 		LOGGER.info("journey param: " + journey);
 		LOGGER.info("numDay param: " + numDay);
-		LOGGER.info("day in post: " + day);
-		LOGGER.info("journey in post: " + journeyName);
 		if (journeyName == null || day == null) {
 			LOGGER.info("journeyName null || day null.");
 			response.setStatus(404);

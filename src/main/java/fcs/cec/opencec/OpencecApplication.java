@@ -174,7 +174,7 @@ public class OpencecApplication {
 														.document(docLessonMember).set(data);
 											}
 
-											contentSend = "Chào bạn, đây là link bài học tiếp theo: http://35.226.165.231/lesson/"
+											contentSend = "Chào bạn, đây là link bài học tiếp theo: https://cec.net.vn/lesson/"
 													+ lessonNext;
 											loggerApp.info("contentSend: " + contentSend);
 										}
@@ -226,7 +226,7 @@ public class OpencecApplication {
 															.document(docJourneyDay).set(data);
 												}
 												journeyNext = "5days/1";
-												contentSend = "Chào bạn, đây là link bài ngày hành trình tiếp theo: http://35.226.165.231/"
+												contentSend = "Chào bạn, đây là link bài ngày hành trình tiếp theo: https://cec.net.vn/"
 														+ journeyNext;
 												loggerApp.info("contentSend: " + contentSend);
 											}
@@ -258,7 +258,7 @@ public class OpencecApplication {
 															.document(docJourneyDay).set(data);
 												}
 												journeyNext = "7days/1";
-												contentSend = "Chào bạn, đây là link bài ngày hành trình tiếp theo: http://35.226.165.231/"
+												contentSend = "Chào bạn, đây là link bài ngày hành trình tiếp theo: https://cec.net.vn/"
 														+ journeyNext;
 												loggerApp.info("contentSend: " + contentSend);
 											}
@@ -290,7 +290,7 @@ public class OpencecApplication {
 															.document(docJourneyDay).set(data);
 												}
 												journeyNext = "10days/1";
-												contentSend = "Chào bạn, đây là link bài ngày hành trình tiếp theo: http://35.226.165.231/"
+												contentSend = "Chào bạn, đây là link bài ngày hành trình tiếp theo: https://cec.net.vn/"
 														+ journeyNext;
 												loggerApp.info("contentSend: " + contentSend);
 											}
@@ -322,7 +322,7 @@ public class OpencecApplication {
 															.document(docJourneyDay).set(data);
 												}
 												journeyNext = "21days/1";
-												contentSend = "Chào bạn, đây là link bài ngày hành trình tiếp theo: http://35.226.165.231/"
+												contentSend = "Chào bạn, đây là link bài ngày hành trình tiếp theo: https://cec.net.vn/"
 														+ journeyNext;
 												loggerApp.info("contentSend: " + contentSend);
 											}
@@ -355,7 +355,7 @@ public class OpencecApplication {
 															.document(docJourneyDay).set(data);
 												}
 												journeyNext = "45days/1";
-												contentSend = "Chào bạn, đây là link bài ngày hành trình tiếp theo: http://35.226.165.231/"
+												contentSend = "Chào bạn, đây là link bài ngày hành trình tiếp theo: https://cec.net.vn/"
 														+ journeyNext;
 												loggerApp.info("contentSend: " + contentSend);
 											}
@@ -387,7 +387,7 @@ public class OpencecApplication {
 															.document(docJourneyDay).set(data);
 												}
 												journeyNext = "90days/1";
-												contentSend = "Chào bạn, đây là link bài ngày hành trình tiếp theo: http://35.226.165.231/"
+												contentSend = "Chào bạn, đây là link bài ngày hành trình tiếp theo: https://cec.net.vn/"
 														+ journeyNext;
 												loggerApp.info("contentSend: " + contentSend);
 											}
@@ -427,7 +427,7 @@ public class OpencecApplication {
 													ApiFuture<WriteResult> addedDocRef = db.collection("JourneyDay")
 															.document(docJourneyDay).set(data);
 												}
-												contentSend = "Chào bạn, đây là link bài ngày hành trình tiếp theo: http://35.226.165.231/"
+												contentSend = "Chào bạn, đây là link bài ngày hành trình tiếp theo: https://cec.net.vn/"
 														+ journeyName + "days/" + day;
 												loggerApp.info("contentSend: " + contentSend);
 											}
@@ -476,7 +476,7 @@ public class OpencecApplication {
 															.document(docLessonMember).set(data);
 												}
 
-												contentSend = "Chào bạn, đây là link bài học tiếp theo: http://35.226.165.231/lesson/"
+												contentSend = "Chào bạn, đây là link bài học tiếp theo: https://cec.net.vn/lesson/"
 														+ lessonNext;
 												loggerApp.info("contentSend: " + contentSend);
 											}
