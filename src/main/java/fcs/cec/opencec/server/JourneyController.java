@@ -1387,7 +1387,7 @@ public class JourneyController {
 					LOGGER.info("keyDay: " + String.valueOf(journeyDay.getDay()));
 					listJourneyActive.add(hashMap);
 				}
-				if (journeyDay.getDay() <= 2) {
+				if (journeyDay.getDay() < 3) {
 					String docIdNext = "3days" + String.valueOf(journeyDay.getDay() + 1) + facebookId;
 					DocumentReference docRef = db.collection("JourneyDay").document(docIdNext);
 					ApiFuture<DocumentSnapshot> futureCheck = docRef.get();
@@ -1417,16 +1417,16 @@ public class JourneyController {
 					LOGGER.info("nameDay: " + nameDayNext);
 					LOGGER.info("keyDay: " + String.valueOf(journeyDay.getDay() + 1));
 					listJourneyActive.add(hashMapNext);
-				}
-				if (journeyDay.getDay() == 3) {
-					String docIdNext = "5days" + String.valueOf(1) + facebookId;
-					DocumentReference docRef = db.collection("JourneyDay").document(docIdNext);
-					ApiFuture<DocumentSnapshot> futureCheck = docRef.get();
-					DocumentSnapshot document = futureCheck.get();
-					if (document.exists()) {
-						LOGGER.info("doc Journey Day Check exist!");
+
+					// create doc 5days day 1
+					String docIdNext5days = "5days" + String.valueOf(1) + facebookId;
+					DocumentReference docRef5days = db.collection("JourneyDay").document(docIdNext5days);
+					ApiFuture<DocumentSnapshot> futureCheck5days = docRef5days.get();
+					DocumentSnapshot document5days = futureCheck5days.get();
+					if (document5days.exists()) {
+						LOGGER.info("doc 5days day 1 Journey Day Check exist!");
 					} else {
-						LOGGER.info("doc Journey Day Check not exist!");
+						LOGGER.info("doc 5days day 1 Journey Day Check not exist!");
 
 						Map<String, Object> data = new HashMap<>();
 						data.put("day", 1);
@@ -1440,9 +1440,11 @@ public class JourneyController {
 						data.put("accountId", facebookId);
 						data.put("createdAt", System.currentTimeMillis() / 1000);
 						data.put("updatedAt", System.currentTimeMillis() / 1000);
-						ApiFuture<WriteResult> addedDocRef = db.collection("JourneyDay").document(docIdNext).set(data);
+						ApiFuture<WriteResult> addedDocRef = db.collection("JourneyDay").document(docIdNext5days)
+								.set(data);
 					}
 				}
+
 			}
 
 			// get list journey
@@ -1615,16 +1617,16 @@ public class JourneyController {
 					LOGGER.info("nameDay: " + nameDayNext);
 					LOGGER.info("keyDay: " + String.valueOf(journeyDay.getDay() + 1));
 					listJourneyActive.add(hashMapNext);
-				}
-				if (journeyDay.getDay() == 5) {
-					String docIdNext = "7days" + String.valueOf(1) + facebookId;
-					DocumentReference docRef = db.collection("JourneyDay").document(docIdNext);
-					ApiFuture<DocumentSnapshot> futureCheck = docRef.get();
-					DocumentSnapshot document = futureCheck.get();
-					if (document.exists()) {
-						LOGGER.info("doc Journey Day Check exist!");
-					} else {
 
+					// create doc 7days day 1
+					String docIdNext7days1 = "7days" + String.valueOf(1) + facebookId;
+					DocumentReference docRef7days1 = db.collection("JourneyDay").document(docIdNext7days1);
+					ApiFuture<DocumentSnapshot> futureCheck7days1 = docRef7days1.get();
+					DocumentSnapshot document7days1 = futureCheck7days1.get();
+					if (document7days1.exists()) {
+						LOGGER.info("doc 7days day 1 Journey Day Check exist!");
+					} else {
+						LOGGER.info("doc 7days day 1 Journey Day Check not exist!");
 						Map<String, Object> data = new HashMap<>();
 						data.put("day", 1);
 						data.put("journey", "7days");
@@ -1637,9 +1639,11 @@ public class JourneyController {
 						data.put("accountId", facebookId);
 						data.put("createdAt", System.currentTimeMillis() / 1000);
 						data.put("updatedAt", System.currentTimeMillis() / 1000);
-						ApiFuture<WriteResult> addedDocRef = db.collection("JourneyDay").document(docIdNext).set(data);
+						ApiFuture<WriteResult> addedDocRef = db.collection("JourneyDay").document(docIdNext7days1)
+								.set(data);
 					}
 				}
+
 				// get list journey
 				numDays = numDays + 1;
 				for (Journey journey : dayList) {
@@ -1818,17 +1822,18 @@ public class JourneyController {
 					LOGGER.info("nameDay: " + nameDayNext);
 					LOGGER.info("keyDay: " + String.valueOf(journeyDay.getDay() + 1));
 					listJourneyActive.add(hashMapNext);
-				}
-				if (journeyDay.getDay() == 7) {
-					String docIdNext = "10days" + String.valueOf(journeyDay.getDay() + 1) + facebookId;
-					DocumentReference docRef = db.collection("JourneyDay").document(docIdNext);
-					ApiFuture<DocumentSnapshot> futureCheck = docRef.get();
-					DocumentSnapshot document = futureCheck.get();
-					if (document.exists()) {
-						LOGGER.info("doc Journey Day Check exist!");
+
+					// create doc 10days day 1
+					String docIdNext10days1 = "10days" + String.valueOf(1) + facebookId;
+					DocumentReference docRef10days1 = db.collection("JourneyDay").document(docIdNext10days1);
+					ApiFuture<DocumentSnapshot> futureCheck10days1 = docRef10days1.get();
+					DocumentSnapshot document10days1 = futureCheck10days1.get();
+					if (document10days1.exists()) {
+						LOGGER.info("doc 10days day 1 Journey Day Check exist!");
 					} else {
+						LOGGER.info("doc 10days day 1 Journey Day Check not exist!");
 						Map<String, Object> data = new HashMap<>();
-						data.put("day", journeyDay.getDay() + 1);
+						data.put("day", 1);
 						data.put("journey", "10days");
 						data.put("memberId", facebookId);
 						data.put("memberName", "");
@@ -1839,10 +1844,11 @@ public class JourneyController {
 						data.put("accountId", facebookId);
 						data.put("createdAt", System.currentTimeMillis() / 1000);
 						data.put("updatedAt", System.currentTimeMillis() / 1000);
-						ApiFuture<WriteResult> addedDocRef = db.collection("JourneyDay").document(docIdNext).set(data);
+						ApiFuture<WriteResult> addedDocRef = db.collection("JourneyDay").document(docIdNext10days1)
+								.set(data);
 					}
-
 				}
+
 				for (Journey journey : dayList) {
 					if (journey.getName().equals("7days")) {
 						if (Integer.parseInt(journey.getDay()) > (numDays + 1)) {
@@ -2018,18 +2024,18 @@ public class JourneyController {
 					LOGGER.info("nameDay: " + nameDayNext);
 					LOGGER.info("keyDay: " + String.valueOf(journeyDay.getDay() + 1));
 					listJourneyActive.add(hashMapNext);
-				}
-				if (journeyDay.getDay() == 10) {
-					String docIdNext = "21days" + String.valueOf(journeyDay.getDay() + 1) + facebookId;
-					DocumentReference docRef = db.collection("JourneyDay").document(docIdNext);
-					ApiFuture<DocumentSnapshot> futureCheck = docRef.get();
-					DocumentSnapshot document = futureCheck.get();
-					if (document.exists()) {
-						LOGGER.info("doc Journey Day Check exist!");
-					} else {
 
+					// create doc 21days day 1
+					String docIdNext21days1 = "21days" + String.valueOf(1) + facebookId;
+					DocumentReference docRef21days1 = db.collection("JourneyDay").document(docIdNext21days1);
+					ApiFuture<DocumentSnapshot> futureCheck21days1 = docRef21days1.get();
+					DocumentSnapshot document21days1 = futureCheck21days1.get();
+					if (document21days1.exists()) {
+						LOGGER.info("doc 21days day1 Journey Day Check exist!");
+					} else {
+						LOGGER.info("doc 21days day 1 Journey Day Check not exist!");
 						Map<String, Object> data = new HashMap<>();
-						data.put("day", journeyDay.getDay() + 1);
+						data.put("day", 1);
 						data.put("journey", "21days");
 						data.put("memberId", facebookId);
 						data.put("memberName", "");
@@ -2040,9 +2046,11 @@ public class JourneyController {
 						data.put("accountId", facebookId);
 						data.put("createdAt", System.currentTimeMillis() / 1000);
 						data.put("updatedAt", System.currentTimeMillis() / 1000);
-						ApiFuture<WriteResult> addedDocRef = db.collection("JourneyDay").document(docIdNext).set(data);
+						ApiFuture<WriteResult> addedDocRef = db.collection("JourneyDay").document(docIdNext21days1)
+								.set(data);
 					}
 				}
+
 				for (Journey journey : dayList) {
 					if (journey.getName().equals("10days")) {
 						if (Integer.parseInt(journey.getDay()) > (numDays + 1)) {
