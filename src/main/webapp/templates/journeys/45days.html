@@ -29,7 +29,7 @@
 											<p th:text="${dayActive.nameDay}"></p>
 										</span>
 									</div>
-									<a th:href="@{'/journey/21days/' + ${dayActive.keyDay}}"> <span
+									<a th:href="@{'/journey/45days/' + ${dayActive.keyDay}}"> <span
 										class="name" th:text="${dayActive.nameDay}"></span>
 									</a>
 								</div>
@@ -70,7 +70,7 @@
 												return;
 											}
 											if (num == 1) {
-												var urlVideo = prompt("Nhập đường dẫn ngày hành trình mới nhất cuả ngày hành trình 10days day " + 10);
+												var urlVideo = prompt("Nhập đường dẫn ngày hành trình mới nhất cuả ngày hành trình 21days day " + 21);
 												
 												/* var strUrlCut = url
 														.slice(
@@ -109,19 +109,19 @@
 			        								}
 												
 												
-												num = 10;
+												num = 21;
 												$
 														.post(
 																"/openLockDay?url="
 																		+ URL
-																		+ "&journey=10"
+																		+ "&journey=21"
 																		+ "&numDay="
 																		+ num,
 																function(data) {
 																	console
 																			.log(data);
 																	alert("Video ngày hành trình của bạn đã được submit thành công!");
-																	window.location.href = "/journey/21days";
+																	window.location.href = "/journey/45days";
 																})
 														.fail(
 																function(xhr,
@@ -176,7 +176,7 @@
 																	}
 																});
 											} else {
-												var urlVideo = prompt("Nhập đường dẫn ngày hành trình mới nhất cuả ngày hành trình 21days day "
+												var urlVideo = prompt("Nhập đường dẫn ngày hành trình mới nhất cuả ngày hành trình 45days day "
 														+ (num - 1));
 												/* var strUrlCut = url
 														.slice(
@@ -219,14 +219,14 @@
 														.post(
 																"/openLockDay?url="
 																		+ URL
-																		+ "&journey=21"
+																		+ "&journey=45"
 																		+ "&numDay="
 																		+ num,
 																function(data) {
 																	console
 																			.log(data);
 																	alert("Video ngày hành trình của bạn đã được submit thành công!");
-																	window.location.href = "/journey/21days";
+																	window.location.href = "/journey/45days";
 																})
 														.fail(
 																function(xhr,
