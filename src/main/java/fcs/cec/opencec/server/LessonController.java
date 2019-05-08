@@ -254,7 +254,7 @@ public class LessonController {
 		String postId = urlContent.substring(last + 1);
 		LOGGER.info("postId: " + postId);
 		LOGGER.info("memberName: " + memberName);
-		
+
 		// get account by uid
 		ApiFuture<QuerySnapshot> futureAcc = db.collection("Account").whereEqualTo("uid", uid).get();
 		List<QueryDocumentSnapshot> accDocuments = futureAcc.get().getDocuments();
@@ -349,7 +349,7 @@ public class LessonController {
 			LOGGER.info("nameLesson: " + nameLessonActive);
 			LOGGER.info("keyLesson: " + String.valueOf(1));
 			listLessonActive.add(hashMapActive);
-			
+
 			for (Lesson lesson : lessonList) {
 				if (Integer.parseInt(lesson.getName()) > 1) {
 					HashMap<String, String> hashMapLock = new HashMap();
@@ -361,7 +361,7 @@ public class LessonController {
 					listLessonLock.add(hashMapLock);
 				}
 			}
-		}else {
+		} else {
 			FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
 			String uid = decodedToken.getUid();
 			Firestore db = FirestoreOptions.getDefaultInstance().getService();
@@ -382,6 +382,13 @@ public class LessonController {
 
 //			listLessonActive = new ArrayList<>();
 			LessonMember lessonMember = new LessonMember();
+			// get account by uid
+			ApiFuture<QuerySnapshot> futureAcc = db.collection("Account").whereEqualTo("uid", uid).get();
+			List<QueryDocumentSnapshot> accDocuments = futureAcc.get().getDocuments();
+			String facebookId = null;
+			for (DocumentSnapshot docAcc : accDocuments) {
+				facebookId = docAcc.getId();
+			}
 			if (lessonDocuments.isEmpty()) {
 				HashMap<String, String> hashMap = new HashMap();
 				String nameLesson = "Lesson " + String.valueOf(1);
@@ -401,13 +408,30 @@ public class LessonController {
 					LOGGER.info("keyLesson: " + String.valueOf(lessonMember.getLesson()));
 					listLessonActive.add(hashMap);
 				}
-				HashMap<String, String> hashMapNext = new HashMap();
-				String nameLessonNext = "Lesson " + String.valueOf(lessonMember.getLesson() + 1);
-				hashMapNext.put("nameLesson", nameLessonNext);
-				hashMapNext.put("keyLesson", String.valueOf(lessonMember.getLesson() + 1));
-				LOGGER.info("nameLesson: " + nameLessonNext);
-				LOGGER.info("keyLesson: " + String.valueOf(lessonMember.getLesson() + 1));
-				listLessonActive.add(hashMapNext);
+				if (lessonMember.getLesson() < 24) {
+					String docNextLesson = String.valueOf(lessonMember.getLesson() + 1) + facebookId;
+					Map<String, Object> data = new HashMap<>();
+					data.put("lesson", lessonMember.getLesson() + 1);
+					data.put("memberId", facebookId);
+					data.put("memberName", "");
+					data.put("postId", "");
+					data.put("status", 0);
+					data.put("url", "");
+					data.put("uid", uid);
+					data.put("accountId", facebookId);
+					data.put("createdAt", System.currentTimeMillis() / 1000);
+					data.put("updatedAt", System.currentTimeMillis() / 1000);
+					ApiFuture<WriteResult> addedDocRef = db.collection("LessonMember").document(docNextLesson)
+							.set(data);
+
+					HashMap<String, String> hashMapNext = new HashMap();
+					String nameLessonNext = "Lesson " + String.valueOf(lessonMember.getLesson() + 1);
+					hashMapNext.put("nameLesson", nameLessonNext);
+					hashMapNext.put("keyLesson", String.valueOf(lessonMember.getLesson() + 1));
+					LOGGER.info("nameLesson: " + nameLessonNext);
+					LOGGER.info("keyLesson: " + String.valueOf(lessonMember.getLesson() + 1));
+					listLessonActive.add(hashMapNext);
+				}
 			}
 
 			// get list lesson
@@ -426,8 +450,6 @@ public class LessonController {
 			}
 		}
 
-		
-
 		model.addAttribute("activeLessons", listLessonActive);
 		model.addAttribute("lockLessons", listLessonLock);
 		return "lesson/event-altp";
@@ -442,6 +464,30 @@ public class LessonController {
 		FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
 		String uid = decodedToken.getUid();
 		Firestore db = FirestoreOptions.getDefaultInstance().getService();
+		// get account by uid
+		ApiFuture<QuerySnapshot> futureAcc = db.collection("Account").whereEqualTo("uid", uid).get();
+		List<QueryDocumentSnapshot> accDocuments = futureAcc.get().getDocuments();
+		String facebookId = null;
+		for (DocumentSnapshot document : accDocuments) {
+			facebookId = document.getId();
+		}
+		if (facebookId == null) {
+			LOGGER.info("facebookId null");
+			return;
+		}
+		// check exist last lesson
+		String docLast = numLesson + facebookId;
+		LOGGER.info("docLast: " + docLast);
+		DocumentReference docRefLast = db.collection("LessonMember").document(docLast);
+		ApiFuture<DocumentSnapshot> futureLast = docRefLast.get();
+		DocumentSnapshot documentLast = futureLast.get();
+		if (!documentLast.exists()) {
+			LOGGER.info("last day not exist.");
+			response.setStatus(406);
+			return;
+		}
+		// end check
+
 		Document doc = Jsoup.connect(url).get();
 		String lessonHashtag = doc.select(".bo .bt").text();
 		int lessonCheckNow = 0;
@@ -465,17 +511,7 @@ public class LessonController {
 		String postId = urlContent.substring(last + 1);
 		LOGGER.info("postId: " + postId);
 		LOGGER.info("memberName: " + memberName);
-		// get account by uid
-		ApiFuture<QuerySnapshot> futureAcc = db.collection("Account").whereEqualTo("uid", uid).get();
-		List<QueryDocumentSnapshot> accDocuments = futureAcc.get().getDocuments();
-		String facebookId = null;
-		for (DocumentSnapshot document : accDocuments) {
-			facebookId = document.getId();
-		}
-		if (facebookId == null) {
-			LOGGER.info("facebookId null");
-			return;
-		}
+
 		// check name account
 		String docAccount = facebookId;
 		DocumentReference docRefAccount = db.collection("Account").document(docAccount);

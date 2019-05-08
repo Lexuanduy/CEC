@@ -274,6 +274,15 @@
 																		timer : 3000,
 																	});
 																}
+																if (xhr.status == 406) {
+																	Swal({
+																		position : 'center',
+																		type : 'error',
+																		title : 'Vui lòng hoàn thiện bài học trước!',
+																		showConfirmButton : false,
+																		timer : 3000,
+																	});
+																}
 																if (xhr.status == 401) {
 																	Swal({
 																		position : 'center',

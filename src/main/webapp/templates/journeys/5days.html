@@ -157,6 +157,15 @@
 																			timer : 3000,
 																		});
 																	}
+																	if (xhr.status == 406) {
+																		Swal({
+																			position : 'center',
+																			type : 'error',
+																			title : 'Vui lòng hoàn thiện ngày hành trình trước!',
+																			showConfirmButton : false,
+																			timer : 3000,
+																		});
+																	}
 																	if (xhr.status == 401) {
 																		Swal({
 																			position : 'center',
@@ -249,6 +258,15 @@
 																			position : 'center',
 																			type : 'error',
 																			title : 'Đây không phải video của bạn .Vui lòng nhập lại link video bài học của bạn!',
+																			showConfirmButton : false,
+																			timer : 3000,
+																		});
+																	}
+																	if (xhr.status == 406) {
+																		Swal({
+																			position : 'center',
+																			type : 'error',
+																			title : 'Vui lòng hoàn thiện ngày hành trình trước!',
 																			showConfirmButton : false,
 																			timer : 3000,
 																		});
