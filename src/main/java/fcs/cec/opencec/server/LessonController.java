@@ -410,19 +410,27 @@ public class LessonController {
 				}
 				if (lessonMember.getLesson() < 24) {
 					String docNextLesson = String.valueOf(lessonMember.getLesson() + 1) + facebookId;
-					Map<String, Object> data = new HashMap<>();
-					data.put("lesson", lessonMember.getLesson() + 1);
-					data.put("memberId", facebookId);
-					data.put("memberName", "");
-					data.put("postId", "");
-					data.put("status", 0);
-					data.put("url", "");
-					data.put("uid", uid);
-					data.put("accountId", facebookId);
-					data.put("createdAt", System.currentTimeMillis() / 1000);
-					data.put("updatedAt", System.currentTimeMillis() / 1000);
-					ApiFuture<WriteResult> addedDocRef = db.collection("LessonMember").document(docNextLesson)
-							.set(data);
+					DocumentReference docRef = db.collection("JourneyDay").document(docNextLesson);
+					ApiFuture<DocumentSnapshot> futureCheck = docRef.get();
+					DocumentSnapshot document = futureCheck.get();
+					if (document.exists()) {
+						LOGGER.info("doc Lesson Check exist!");
+					} else {
+
+						Map<String, Object> data = new HashMap<>();
+						data.put("lesson", lessonMember.getLesson() + 1);
+						data.put("memberId", facebookId);
+						data.put("memberName", "");
+						data.put("postId", "");
+						data.put("status", 0);
+						data.put("url", "");
+						data.put("uid", uid);
+						data.put("accountId", facebookId);
+						data.put("createdAt", System.currentTimeMillis() / 1000);
+						data.put("updatedAt", System.currentTimeMillis() / 1000);
+						ApiFuture<WriteResult> addedDocRef = db.collection("LessonMember").document(docNextLesson)
+								.set(data);
+					}
 
 					HashMap<String, String> hashMapNext = new HashMap();
 					String nameLessonNext = "Lesson " + String.valueOf(lessonMember.getLesson() + 1);
