@@ -87,17 +87,25 @@ public class Main {
 //			String journey = journeyDay.substring((journeyDay.indexOf("/") + 1), lenght);
 //		}
 		// end test
+		Firestore db = FirestoreOptions.getDefaultInstance().getService();
+		// asynchronously retrieve multiple documents
+		ApiFuture<QuerySnapshot> future = db.collection("LessonMember").whereEqualTo("accountId", "488857841634271")
+				.get();
+		List<QueryDocumentSnapshot> documents = future.get().getDocuments();
+		for (DocumentSnapshot document : documents) {
+			System.out.println(document.getId());
+			ApiFuture<WriteResult> writeResult = db.collection("LessonMember").document(document.getId()).delete();
+		}
 
+//		String docId = null;
 //		
 //		String title = doc.select("title").text();
 //		System.out.println(title);
 //		System.out.println(title.charAt(7));
 
-		
-		
 //		System.out.println("journey param: " + journey);
 //		System.out.println("numDay param: " + numDay);
-		
+
 //		String id = "1784461175160264_100003681093579";
 //		DocumentReference docRef = db.collection("MemberPost").document(id); 
 //		// asynchronously retrieve the document

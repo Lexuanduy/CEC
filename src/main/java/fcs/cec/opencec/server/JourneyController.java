@@ -1368,7 +1368,7 @@ public class JourneyController {
 			for (DocumentSnapshot docAcc : accDocuments) {
 				facebookId = docAcc.getId();
 			}
-			if (journeyDocuments.isEmpty()) {
+			if (numDays == 0) {
 				HashMap<String, String> hashMap = new HashMap();
 				String nameDay = "Day " + String.valueOf(1);
 				hashMap.put("nameDay", nameDay);
@@ -1388,7 +1388,7 @@ public class JourneyController {
 					listJourneyActive.add(hashMap);
 				}
 				if (journeyDay.getDay() < 3) {
-					String docIdNext = "3days" + String.valueOf(journeyDay.getDay() + 1) + facebookId;
+					String docIdNext = "3days" + String.valueOf(numDays + 1) + facebookId;
 					DocumentReference docRef = db.collection("JourneyDay").document(docIdNext);
 					ApiFuture<DocumentSnapshot> futureCheck = docRef.get();
 					DocumentSnapshot document = futureCheck.get();
@@ -1396,7 +1396,7 @@ public class JourneyController {
 						LOGGER.info("doc Journey Day Check exist!");
 					} else {
 						Map<String, Object> data = new HashMap<>();
-						data.put("day", journeyDay.getDay() + 1);
+						data.put("day", numDays + 1);
 						data.put("journey", "3days");
 						data.put("memberId", facebookId);
 						data.put("memberName", "");
@@ -1411,11 +1411,11 @@ public class JourneyController {
 					}
 
 					HashMap<String, String> hashMapNext = new HashMap();
-					String nameDayNext = "Day " + String.valueOf(journeyDay.getDay() + 1);
+					String nameDayNext = "Day " + String.valueOf(numDays + 1);
 					hashMapNext.put("nameDay", nameDayNext);
-					hashMapNext.put("keyDay", String.valueOf(journeyDay.getDay() + 1));
+					hashMapNext.put("keyDay", String.valueOf(numDays + 1));
 					LOGGER.info("nameDay: " + nameDayNext);
-					LOGGER.info("keyDay: " + String.valueOf(journeyDay.getDay() + 1));
+					LOGGER.info("keyDay: " + String.valueOf(numDays + 1));
 					listJourneyActive.add(hashMapNext);
 
 					// create doc 5days day 1
@@ -1523,7 +1523,7 @@ public class JourneyController {
 			for (DocumentSnapshot docAcc : accDocuments) {
 				facebookId = docAcc.getId();
 			}
-			if (journeyDocuments.isEmpty()) {
+			if (numDays == 0) {
 				// det 3days day3 check status
 				String docId3days3 = "3days3" + accountId;
 				LOGGER.info("docId3days3: " + docId3days3);
@@ -1588,7 +1588,7 @@ public class JourneyController {
 				}
 				if (journeyDay.getDay() < 5) {
 
-					String docIdNext = "5days" + String.valueOf(journeyDay.getDay() + 1) + facebookId;
+					String docIdNext = "5days" + String.valueOf(numDays + 1) + facebookId;
 					DocumentReference docRef = db.collection("JourneyDay").document(docIdNext);
 					ApiFuture<DocumentSnapshot> futureCheck = docRef.get();
 					DocumentSnapshot document = futureCheck.get();
@@ -1611,11 +1611,11 @@ public class JourneyController {
 					}
 
 					HashMap<String, String> hashMapNext = new HashMap();
-					String nameDayNext = "Day " + String.valueOf(journeyDay.getDay() + 1);
+					String nameDayNext = "Day " + String.valueOf(numDays + 1); 
 					hashMapNext.put("nameDay", nameDayNext);
-					hashMapNext.put("keyDay", String.valueOf(journeyDay.getDay() + 1));
+					hashMapNext.put("keyDay", String.valueOf(numDays + 1));
 					LOGGER.info("nameDay: " + nameDayNext);
-					LOGGER.info("keyDay: " + String.valueOf(journeyDay.getDay() + 1));
+					LOGGER.info("keyDay: " + String.valueOf(numDays + 1));
 					listJourneyActive.add(hashMapNext);
 
 					// create doc 7days day 1
@@ -1792,7 +1792,7 @@ public class JourneyController {
 					listJourneyActive.add(hashMap);
 				}
 				if (journeyDay.getDay() < 7) {
-					String docIdNext = "7days" + String.valueOf(journeyDay.getDay() + 1) + facebookId;
+					String docIdNext = "7days" + String.valueOf(numDays + 1) + facebookId;
 					DocumentReference docRef = db.collection("JourneyDay").document(docIdNext);
 					ApiFuture<DocumentSnapshot> futureCheck = docRef.get();
 					DocumentSnapshot document = futureCheck.get();
@@ -1816,11 +1816,11 @@ public class JourneyController {
 					}
 
 					HashMap<String, String> hashMapNext = new HashMap();
-					String nameDayNext = "Day " + String.valueOf(journeyDay.getDay() + 1);
+					String nameDayNext = "Day " + String.valueOf(numDays + 1);
 					hashMapNext.put("nameDay", nameDayNext);
-					hashMapNext.put("keyDay", String.valueOf(journeyDay.getDay() + 1));
+					hashMapNext.put("keyDay", String.valueOf(numDays + 1));
 					LOGGER.info("nameDay: " + nameDayNext);
-					LOGGER.info("keyDay: " + String.valueOf(journeyDay.getDay() + 1));
+					LOGGER.info("keyDay: " + String.valueOf(numDays + 1));
 					listJourneyActive.add(hashMapNext);
 
 					// create doc 10days day 1
@@ -1994,7 +1994,7 @@ public class JourneyController {
 					listJourneyActive.add(hashMap);
 				}
 				if (journeyDay.getDay() < 10) {
-					String docIdNext = "10days" + String.valueOf(journeyDay.getDay() + 1) + facebookId;
+					String docIdNext = "10days" + String.valueOf(numDays + 1) + facebookId;
 					DocumentReference docRef = db.collection("JourneyDay").document(docIdNext);
 					ApiFuture<DocumentSnapshot> futureCheck = docRef.get();
 					DocumentSnapshot document = futureCheck.get();
@@ -2018,11 +2018,11 @@ public class JourneyController {
 					}
 
 					HashMap<String, String> hashMapNext = new HashMap();
-					String nameDayNext = "Day " + String.valueOf(journeyDay.getDay() + 1);
+					String nameDayNext = "Day " + String.valueOf(numDays + 1);
 					hashMapNext.put("nameDay", nameDayNext);
-					hashMapNext.put("keyDay", String.valueOf(journeyDay.getDay() + 1));
+					hashMapNext.put("keyDay", String.valueOf(numDays + 1));
 					LOGGER.info("nameDay: " + nameDayNext);
-					LOGGER.info("keyDay: " + String.valueOf(journeyDay.getDay() + 1));
+					LOGGER.info("keyDay: " + String.valueOf(numDays + 1));
 					listJourneyActive.add(hashMapNext);
 
 					// create doc 21days day 1
@@ -2199,7 +2199,7 @@ public class JourneyController {
 					listJourneyActive.add(hashMap);
 				}
 				if (journeyDay.getDay() < 21) {
-					String docIdNext = "21days" + String.valueOf(journeyDay.getDay() + 1) + facebookId;
+					String docIdNext = "21days" + String.valueOf(numDays + 1) + facebookId;
 					DocumentReference docRef = db.collection("JourneyDay").document(docIdNext);
 					ApiFuture<DocumentSnapshot> futureCheck = docRef.get();
 					DocumentSnapshot document = futureCheck.get();
@@ -2223,11 +2223,11 @@ public class JourneyController {
 					}
 
 					HashMap<String, String> hashMapNext = new HashMap();
-					String nameDayNext = "Day " + String.valueOf(journeyDay.getDay() + 1);
+					String nameDayNext = "Day " + String.valueOf(numDays + 1);
 					hashMapNext.put("nameDay", nameDayNext);
-					hashMapNext.put("keyDay", String.valueOf(journeyDay.getDay() + 1));
+					hashMapNext.put("keyDay", String.valueOf(numDays + 1));
 					LOGGER.info("nameDay: " + nameDayNext);
-					LOGGER.info("keyDay: " + String.valueOf(journeyDay.getDay() + 1));
+					LOGGER.info("keyDay: " + String.valueOf(numDays + 1));
 					listJourneyActive.add(hashMapNext);
 
 					// create doc 45days day 1
@@ -2400,7 +2400,7 @@ public class JourneyController {
 					listJourneyActive.add(hashMap);
 				}
 				if (journeyDay.getDay() < 45) {
-					String docIdNext = "45days" + String.valueOf(journeyDay.getDay() + 1) + facebookId;
+					String docIdNext = "45days" + String.valueOf(numDays + 1) + facebookId;
 					DocumentReference docRef = db.collection("JourneyDay").document(docIdNext);
 					ApiFuture<DocumentSnapshot> futureCheck = docRef.get();
 					DocumentSnapshot document = futureCheck.get();
@@ -2424,11 +2424,11 @@ public class JourneyController {
 					}
 
 					HashMap<String, String> hashMapNext = new HashMap();
-					String nameDayNext = "Day " + String.valueOf(journeyDay.getDay() + 1);
+					String nameDayNext = "Day " + String.valueOf(numDays + 1);
 					hashMapNext.put("nameDay", nameDayNext);
-					hashMapNext.put("keyDay", String.valueOf(journeyDay.getDay() + 1));
+					hashMapNext.put("keyDay", String.valueOf(numDays + 1));
 					LOGGER.info("nameDay: " + nameDayNext);
-					LOGGER.info("keyDay: " + String.valueOf(journeyDay.getDay() + 1));
+					LOGGER.info("keyDay: " + String.valueOf(numDays + 1));
 					listJourneyActive.add(hashMapNext);
 
 					// create doc 90days day 1
@@ -2602,7 +2602,7 @@ public class JourneyController {
 					listJourneyActive.add(hashMap);
 				}
 				if (journeyDay.getDay() < 90) {
-					String docIdNext = "90days" + String.valueOf(journeyDay.getDay() + 1) + facebookId;
+					String docIdNext = "90days" + String.valueOf(numDays + 1) + facebookId;
 					DocumentReference docRef = db.collection("JourneyDay").document(docIdNext);
 					ApiFuture<DocumentSnapshot> futureCheck = docRef.get();
 					DocumentSnapshot document = futureCheck.get();
@@ -2626,11 +2626,11 @@ public class JourneyController {
 					}
 
 					HashMap<String, String> hashMapNext = new HashMap();
-					String nameDayNext = "Day " + String.valueOf(journeyDay.getDay() + 1);
+					String nameDayNext = "Day " + String.valueOf(numDays + 1);
 					hashMapNext.put("nameDay", nameDayNext);
-					hashMapNext.put("keyDay", String.valueOf(journeyDay.getDay() + 1));
+					hashMapNext.put("keyDay", String.valueOf(numDays + 1));
 					LOGGER.info("nameDay: " + nameDayNext);
-					LOGGER.info("keyDay: " + String.valueOf(journeyDay.getDay() + 1));
+					LOGGER.info("keyDay: " + String.valueOf(numDays + 1));
 					listJourneyActive.add(hashMapNext);
 
 				}

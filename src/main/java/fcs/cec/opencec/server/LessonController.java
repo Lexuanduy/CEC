@@ -389,7 +389,7 @@ public class LessonController {
 			for (DocumentSnapshot docAcc : accDocuments) {
 				facebookId = docAcc.getId();
 			}
-			if (lessonDocuments.isEmpty()) {
+			if (numLessons == 0) {
 				HashMap<String, String> hashMap = new HashMap();
 				String nameLesson = "Lesson " + String.valueOf(1);
 				hashMap.put("nameLesson", nameLesson);
@@ -408,9 +408,10 @@ public class LessonController {
 					LOGGER.info("keyLesson: " + String.valueOf(lessonMember.getLesson()));
 					listLessonActive.add(hashMap);
 				}
+				LOGGER.info("LESSOONNNN: " + lessonMember.getLesson());
 				if (lessonMember.getLesson() < 24) {
-					String docNextLesson = String.valueOf(lessonMember.getLesson() + 1) + facebookId;
-					DocumentReference docRef = db.collection("JourneyDay").document(docNextLesson);
+					String docNextLesson = String.valueOf(numLessons + 1) + facebookId;
+					DocumentReference docRef = db.collection("LessonMember").document(docNextLesson);
 					ApiFuture<DocumentSnapshot> futureCheck = docRef.get();
 					DocumentSnapshot document = futureCheck.get();
 					if (document.exists()) {
@@ -418,7 +419,7 @@ public class LessonController {
 					} else {
 
 						Map<String, Object> data = new HashMap<>();
-						data.put("lesson", lessonMember.getLesson() + 1);
+						data.put("lesson", numLessons + 1);
 						data.put("memberId", facebookId);
 						data.put("memberName", "");
 						data.put("postId", "");
@@ -433,11 +434,12 @@ public class LessonController {
 					}
 
 					HashMap<String, String> hashMapNext = new HashMap();
-					String nameLessonNext = "Lesson " + String.valueOf(lessonMember.getLesson() + 1);
+					LOGGER.info("LESSOONNNN NEXTTTT: " + String.valueOf(numLessons + 1));
+					String nameLessonNext = "Lesson " + String.valueOf(numLessons + 1);
 					hashMapNext.put("nameLesson", nameLessonNext);
-					hashMapNext.put("keyLesson", String.valueOf(lessonMember.getLesson() + 1));
+					hashMapNext.put("keyLesson", String.valueOf(numLessons + 1));
 					LOGGER.info("nameLesson: " + nameLessonNext);
-					LOGGER.info("keyLesson: " + String.valueOf(lessonMember.getLesson() + 1));
+					LOGGER.info("keyLesson: " + String.valueOf(numLessons + 1));
 					listLessonActive.add(hashMapNext);
 				}
 			}
