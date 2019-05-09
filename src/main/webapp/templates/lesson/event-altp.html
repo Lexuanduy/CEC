@@ -202,6 +202,24 @@
 											
 											
 											console.log("urlVideo: " + urlVideo);
+											regexp =  /^(?:(?:https?|ftp):\/\/)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:\/\S*)?$/;
+									        if (regexp.test(urlVideo))
+									        {
+									          
+									        }
+									        else
+									        {
+									          Swal({
+													position : 'center',
+													type : 'error',
+													title : 'Link video không đúng định dang. Vui lòng nhập lại!',
+													showConfirmButton : false,
+													timer : 2000,
+												});
+									          return;
+									        }
+											
+											
 	        								var indexGroup = 0;
 	        								indexGroup = urlVideo.indexOf("s/");
 	        								console.log("indexGroup: " + indexGroup);
@@ -332,7 +350,7 @@
 											<div>
 												<a href="https://cec.net.vn/m/100003681093579" class="name">Gari
 													Em</a> <a
-													href="https://www.facebook.com/groups/cec.edu.vn/permalink/2194697354136642"
+													href="https://cec.net.vn/p/2194697354136642"
 													target="_blank" class="date">4 tháng trước</a>
 											</div>
 										</div>
@@ -382,7 +400,7 @@ Mong mọi người sửa lỗi giúp em!!
 											<div>
 												<a href="https://cec.net.vn/m/100001355201714" class="name">Mai
 													Hoa</a> <a
-													href="https://www.facebook.com/groups/cec.edu.vn/permalink/2194681100804934"
+													href="https://cec.net.vn/p/2194681100804934"
 													target="_blank" class="date">4 tháng trước</a>
 											</div>
 										</div>
@@ -431,7 +449,7 @@ Thanks for listening.
 											<div>
 												<a href="https://cec.net.vn/m/100011811007878" class="name">Vy
 													Nguyen</a> <a
-													href="https://www.facebook.com/groups/cec.edu.vn/permalink/2194668564139521"
+													href="https://cec.net.vn/p/2194668564139521"
 													target="_blank" class="date">4 tháng trước</a>
 											</div>
 										</div>
@@ -497,7 +515,7 @@ LINK ĐK BÀI HỌC SỐ 24:  https://goo.gl/forms/BhiJltqyHtZUiceA2
 											<div>
 												<a href="https://cec.net.vn/m/100002726845214" class="name">Lê
 													Quốc Dũng Dungken</a> <a
-													href="https://www.facebook.com/groups/cec.edu.vn/permalink/2194657064140671"
+													href="https://cec.net.vn/p/2194657064140671"
 													target="_blank" class="date">4 tháng trước</a>
 											</div>
 										</div>
@@ -546,7 +564,7 @@ Lesson 3: I welcome challenges happily
 											<div>
 												<a href="https://cec.net.vn/m/100010041196370" class="name">Tinh
 													Duong</a> <a
-													href="https://www.facebook.com/groups/cec.edu.vn/permalink/2194625454143832"
+													href="https://cec.net.vn/p/2194625454143832"
 													target="_blank" class="date">4 tháng trước</a>
 											</div>
 										</div>
@@ -597,7 +615,7 @@ Mong các anh chị sửa lỗi giúp em với ạ!! Em cảm ơn nhiều ạ!
 											<div>
 												<a href="https://cec.net.vn/m/100030503377174" class="name">Trang
 													Trần</a> <a
-													href="https://www.facebook.com/groups/cec.edu.vn/permalink/2194551927484518"
+													href="https://cec.net.vn/p/2194551927484518"
 													target="_blank" class="date">4 tháng trước</a>
 											</div>
 										</div>
@@ -662,7 +680,7 @@ không quên tag 3 người bạn cùng tham gia nhé!😉
 											<div>
 												<a href="https://cec.net.vn/m/100002736512433" class="name">Bình
 													Tiến</a> <a
-													href="https://www.facebook.com/groups/cec.edu.vn/permalink/2194474700825574"
+													href="https://cec.net.vn/p/2194474700825574"
 													target="_blank" class="date">4 tháng trước</a>
 											</div>
 										</div>
@@ -713,7 +731,7 @@ Mình là thành viên mới học tiếng anh, lần đầu quay video bài h�
 											<div>
 												<a href="https://cec.net.vn/m/100022217745480" class="name">Ngọc
 													Ánh</a> <a
-													href="https://www.facebook.com/groups/cec.edu.vn/permalink/2194440014162376"
+													href="https://cec.net.vn/p/2194440014162376"
 													target="_blank" class="date">4 tháng trước</a>
 											</div>
 										</div>
@@ -749,7 +767,7 @@ Thank you so much
 							</div>
 						</div>
 
-						<div class="grid-item userBoxInfo"
+						<!-- <div class="grid-item userBoxInfo"
 							style="position: absolute; left: 0px; top: 1008px;">
 							<div class="inner">
 								<div class="info">
@@ -798,7 +816,7 @@ Please help me with the comments
 										src="">
 								</div>
 							</div>
-						</div>
+						</div> -->
 
 						<div class="grid-item userBoxInfo"
 							style="position: absolute; left: 912.406px; top: 1330px;">
@@ -814,7 +832,7 @@ Please help me with the comments
 											<div>
 												<a href="https://cec.net.vn/m/100004996686730" class="name">Lệ
 													Mỹ</a> <a
-													href="https://www.facebook.com/groups/cec.edu.vn/permalink/2194400390833005"
+													href="https://cec.net.vn/p/2194400390833005"
 													target="_blank" class="date">4 tháng trước</a>
 											</div>
 										</div>

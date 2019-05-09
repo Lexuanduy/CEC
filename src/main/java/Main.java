@@ -93,14 +93,29 @@ public class Main {
 //		System.out.println(title);
 //		System.out.println(title.charAt(7));
 
-		Firestore db = FirestoreOptions.getDefaultInstance().getService();
-		ApiFuture<QuerySnapshot> future =
-			    db.collection("JourneyDay").whereEqualTo("accountId", "488857841634271").get();
-			// future.get() blocks on response
-			List<QueryDocumentSnapshot> documents = future.get().getDocuments();
-			for (DocumentSnapshot document : documents) {
-			  System.out.println(document.get("url"));
-			}
+		
+		
+//		System.out.println("journey param: " + journey);
+//		System.out.println("numDay param: " + numDay);
+		
+//		String id = "1784461175160264_100003681093579";
+//		DocumentReference docRef = db.collection("MemberPost").document(id); 
+//		// asynchronously retrieve the document
+//		ApiFuture<DocumentSnapshot> future = docRef.get();
+//		// ...
+//		// future.get() blocks on response
+//		DocumentSnapshot document = future.get();
+//		if (document.exists()) {
+//		  System.out.println("Document data: " + document.getData());
+//		} else {
+//		  System.out.println("No such document!");
+//		}
+
+//		ObjectMapper mapper = new ObjectMapper();
+//		Map<String, Object> map = mapper.readValue(object, Map.class);
+//		String name = (String) map.get("name");
+//		System.out.println(name);
+
 //		Map<String, Object> data = new HashMap<>();
 //		Map<String, Object> subdata = new HashMap<>();
 //		subdata.put("Lesson 1", "1");
@@ -277,11 +292,9 @@ public class Main {
 //				DocumentReference docRef = db.collection("JourneyDay").document(docId);
 //				ApiFuture<WriteResult> futureUpdate = docRef.update("journey", "10days");
 //			}
-		
-		
-		
+
 		// check journey day
-		String url = "https://m.facebook.com/groups/1784461175160264?view=permalink&id=2288028821470161";
+//		String url = "https://m.facebook.com/groups/1784461175160264?view=permalink&id=2288028821470161";
 //		String url = "https://m.facebook.com/groups/cec.edu.vn/permalink/2288022191470824/";
 //		Document doc = Jsoup.connect(url).get();
 //		int begin = doc.html().indexOf("content_owner_id_new&quot;:&quot;")

@@ -177,6 +177,22 @@ $('#nextLesson')
 				        								}
 				        								
 				        								console.log("urlVideo: " + urlVideo);
+				        								regexp =  /^(?:(?:https?|ftp):\/\/)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:\/\S*)?$/;
+												        if (regexp.test(urlVideo))
+												        {
+												          
+												        }
+												        else
+												        {
+												          Swal({
+																position : 'center',
+																type : 'error',
+																title : 'Link video không đúng định dang. Vui lòng nhập lại!',
+																showConfirmButton : false,
+																timer : 2000,
+															});
+												          return;
+												        }
 				        								var indexGroup = 0;
 				        								indexGroup = urlVideo.indexOf("s/");
 				        								console.log("indexGroup: " + indexGroup);
@@ -282,7 +298,11 @@ $('#nextDay')
 					var journeyDay = uri.slice(9);
 					var indexDay = journeyDay.indexOf("/")*1;  
 					var journey = journeyDay.slice(0,indexDay);
-					var journeyName = (journeyDay.slice(0,indexDay)).slice(0,1); 
+//					var journeyName = (journeyDay.slice(0,indexDay)).slice(0,1); 
+					//
+					var _indexdays = uri.indexOf("days")*1;
+					var journeyName = uri.slice(9,_indexdays);
+					//
 					console.log("journey: " + journeyName);
 					indexDay = indexDay + 1;
 					var day = journeyDay.slice(indexDay);
@@ -364,6 +384,22 @@ $('#nextDay')
 		        								}
 		        								
 		        								console.log("urlVideo: " + urlVideo);
+		        								regexp =  /^(?:(?:https?|ftp):\/\/)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:\/\S*)?$/;
+										        if (regexp.test(urlVideo))
+										        {
+										          
+										        }
+										        else
+										        {
+										          Swal({
+														position : 'center',
+														type : 'error',
+														title : 'Link video không đúng định dang. Vui lòng nhập lại!',
+														showConfirmButton : false,
+														timer : 2000,
+													});
+										          return;
+										        }
 		        								var indexGroup = 0;
 		        								indexGroup = urlVideo.indexOf("s/");
 		        								console.log("indexGroup: " + indexGroup);
