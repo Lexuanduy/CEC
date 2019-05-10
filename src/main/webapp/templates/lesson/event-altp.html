@@ -229,9 +229,22 @@
 	        								var URL;
 	        								if(checkGroup != "cec"){
 	        									console.log("!= cec");
+	        									console.log("url valid groups: " + urlVideo.slice(23,29));
+	        									var checkGroup1 = urlVideo.slice(23,29);
+	        									if (checkGroup1 != "groups") {
+	        										Swal({
+														position : 'center',
+														type : 'error',
+														title : 'Vui lòng nhập lại link video được đăng trên groups facebook cec!',
+														showConfirmButton : false,
+														timer : 2000,
+													});
+	        										return;
+	        									}
 	        									var indexId = 0;
 	        									indexId = urlVideo.lastIndexOf("=");
 	        									postId = urlVideo.slice(indexId + 1);
+	        									console.log("postId: " + postId);
 	        									URL = "https://m.facebook.com/groups/cec.edu.vn/permalink/"+postId;
 	        									console.log("URLif: " + URL);
 	        								}else{
@@ -243,6 +256,18 @@
 		        								var strHTTP = "https://m";
 		        								URL = strHTTP + strUrlLast;
 		        								console.log("URLelse: " + URL);
+		        								var checkGroup2 = URL.slice(23,29);
+		        								console.log("url valid groups: " + checkGroup2);
+		        								if (checkGroup2 != "groups"){
+		        									Swal({
+														position : 'center',
+														type : 'error',
+														title : 'Vui lòng nhập lại link video được đăng trên groups facebook cec!',
+														showConfirmButton : false,
+														timer : 2000,
+													});
+	        										return;
+		        								}
 		        								}
 											
 											num = num -1;

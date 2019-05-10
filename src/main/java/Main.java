@@ -89,12 +89,15 @@ public class Main {
 		// end test
 		Firestore db = FirestoreOptions.getDefaultInstance().getService();
 		// asynchronously retrieve multiple documents
-		ApiFuture<QuerySnapshot> future = db.collection("LessonMember").whereEqualTo("accountId", "488857841634271")
+		ApiFuture<QuerySnapshot> future = db.collection("JourneyDay").whereEqualTo("accountId", "488857841634271")
 				.get();
 		List<QueryDocumentSnapshot> documents = future.get().getDocuments();
 		for (DocumentSnapshot document : documents) {
 			System.out.println(document.getId());
-			ApiFuture<WriteResult> writeResult = db.collection("LessonMember").document(document.getId()).delete();
+			if(!document.getId().equals("3days1488857841634271")) {
+
+				ApiFuture<WriteResult> writeResult = db.collection("JourneyDay").document(document.getId()).delete();
+			}
 		}
 
 //		String docId = null;

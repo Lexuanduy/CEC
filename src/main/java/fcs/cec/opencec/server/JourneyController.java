@@ -1121,6 +1121,7 @@ public class JourneyController {
 			@CookieValue(value = "idToken", required = true) String idToken, @RequestParam String journey,
 			@RequestParam String numDay, HttpServletResponse response)
 			throws IOException, FirebaseAuthException, InterruptedException, ExecutionException {
+		LOGGER.info("url video check day: " + url);
 		FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
 		String uid = decodedToken.getUid();
 		Firestore db = FirestoreOptions.getDefaultInstance().getService();
@@ -1596,7 +1597,7 @@ public class JourneyController {
 						LOGGER.info("doc Journey Day Check exist!");
 					} else {
 						Map<String, Object> data = new HashMap<>();
-						data.put("day", journeyDay.getDay() + 1);
+						data.put("day", numDays + 1);
 						data.put("journey", "5days");
 						data.put("memberId", facebookId);
 						data.put("memberName", "");
@@ -1801,7 +1802,7 @@ public class JourneyController {
 					} else {
 
 						Map<String, Object> data = new HashMap<>();
-						data.put("day", journeyDay.getDay() + 1);
+						data.put("day", numDays + 1);
 						data.put("journey", "7days");
 						data.put("memberId", facebookId);
 						data.put("memberName", "");
@@ -2003,7 +2004,7 @@ public class JourneyController {
 					} else {
 
 						Map<String, Object> data = new HashMap<>();
-						data.put("day", journeyDay.getDay() + 1);
+						data.put("day", numDays + 1);
 						data.put("journey", "10days");
 						data.put("memberId", facebookId);
 						data.put("memberName", "");
@@ -2208,7 +2209,7 @@ public class JourneyController {
 					} else {
 
 						Map<String, Object> data = new HashMap<>();
-						data.put("day", journeyDay.getDay() + 1);
+						data.put("day", numDays + 1);
 						data.put("journey", "21days");
 						data.put("memberId", facebookId);
 						data.put("memberName", "");
@@ -2409,7 +2410,7 @@ public class JourneyController {
 					} else {
 
 						Map<String, Object> data = new HashMap<>();
-						data.put("day", journeyDay.getDay() + 1);
+						data.put("day", numDays + 1);
 						data.put("journey", "45days");
 						data.put("memberId", facebookId);
 						data.put("memberName", "");
@@ -2611,7 +2612,7 @@ public class JourneyController {
 					} else {
 
 						Map<String, Object> data = new HashMap<>();
-						data.put("day", journeyDay.getDay() + 1);
+						data.put("day", numDays + 1);
 						data.put("journey", "90days");
 						data.put("memberId", facebookId);
 						data.put("memberName", "");
@@ -2661,6 +2662,7 @@ public class JourneyController {
 			@CookieValue(value = "idToken", required = true) String idToken, @RequestParam String journey,
 			@RequestParam String numDay, HttpServletResponse response) throws FirebaseAuthException, JsonParseException,
 			JsonMappingException, IOException, InterruptedException, ExecutionException {
+		LOGGER.info("urlvideo open day: " + url);
 		FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
 		String uid = decodedToken.getUid();
 		Firestore db = FirestoreOptions.getDefaultInstance().getService();

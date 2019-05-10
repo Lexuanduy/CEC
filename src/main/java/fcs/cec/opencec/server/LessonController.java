@@ -227,7 +227,7 @@ public class LessonController {
 			@CookieValue(value = "idToken", required = true) String idToken, @RequestParam String numLesson,
 			HttpServletResponse response)
 			throws IOException, InterruptedException, ExecutionException, ServletException, FirebaseAuthException {
-//		LOGGER.info("facebookId: " + facebookId);
+		LOGGER.info("url video check lesson: " + url);
 		FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
 		String uid = decodedToken.getUid();
 		Firestore db = FirestoreOptions.getDefaultInstance().getService();
@@ -470,7 +470,7 @@ public class LessonController {
 			@CookieValue(value = "idToken", required = true) String idToken, @RequestParam String numLesson,
 			HttpServletResponse response)
 			throws IOException, InterruptedException, ExecutionException, ServletException, FirebaseAuthException {
-//		LOGGER.info("facebookId: " + facebookId);
+		LOGGER.info("url video open lesson: " + url);
 		FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
 		String uid = decodedToken.getUid();
 		Firestore db = FirestoreOptions.getDefaultInstance().getService();
