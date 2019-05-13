@@ -1382,7 +1382,7 @@ public class JourneyController {
 					LOGGER.info("keyDay: " + String.valueOf(journeyDay.getDay()));
 					listJourneyActive.add(hashMap);
 				}
-				if (journeyDay.getDay() < 3) {
+				if (numDays < 3) {
 					String docIdNext = "3days" + String.valueOf(numDays + 1) + facebookId;
 					DocumentReference docRef = db.collection("JourneyDay").document(docIdNext);
 					ApiFuture<DocumentSnapshot> futureCheck = docRef.get();
@@ -1582,7 +1582,7 @@ public class JourneyController {
 					LOGGER.info("keyDay: " + String.valueOf(journeyDay.getDay()));
 					listJourneyActive.add(hashMap);
 				}
-				if (journeyDay.getDay() < 5) {
+				if (numDays < 5) {
 
 					String docIdNext = "5days" + String.valueOf(numDays + 1) + facebookId;
 					DocumentReference docRef = db.collection("JourneyDay").document(docIdNext);
@@ -1787,7 +1787,7 @@ public class JourneyController {
 					LOGGER.info("keyDay: " + String.valueOf(journeyDay.getDay()));
 					listJourneyActive.add(hashMap);
 				}
-				if (journeyDay.getDay() < 7) {
+				if (numDays < 7) {
 					String docIdNext = "7days" + String.valueOf(numDays + 1) + facebookId;
 					DocumentReference docRef = db.collection("JourneyDay").document(docIdNext);
 					ApiFuture<DocumentSnapshot> futureCheck = docRef.get();
@@ -1989,7 +1989,7 @@ public class JourneyController {
 					LOGGER.info("keyDay: " + String.valueOf(journeyDay.getDay()));
 					listJourneyActive.add(hashMap);
 				}
-				if (journeyDay.getDay() < 10) {
+				if (numDays < 10) {
 					String docIdNext = "10days" + String.valueOf(numDays + 1) + facebookId;
 					DocumentReference docRef = db.collection("JourneyDay").document(docIdNext);
 					ApiFuture<DocumentSnapshot> futureCheck = docRef.get();
@@ -2194,7 +2194,7 @@ public class JourneyController {
 					LOGGER.info("keyDay: " + String.valueOf(journeyDay.getDay()));
 					listJourneyActive.add(hashMap);
 				}
-				if (journeyDay.getDay() < 21) {
+				if (numDays < 21) {
 					String docIdNext = "21days" + String.valueOf(numDays + 1) + facebookId;
 					DocumentReference docRef = db.collection("JourneyDay").document(docIdNext);
 					ApiFuture<DocumentSnapshot> futureCheck = docRef.get();
@@ -2395,7 +2395,7 @@ public class JourneyController {
 					LOGGER.info("keyDay: " + String.valueOf(journeyDay.getDay()));
 					listJourneyActive.add(hashMap);
 				}
-				if (journeyDay.getDay() < 45) {
+				if (numDays < 45) {
 					String docIdNext = "45days" + String.valueOf(numDays + 1) + facebookId;
 					DocumentReference docRef = db.collection("JourneyDay").document(docIdNext);
 					ApiFuture<DocumentSnapshot> futureCheck = docRef.get();
@@ -2597,7 +2597,7 @@ public class JourneyController {
 					LOGGER.info("keyDay: " + String.valueOf(journeyDay.getDay()));
 					listJourneyActive.add(hashMap);
 				}
-				if (journeyDay.getDay() < 90) {
+				if (numDays < 90) {
 					String docIdNext = "90days" + String.valueOf(numDays + 1) + facebookId;
 					DocumentReference docRef = db.collection("JourneyDay").document(docIdNext);
 					ApiFuture<DocumentSnapshot> futureCheck = docRef.get();

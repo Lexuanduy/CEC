@@ -72,7 +72,6 @@ public class LessonController {
 		}
 		FirebaseOptions options = new FirebaseOptions.Builder().setCredentials(credentials).setProjectId("opencec")
 				.build();
-
 		FirebaseApp.initializeApp(options);
 
 //		FirebaseApp.initializeApp();
