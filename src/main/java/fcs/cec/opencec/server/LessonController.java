@@ -64,7 +64,7 @@ public class LessonController {
 		GoogleCredentials credentials = null;
 		try {
 			credentials = GoogleCredentials.fromStream(new FileInputStream(
-					"\\opencec\\src\\main\\java\\fcs\\cec\\opencec\\opencec-firebase-adminsdk-ccqab-9f50c0997b.json"));
+					"/var/lib/tomcat8/opencec-firebase-adminsdk-ccqab-9f50c0997b.json"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
