@@ -40,6 +40,7 @@ import com.google.cloud.firestore.WriteResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseToken;
+import com.google.firebase.cloud.FirestoreClient;
 
 import fcs.cec.opencec.entity.Account;
 import fcs.cec.opencec.entity.Journey;
@@ -93,7 +94,8 @@ public class JourneyController {
 	public String journeyDays(Model model, @PathVariable("name") String name, @PathVariable("day") String day,
 			@CookieValue(value = "idToken", required = false) String idToken)
 			throws FirebaseAuthException, InterruptedException, ExecutionException {
-		Firestore db = FirestoreOptions.getDefaultInstance().getService();
+//		Firestore db = FirestoreClient.getFirestore();
+		Firestore db = FirestoreClient.getFirestore();
 //		FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
 //		String uid = decodedToken.getUid();
 		int dayJourney = Integer.parseInt(day);
@@ -1114,7 +1116,8 @@ public class JourneyController {
 		LOGGER.info("url video check day: " + url);
 		FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
 		String uid = decodedToken.getUid();
-		Firestore db = FirestoreOptions.getDefaultInstance().getService();
+//		Firestore db = FirestoreClient.getFirestore();
+		Firestore db = FirestoreClient.getFirestore();
 		Document doc = Jsoup.connect(url).get();
 		int begin = doc.html().indexOf("content_owner_id_new&quot;:&quot;")
 				+ "content_owner_id_new&quot;:&quot;".length();
@@ -1335,7 +1338,8 @@ public class JourneyController {
 		} else {
 			FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
 			String uid = decodedToken.getUid();
-			Firestore db = FirestoreOptions.getDefaultInstance().getService();
+//			Firestore db = FirestoreClient.getFirestore();
+			Firestore db = FirestoreClient.getFirestore();
 			// get account id
 			ApiFuture<QuerySnapshot> future = db.collection("Account").whereEqualTo("uid", uid).get();
 			List<QueryDocumentSnapshot> documents = future.get().getDocuments();
@@ -1490,7 +1494,8 @@ public class JourneyController {
 		} else {
 			FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
 			String uid = decodedToken.getUid();
-			Firestore db = FirestoreOptions.getDefaultInstance().getService();
+//			Firestore db = FirestoreClient.getFirestore();
+			Firestore db = FirestoreClient.getFirestore();
 			// get account id
 			ApiFuture<QuerySnapshot> future = db.collection("Account").whereEqualTo("uid", uid).get();
 			List<QueryDocumentSnapshot> documents = future.get().getDocuments();
@@ -1693,7 +1698,7 @@ public class JourneyController {
 			LOGGER.info("idToken != null");
 			FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
 			String uid = decodedToken.getUid();
-			Firestore db = FirestoreOptions.getDefaultInstance().getService();
+			Firestore db = FirestoreClient.getFirestore();
 			// get account id
 			ApiFuture<QuerySnapshot> future = db.collection("Account").whereEqualTo("uid", uid).get();
 			List<QueryDocumentSnapshot> documents = future.get().getDocuments();
@@ -1894,7 +1899,7 @@ public class JourneyController {
 			LOGGER.info("idToken != null");
 			FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
 			String uid = decodedToken.getUid();
-			Firestore db = FirestoreOptions.getDefaultInstance().getService();
+			Firestore db = FirestoreClient.getFirestore();
 			// get account id
 			ApiFuture<QuerySnapshot> future = db.collection("Account").whereEqualTo("uid", uid).get();
 			List<QueryDocumentSnapshot> documents = future.get().getDocuments();
@@ -2099,7 +2104,7 @@ public class JourneyController {
 			LOGGER.info("idToken != null");
 			FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
 			String uid = decodedToken.getUid();
-			Firestore db = FirestoreOptions.getDefaultInstance().getService();
+			Firestore db = FirestoreClient.getFirestore();
 			// get account id
 			ApiFuture<QuerySnapshot> future = db.collection("Account").whereEqualTo("uid", uid).get();
 			List<QueryDocumentSnapshot> documents = future.get().getDocuments();
@@ -2302,7 +2307,7 @@ public class JourneyController {
 			LOGGER.info("idToken != null");
 			FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
 			String uid = decodedToken.getUid();
-			Firestore db = FirestoreOptions.getDefaultInstance().getService();
+			Firestore db = FirestoreClient.getFirestore();
 			// get account id
 			ApiFuture<QuerySnapshot> future = db.collection("Account").whereEqualTo("uid", uid).get();
 			List<QueryDocumentSnapshot> documents = future.get().getDocuments();
@@ -2503,7 +2508,7 @@ public class JourneyController {
 			LOGGER.info("idToken != null");
 			FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
 			String uid = decodedToken.getUid();
-			Firestore db = FirestoreOptions.getDefaultInstance().getService();
+			Firestore db = FirestoreClient.getFirestore();
 			// get account id
 			ApiFuture<QuerySnapshot> future = db.collection("Account").whereEqualTo("uid", uid).get();
 			List<QueryDocumentSnapshot> documents = future.get().getDocuments();
@@ -2655,7 +2660,7 @@ public class JourneyController {
 		LOGGER.info("urlvideo open day: " + url);
 		FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
 		String uid = decodedToken.getUid();
-		Firestore db = FirestoreOptions.getDefaultInstance().getService();
+		Firestore db = FirestoreClient.getFirestore();
 		// get account by uid
 		ApiFuture<QuerySnapshot> futureAcc = db.collection("Account").whereEqualTo("uid", uid).get();
 		List<QueryDocumentSnapshot> accDocuments = futureAcc.get().getDocuments();

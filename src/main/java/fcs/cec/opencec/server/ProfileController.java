@@ -32,6 +32,7 @@ import com.google.cloud.firestore.Firestore;
 import com.google.cloud.firestore.FirestoreOptions;
 import com.google.cloud.firestore.QuerySnapshot;
 import com.google.cloud.firestore.WriteResult;
+import com.google.firebase.cloud.FirestoreClient;
 
 import fcs.cec.opencec.entity.Member;
 import fcs.cec.opencec.entity.MemberPost;
@@ -43,7 +44,7 @@ public class ProfileController {
 	@GetMapping(value = "m/{id}")
 	public String profile(Model model, @PathVariable("id") String id)
 			throws InterruptedException, ExecutionException, JsonParseException, JsonMappingException, IOException {
-		Firestore db = FirestoreOptions.getDefaultInstance().getService();
+		Firestore db = FirestoreClient.getFirestore();
 		// get Member by document member id
 		DocumentReference docRef = db.collection("Member").document(id);
 		ApiFuture<DocumentSnapshot> future = docRef.get();
@@ -106,7 +107,7 @@ public class ProfileController {
 	@GetMapping(value = "p/{id}")
 	public String fileDetail(Model model, @PathVariable("id") String id)
 			throws InterruptedException, ExecutionException, JsonParseException, JsonMappingException, IOException {
-		Firestore db = FirestoreOptions.getDefaultInstance().getService();
+		Firestore db = FirestoreClient.getFirestore();
 
 		// get memberpost
 		String docId = "1784461175160264_" + id;

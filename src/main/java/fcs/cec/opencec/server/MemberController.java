@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.Firestore;
-import com.google.cloud.firestore.FirestoreOptions;
 import com.google.cloud.firestore.QuerySnapshot;
+import com.google.firebase.cloud.FirestoreClient;
 
 import fcs.cec.opencec.entity.Member;
 
@@ -33,7 +33,8 @@ public class MemberController {
 		}
 		int limit = 50;
 		int offset = (page - 1) * limit;
-		Firestore db = FirestoreOptions.getDefaultInstance().getService();
+//		Firestore db = FirestoreOptions.getDefaultInstance().getService();
+		Firestore db = FirestoreClient.getFirestore();
 		ApiFuture<QuerySnapshot> query = db.collection("Member").offset(offset).limit(limit).get();
 		List<Member> members = query.get().toObjects(Member.class);
 		ApiFuture<QuerySnapshot> queryTotal = db.collection("Member").get();

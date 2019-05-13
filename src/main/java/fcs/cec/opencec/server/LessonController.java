@@ -44,6 +44,7 @@ import com.google.firebase.FirebaseOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseToken;
+import com.google.firebase.cloud.FirestoreClient;
 
 import fcs.cec.opencec.entity.Account;
 import fcs.cec.opencec.entity.Lesson;
@@ -115,7 +116,8 @@ public class LessonController {
 			throws InterruptedException, ExecutionException, IOException {
 		int idLesson = Integer.parseInt(id);
 		LOGGER.info("idLesson: " + idLesson);
-		Firestore db = FirestoreOptions.getDefaultInstance().getService();
+//		Firestore db = FirestoreOptions.getDefaultInstance().getService();
+		Firestore db = FirestoreClient.getFirestore();
 
 		if (idLesson < 1) {
 			LOGGER.info("lesson < 1");
@@ -242,7 +244,8 @@ public class LessonController {
 		LOGGER.info("url video check lesson: " + url);
 		FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
 		String uid = decodedToken.getUid();
-		Firestore db = FirestoreOptions.getDefaultInstance().getService();
+//		Firestore db = FirestoreOptions.getDefaultInstance().getService();
+		Firestore db = FirestoreClient.getFirestore();
 		Document doc = Jsoup.connect(url).get();
 		String lessonHashtag = doc.select(".bo .bt").text();
 		int lessonCheckNow = 0;
@@ -376,7 +379,8 @@ public class LessonController {
 		} else {
 			FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
 			String uid = decodedToken.getUid();
-			Firestore db = FirestoreOptions.getDefaultInstance().getService();
+//			Firestore db = FirestoreOptions.getDefaultInstance().getService();
+			Firestore db = FirestoreClient.getFirestore();
 			// get account id
 			ApiFuture<QuerySnapshot> future = db.collection("Account").whereEqualTo("uid", uid).get();
 			List<QueryDocumentSnapshot> documents = future.get().getDocuments();
@@ -485,7 +489,8 @@ public class LessonController {
 		LOGGER.info("url video open lesson: " + url);
 		FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
 		String uid = decodedToken.getUid();
-		Firestore db = FirestoreOptions.getDefaultInstance().getService();
+//		Firestore db = FirestoreOptions.getDefaultInstance().getService();
+		Firestore db = FirestoreClient.getFirestore();
 		// get account by uid
 		ApiFuture<QuerySnapshot> futureAcc = db.collection("Account").whereEqualTo("uid", uid).get();
 		List<QueryDocumentSnapshot> accDocuments = futureAcc.get().getDocuments();
