@@ -89,17 +89,28 @@ public class Main {
 		// end test
 		Firestore db = FirestoreOptions.getDefaultInstance().getService();
 		// asynchronously retrieve multiple documents
-		ApiFuture<QuerySnapshot> future = db.collection("JourneyDay").whereEqualTo("accountId", "488857841634271")
+		ApiFuture<QuerySnapshot> future = db.collection("Account").whereEqualTo("id", "457294174840160")
 				.get();
 		List<QueryDocumentSnapshot> documents = future.get().getDocuments();
 		for (DocumentSnapshot document : documents) {
 			System.out.println(document.getId());
-			if(!document.getId().equals("3days1488857841634271")) {
+			System.out.println(document.get("displayName"));
+//			System.out.println(document.get("email"));
+//			System.out.println(document.get("memberId"));
+//			System.out.println(document.get("uid"));
+//			ApiFuture<WriteResult> writeResult = db.collection("Account").document(document.getId()).delete();
+//			ApiFuture<WriteResult> writeResult2 = db.collection("LessonMember").document("1457294174840160").delete();
 
-				ApiFuture<WriteResult> writeResult = db.collection("JourneyDay").document(document.getId()).delete();
-			}
 		}
-
+//		ApiFuture<QuerySnapshot> future = db.collection("JourneyDay").whereEqualTo("accountId", "457294174840160")
+//				.get();
+//		List<QueryDocumentSnapshot> documents = future.get().getDocuments();
+//		for (DocumentSnapshot document : documents) {
+//			System.out.println(document.getId());
+//			
+//		}
+		
+		
 //		String docId = null;
 //		
 //		String title = doc.select("title").text();

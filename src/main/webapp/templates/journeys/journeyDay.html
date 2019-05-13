@@ -63,10 +63,12 @@
 					</div>
 					<hr class="mb-5 mt-5">
 					<div class="row" style="text-align: center;">
-						<embed th:src="@{${journey.pdfUrl}}" width="650" height="400"
+						<!-- <embed th:src="@{${journey.pdfUrl}}" width="650" height="400"
 							style="margin: 0 auto;">
-						</embed>
+						</embed> --> 
+						<iframe th:src="@{${journey.pdfUrl}}" width="650" height="400" style="margin: 0 auto;" frameborder="0"></iframe>
 					</div>
+					
 					<div class="row">
 						<div class="col-md-6 offset-md-3">
 							<div class="btn-group" style="float: right; margin-top: 35px;">
