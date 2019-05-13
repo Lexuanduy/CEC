@@ -29,7 +29,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.DocumentReference;
 import com.google.cloud.firestore.DocumentSnapshot;
@@ -45,8 +44,6 @@ import com.google.firebase.auth.FirebaseToken;
 import fcs.cec.opencec.entity.Account;
 import fcs.cec.opencec.entity.Journey;
 import fcs.cec.opencec.entity.JourneyDay;
-import fcs.cec.opencec.entity.Lesson;
-import fcs.cec.opencec.entity.LessonMember;
 
 @Controller
 public class JourneyController {
@@ -127,7 +124,6 @@ public class JourneyController {
 				List<QueryDocumentSnapshot> accountDocuments = futureAccount.get().getDocuments();
 				String facebookId = null;
 				for (DocumentSnapshot document : accountDocuments) {
-					System.out.println(document.getId() + " => " + document.toObject(Account.class));
 					facebookId = document.getId();
 				}
 
@@ -255,7 +251,6 @@ public class JourneyController {
 			List<QueryDocumentSnapshot> accountDocuments = futureAccount.get().getDocuments();
 			String facebookId = null;
 			for (DocumentSnapshot document : accountDocuments) {
-				System.out.println(document.getId() + " => " + document.toObject(Account.class));
 				facebookId = document.getId();
 			}
 
@@ -405,7 +400,6 @@ public class JourneyController {
 			List<QueryDocumentSnapshot> accountDocuments = futureAccount.get().getDocuments();
 			String facebookId = null;
 			for (DocumentSnapshot document : accountDocuments) {
-				System.out.println(document.getId() + " => " + document.toObject(Account.class));
 				facebookId = document.getId();
 			}
 
@@ -554,7 +548,6 @@ public class JourneyController {
 			List<QueryDocumentSnapshot> accountDocuments = futureAccount.get().getDocuments();
 			String facebookId = null;
 			for (DocumentSnapshot document : accountDocuments) {
-				System.out.println(document.getId() + " => " + document.toObject(Account.class));
 				facebookId = document.getId();
 			}
 
@@ -703,7 +696,6 @@ public class JourneyController {
 			List<QueryDocumentSnapshot> accountDocuments = futureAccount.get().getDocuments();
 			String facebookId = null;
 			for (DocumentSnapshot document : accountDocuments) {
-				System.out.println(document.getId() + " => " + document.toObject(Account.class));
 				facebookId = document.getId();
 			}
 
@@ -852,7 +844,6 @@ public class JourneyController {
 			List<QueryDocumentSnapshot> accountDocuments = futureAccount.get().getDocuments();
 			String facebookId = null;
 			for (DocumentSnapshot document : accountDocuments) {
-				System.out.println(document.getId() + " => " + document.toObject(Account.class));
 				facebookId = document.getId();
 			}
 
@@ -1001,7 +992,6 @@ public class JourneyController {
 			List<QueryDocumentSnapshot> accountDocuments = futureAccount.get().getDocuments();
 			String facebookId = null;
 			for (DocumentSnapshot document : accountDocuments) {
-				System.out.println(document.getId() + " => " + document.toObject(Account.class));
 				facebookId = document.getId();
 			}
 

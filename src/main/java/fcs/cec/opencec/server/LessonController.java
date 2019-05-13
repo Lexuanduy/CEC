@@ -28,7 +28,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.api.core.ApiFuture;
 import com.google.auth.oauth2.ComputeEngineCredentials;
 import com.google.auth.oauth2.GoogleCredentials;
@@ -141,7 +140,6 @@ public class LessonController {
 			List<QueryDocumentSnapshot> accountDocuments = futureAccount.get().getDocuments();
 			String facebookId = null;
 			for (DocumentSnapshot document : accountDocuments) {
-				System.out.println(document.getId() + " => " + document.toObject(Account.class));
 				facebookId = document.getId();
 			}
 
