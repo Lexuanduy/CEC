@@ -1,5 +1,6 @@
 package fcs.cec.opencec.server;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -55,9 +56,22 @@ public class LessonController {
 
 	static {
 
-		GoogleCredentials credentials = ComputeEngineCredentials.create();
+//		GoogleCredentials credentials = ComputeEngineCredentials.create();
+//		FirebaseOptions options = new FirebaseOptions.Builder().setCredentials(credentials).setProjectId("opencec")
+//				.build();
+//		FirebaseApp.initializeApp(options);
+
+		GoogleCredentials credentials = null;
+		try {
+			credentials = GoogleCredentials.fromStream(new FileInputStream(
+					"\\opencec\\src\\main\\java\\fcs\\cec\\opencec\\opencec-firebase-adminsdk-ccqab-9f50c0997b.json"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		FirebaseOptions options = new FirebaseOptions.Builder().setCredentials(credentials).setProjectId("opencec")
 				.build();
+
 		FirebaseApp.initializeApp(options);
 
 //		FirebaseApp.initializeApp();
