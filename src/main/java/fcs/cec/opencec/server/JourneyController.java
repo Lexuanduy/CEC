@@ -1314,6 +1314,7 @@ public class JourneyController {
 				}
 			}
 		}
+		LOGGER.info("idToken: " + idToken);
 		List<HashMap<String, String>> listJourneyActive = new ArrayList<>();
 		List<HashMap<String, String>> listDayLock = new ArrayList<>();
 		if (idToken == null) {
@@ -1481,6 +1482,7 @@ public class JourneyController {
 				}
 			}
 		}
+		LOGGER.info("idToken: " + idToken);
 		List<HashMap<String, String>> listJourneyActive = new ArrayList<>();
 		List<HashMap<String, String>> listDayLock = new ArrayList<>();
 		if (idToken == null) {
@@ -1682,6 +1684,7 @@ public class JourneyController {
 				}
 			}
 		}
+		LOGGER.info("idToken: " + idToken); 
 		List<HashMap<String, String>> listJourneyActive = new ArrayList<>();
 		List<HashMap<String, String>> listDayLock = new ArrayList<>();
 		if (idToken == null) {
@@ -1884,6 +1887,7 @@ public class JourneyController {
 				}
 			}
 		}
+		LOGGER.info("idToken: " + idToken); 
 		List<HashMap<String, String>> listJourneyActive = new ArrayList<>();
 		List<HashMap<String, String>> listDayLock = new ArrayList<>();
 		if (idToken == null) {
@@ -2090,6 +2094,7 @@ public class JourneyController {
 				}
 			}
 		}
+		LOGGER.info("idToken: " + idToken);
 		List<HashMap<String, String>> listJourneyActive = new ArrayList<>();
 		List<HashMap<String, String>> listDayLock = new ArrayList<>();
 		if (idToken == null) {
@@ -2284,7 +2289,7 @@ public class JourneyController {
 	public String evt45days(Model model, HttpServletRequest request)
 			throws FirebaseAuthException, InterruptedException, ExecutionException, UnsupportedEncodingException {
 		Cookie[] cookies = request.getCookies();
-		String idToken = null;
+		String idToken = null; 
 		if (cookies != null) {
 			for (Cookie cookie : cookies) {
 				if (cookie.getName().equals("idToken")) {
@@ -2294,6 +2299,7 @@ public class JourneyController {
 				}
 			}
 		}
+		LOGGER.info("idToken: " + idToken);
 		List<HashMap<String, String>> listJourneyActive = new ArrayList<>();
 		List<HashMap<String, String>> listDayLock = new ArrayList<>();
 		if (idToken == null) {
@@ -2496,6 +2502,7 @@ public class JourneyController {
 				}
 			}
 		}
+		LOGGER.info("idToken: " + idToken); 
 		List<HashMap<String, String>> listJourneyActive = new ArrayList<>();
 		List<HashMap<String, String>> listDayLock = new ArrayList<>();
 		if (idToken == null) {

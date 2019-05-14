@@ -355,6 +355,7 @@ public class LessonController {
 				}
 			}
 		}
+		LOGGER.info("idToken: " + idToken);
 		List<HashMap<String, String>> listLessonActive = new ArrayList<>();
 		List<HashMap<String, String>> listLessonLock = new ArrayList<>();
 		if (idToken == null) {
