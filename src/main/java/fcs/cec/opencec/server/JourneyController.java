@@ -1310,7 +1310,7 @@ public class JourneyController {
 				if (cookie.getName().equals("idToken")) {
 					// do something
 //					idToken = cookie.getValue();
-					idToken = URLDecoder.decode(cookie.getValue(), "UTF-8");
+					idToken = URLDecoder.decode(cookie.getValue(), "ASCII");
 				}
 			}
 		}
@@ -1477,7 +1477,7 @@ public class JourneyController {
 				if (cookie.getName().equals("idToken")) {
 					// do something
 //					idToken = cookie.getValue();
-					idToken = URLDecoder.decode(cookie.getValue(), "UTF-8");
+					idToken = URLDecoder.decode(cookie.getValue(), "ASCII");
 				}
 			}
 		}
@@ -1678,7 +1678,7 @@ public class JourneyController {
 				if (cookie.getName().equals("idToken")) {
 					// do something
 //					idToken = cookie.getValue();
-					idToken = URLDecoder.decode(cookie.getValue(), "UTF-8");
+					idToken = URLDecoder.decode(cookie.getValue(), "ASCII");
 				}
 			}
 		}
@@ -1880,7 +1880,7 @@ public class JourneyController {
 				if (cookie.getName().equals("idToken")) {
 					// do something
 //					idToken = cookie.getValue();
-					idToken = URLDecoder.decode(cookie.getValue(), "UTF-8");
+					idToken = URLDecoder.decode(cookie.getValue(), "ASCII");
 				}
 			}
 		}
@@ -2086,7 +2086,7 @@ public class JourneyController {
 				if (cookie.getName().equals("idToken")) {
 					// do something
 //					idToken = cookie.getValue();
-					idToken = URLDecoder.decode(cookie.getValue(), "UTF-8");
+					idToken = URLDecoder.decode(cookie.getValue(), "ASCII");
 				}
 			}
 		}
@@ -2290,7 +2290,7 @@ public class JourneyController {
 				if (cookie.getName().equals("idToken")) {
 					// do something
 //					idToken = cookie.getValue();
-					idToken = URLDecoder.decode(cookie.getValue(), "UTF-8");
+					idToken = URLDecoder.decode(cookie.getValue(), "ASCII");
 				}
 			}
 		}
@@ -2492,7 +2492,7 @@ public class JourneyController {
 				if (cookie.getName().equals("idToken")) {
 					// do something
 //					idToken = cookie.getValue();
-					idToken = URLDecoder.decode(cookie.getValue(), "UTF-8");
+					idToken = URLDecoder.decode(cookie.getValue(), "ASCII");
 				}
 			}
 		}

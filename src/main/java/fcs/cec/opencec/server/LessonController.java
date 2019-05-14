@@ -347,10 +347,11 @@ public class LessonController {
 		String idToken = null;
 		if (cookies != null) {
 			for (Cookie cookie : cookies) {
+				 
 				if (cookie.getName().equals("idToken")) {
 					// do something
 //					idToken = cookie.getValue();
-					idToken = URLDecoder.decode(cookie.getValue(), "UTF-8");
+					idToken = URLDecoder.decode(cookie.getValue(), "ASCII");
 				}
 			}
 		}
