@@ -2861,4 +2861,9 @@ public class JourneyController {
 			}
 		}
 	}
+	
+	@RequestMapping(value = "/journey", method = RequestMethod.GET)
+	public String evtJourneys() {
+		return "journeys/journey-all";
+	}
 }
