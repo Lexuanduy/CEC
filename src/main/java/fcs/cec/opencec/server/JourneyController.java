@@ -1,6 +1,8 @@
 package fcs.cec.opencec.server;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -1300,14 +1302,15 @@ public class JourneyController {
 
 	@RequestMapping(value = "/journey/3days", method = RequestMethod.GET)
 	public String evt3days(Model model, HttpServletRequest request)
-			throws FirebaseAuthException, InterruptedException, ExecutionException {
+			throws FirebaseAuthException, InterruptedException, ExecutionException, UnsupportedEncodingException {
 		Cookie[] cookies = request.getCookies();
 		String idToken = null;
 		if (cookies != null) {
 			for (Cookie cookie : cookies) {
 				if (cookie.getName().equals("idToken")) {
 					// do something
-					idToken = cookie.getValue();
+//					idToken = cookie.getValue();
+					idToken = URLDecoder.decode(cookie.getValue(), "UTF-8");
 				}
 			}
 		}
@@ -1466,14 +1469,15 @@ public class JourneyController {
 
 	@RequestMapping(value = "/journey/5days", method = RequestMethod.GET)
 	public String evt5days(Model model, HttpServletRequest request)
-			throws InterruptedException, ExecutionException, FirebaseAuthException {
+			throws InterruptedException, ExecutionException, FirebaseAuthException, UnsupportedEncodingException {
 		Cookie[] cookies = request.getCookies();
 		String idToken = null;
 		if (cookies != null) {
 			for (Cookie cookie : cookies) {
 				if (cookie.getName().equals("idToken")) {
 					// do something
-					idToken = cookie.getValue();
+//					idToken = cookie.getValue();
+					idToken = URLDecoder.decode(cookie.getValue(), "UTF-8");
 				}
 			}
 		}
@@ -1666,14 +1670,15 @@ public class JourneyController {
 
 	@RequestMapping(value = "/journey/7days", method = RequestMethod.GET)
 	public String evt7days(Model model, HttpServletRequest request)
-			throws FirebaseAuthException, InterruptedException, ExecutionException {
+			throws FirebaseAuthException, InterruptedException, ExecutionException, UnsupportedEncodingException {
 		Cookie[] cookies = request.getCookies();
 		String idToken = null;
 		if (cookies != null) {
 			for (Cookie cookie : cookies) {
 				if (cookie.getName().equals("idToken")) {
 					// do something
-					idToken = cookie.getValue();
+//					idToken = cookie.getValue();
+					idToken = URLDecoder.decode(cookie.getValue(), "UTF-8");
 				}
 			}
 		}
@@ -1867,14 +1872,15 @@ public class JourneyController {
 
 	@RequestMapping(value = "/journey/10days", method = RequestMethod.GET)
 	public String evt10days(Model model, HttpServletRequest request)
-			throws FirebaseAuthException, InterruptedException, ExecutionException {
+			throws FirebaseAuthException, InterruptedException, ExecutionException, UnsupportedEncodingException {
 		Cookie[] cookies = request.getCookies();
 		String idToken = null;
 		if (cookies != null) {
 			for (Cookie cookie : cookies) {
 				if (cookie.getName().equals("idToken")) {
 					// do something
-					idToken = cookie.getValue();
+//					idToken = cookie.getValue();
+					idToken = URLDecoder.decode(cookie.getValue(), "UTF-8");
 				}
 			}
 		}
@@ -2072,14 +2078,15 @@ public class JourneyController {
 
 	@RequestMapping(value = "/journey/21days", method = RequestMethod.GET)
 	public String evt21days(Model model, HttpServletRequest request)
-			throws FirebaseAuthException, InterruptedException, ExecutionException {
+			throws FirebaseAuthException, InterruptedException, ExecutionException, UnsupportedEncodingException {
 		Cookie[] cookies = request.getCookies();
 		String idToken = null;
 		if (cookies != null) {
 			for (Cookie cookie : cookies) {
 				if (cookie.getName().equals("idToken")) {
 					// do something
-					idToken = cookie.getValue();
+//					idToken = cookie.getValue();
+					idToken = URLDecoder.decode(cookie.getValue(), "UTF-8");
 				}
 			}
 		}
@@ -2275,14 +2282,15 @@ public class JourneyController {
 
 	@RequestMapping(value = "/journey/45days", method = RequestMethod.GET)
 	public String evt45days(Model model, HttpServletRequest request)
-			throws FirebaseAuthException, InterruptedException, ExecutionException {
+			throws FirebaseAuthException, InterruptedException, ExecutionException, UnsupportedEncodingException {
 		Cookie[] cookies = request.getCookies();
 		String idToken = null;
 		if (cookies != null) {
 			for (Cookie cookie : cookies) {
 				if (cookie.getName().equals("idToken")) {
 					// do something
-					idToken = cookie.getValue();
+//					idToken = cookie.getValue();
+					idToken = URLDecoder.decode(cookie.getValue(), "UTF-8");
 				}
 			}
 		}
@@ -2476,14 +2484,15 @@ public class JourneyController {
 
 	@RequestMapping(value = "/journey/90days", method = RequestMethod.GET)
 	public String evt90days(Model model, HttpServletRequest request)
-			throws FirebaseAuthException, InterruptedException, ExecutionException {
+			throws FirebaseAuthException, InterruptedException, ExecutionException, UnsupportedEncodingException {
 		Cookie[] cookies = request.getCookies();
 		String idToken = null;
 		if (cookies != null) {
 			for (Cookie cookie : cookies) {
 				if (cookie.getName().equals("idToken")) {
 					// do something
-					idToken = cookie.getValue();
+//					idToken = cookie.getValue();
+					idToken = URLDecoder.decode(cookie.getValue(), "UTF-8");
 				}
 			}
 		}

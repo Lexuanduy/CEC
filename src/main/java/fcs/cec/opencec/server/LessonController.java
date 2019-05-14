@@ -2,6 +2,8 @@ package fcs.cec.opencec.server;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -339,7 +341,7 @@ public class LessonController {
 
 	@RequestMapping(value = "/events/altp", method = RequestMethod.GET)
 	public String evtAltp(Model model, HttpServletRequest request)
-			throws FirebaseAuthException, InterruptedException, ExecutionException {
+			throws FirebaseAuthException, InterruptedException, ExecutionException, UnsupportedEncodingException {
 
 		Cookie[] cookies = request.getCookies();
 		String idToken = null;
@@ -347,7 +349,8 @@ public class LessonController {
 			for (Cookie cookie : cookies) {
 				if (cookie.getName().equals("idToken")) {
 					// do something
-					idToken = cookie.getValue();
+//					idToken = cookie.getValue();
+					idToken = URLDecoder.decode(cookie.getValue(), "UTF-8");
 				}
 			}
 		}
