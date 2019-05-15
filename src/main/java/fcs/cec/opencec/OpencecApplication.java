@@ -147,7 +147,7 @@ public class OpencecApplication {
 											loggerApp.info("lesson < 1 || lesson >= 24, break");
 											break;
 										} else {
-											lessonNext = String.valueOf(lesson + 1);
+											lessonNext = String.valueOf(lesson + 1); 
 											String docLessonMember = lessonNext + accountId;
 											loggerApp.info("docLessonMember: " + docLessonMember);
 											DocumentReference docRefLessonMember = db.collection("LessonMember")
@@ -226,7 +226,7 @@ public class OpencecApplication {
 															.document(docJourneyDay).set(data);
 												}
 												journeyNext = "5days/1";
-												contentSend = "Chào bạn, đây là link bài ngày hành trình tiếp theo: https://cec.net.vn/"
+												contentSend = "Chào bạn, đây là link bài ngày hành trình tiếp theo: https://cec.net.vn/journey/"
 														+ journeyNext;
 												loggerApp.info("contentSend: " + contentSend);
 											}
@@ -258,7 +258,7 @@ public class OpencecApplication {
 															.document(docJourneyDay).set(data);
 												}
 												journeyNext = "7days/1";
-												contentSend = "Chào bạn, đây là link bài ngày hành trình tiếp theo: https://cec.net.vn/"
+												contentSend = "Chào bạn, đây là link bài ngày hành trình tiếp theo: https://cec.net.vn/journey/"
 														+ journeyNext;
 												loggerApp.info("contentSend: " + contentSend);
 											}
@@ -290,7 +290,7 @@ public class OpencecApplication {
 															.document(docJourneyDay).set(data);
 												}
 												journeyNext = "10days/1";
-												contentSend = "Chào bạn, đây là link bài ngày hành trình tiếp theo: https://cec.net.vn/"
+												contentSend = "Chào bạn, đây là link bài ngày hành trình tiếp theo: https://cec.net.vn/journey/"
 														+ journeyNext;
 												loggerApp.info("contentSend: " + contentSend);
 											}
@@ -322,7 +322,7 @@ public class OpencecApplication {
 															.document(docJourneyDay).set(data);
 												}
 												journeyNext = "21days/1";
-												contentSend = "Chào bạn, đây là link bài ngày hành trình tiếp theo: https://cec.net.vn/"
+												contentSend = "Chào bạn, đây là link bài ngày hành trình tiếp theo: https://cec.net.vn/journey/"
 														+ journeyNext;
 												loggerApp.info("contentSend: " + contentSend);
 											}
@@ -355,7 +355,7 @@ public class OpencecApplication {
 															.document(docJourneyDay).set(data);
 												}
 												journeyNext = "45days/1";
-												contentSend = "Chào bạn, đây là link bài ngày hành trình tiếp theo: https://cec.net.vn/"
+												contentSend = "Chào bạn, đây là link bài ngày hành trình tiếp theo: https://cec.net.vn/journey/"
 														+ journeyNext;
 												loggerApp.info("contentSend: " + contentSend);
 											}
@@ -387,7 +387,7 @@ public class OpencecApplication {
 															.document(docJourneyDay).set(data);
 												}
 												journeyNext = "90days/1";
-												contentSend = "Chào bạn, đây là link bài ngày hành trình tiếp theo: https://cec.net.vn/"
+												contentSend = "Chào bạn, đây là link bài ngày hành trình tiếp theo: https://cec.net.vn/journey/"
 														+ journeyNext;
 												loggerApp.info("contentSend: " + contentSend);
 											}
@@ -427,8 +427,8 @@ public class OpencecApplication {
 													ApiFuture<WriteResult> addedDocRef = db.collection("JourneyDay")
 															.document(docJourneyDay).set(data);
 												}
-												contentSend = "Chào bạn, đây là link bài ngày hành trình tiếp theo: https://cec.net.vn/"
-														+ journeyName + "days/" + day;
+												contentSend = "Chào bạn, đây là link bài ngày hành trình tiếp theo: https://cec.net.vn/journey/"
+														+ journeyName + "days/" + day; 
 												loggerApp.info("contentSend: " + contentSend);
 											}
 											if (Integer.parseInt(day) >= 1 && ((journeyName.equals("3")
