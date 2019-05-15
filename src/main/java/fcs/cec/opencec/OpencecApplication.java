@@ -147,7 +147,27 @@ public class OpencecApplication {
 											loggerApp.info("lesson < 1 || lesson >= 24, break");
 											break;
 										} else {
-											lessonNext = String.valueOf(lesson + 1); 
+											// add lesson last
+											loggerApp.info("add lesson last.");
+											String docLessonMemberLast = lesson + accountId;
+											loggerApp.info("docLessonMemberLast: " + docLessonMemberLast);
+											Map<String, Object> docData = new HashMap<>();
+											docData.put("lesson", lesson);
+											docData.put("memberId", posterId);
+											docData.put("memberName", "");
+											docData.put("postId", "");
+											docData.put("status", 1);
+											docData.put("url", "");
+											docData.put("uid", uid);
+											docData.put("accountId", accountId);
+											docData.put("createdAt", System.currentTimeMillis() / 1000);
+											docData.put("updatedAt", System.currentTimeMillis() / 1000);
+											ApiFuture<WriteResult> addLessonLast = db.collection("LessonMember")
+													.document(docLessonMemberLast).set(docData);
+
+											// check lesson next
+											loggerApp.info("check lesson next");
+											lessonNext = String.valueOf(lesson + 1);
 											String docLessonMember = lessonNext + accountId;
 											loggerApp.info("docLessonMember: " + docLessonMember);
 											DocumentReference docRefLessonMember = db.collection("LessonMember")
@@ -157,7 +177,9 @@ public class OpencecApplication {
 											if (documentLessonMember.exists()) {
 												loggerApp.info("Document LessonMember exist!");
 											} else {
+												// add lesson next
 												loggerApp.info("No such document LessonMember!");
+												loggerApp.info("add lesson next");
 												Map<String, Object> data = new HashMap<>();
 												lesson = lesson + 1;
 												data.put("lesson", lesson);
@@ -329,7 +351,7 @@ public class OpencecApplication {
 											if (journeyName.contentEquals("21") && day.equals("21")) {
 												loggerApp.info("21/21");
 												String journeyNew = "45days1";
-												docJourneyDay = journeyNew+accountId;
+												docJourneyDay = journeyNew + accountId;
 												loggerApp.info("docJourneyDay: " + docJourneyDay);
 												// create new day in journey day
 												DocumentReference docRef = db.collection("JourneyDay")
@@ -428,7 +450,7 @@ public class OpencecApplication {
 															.document(docJourneyDay).set(data);
 												}
 												contentSend = "Chào bạn, đây là link bài ngày hành trình tiếp theo: https://cec.net.vn/journey/"
-														+ journeyName + "days/" + day; 
+														+ journeyName + "days/" + day;
 												loggerApp.info("contentSend: " + contentSend);
 											}
 											if (Integer.parseInt(day) >= 1 && ((journeyName.equals("3")
@@ -459,7 +481,27 @@ public class OpencecApplication {
 												if (documentLessonMember.exists()) {
 													loggerApp.info("Document LessonMember exist!");
 												} else {
+													// add lesson last
+													loggerApp.info("add lesson last");
+													String docLessonMemberLast = lesson + accountId;
+													loggerApp.info("docLessonMemberLast: " + docLessonMemberLast);
+													Map<String, Object> docData = new HashMap<>();
+													docData.put("lesson", lesson);
+													docData.put("memberId", posterId);
+													docData.put("memberName", "");
+													docData.put("postId", "");
+													docData.put("status", 1);
+													docData.put("url", "");
+													docData.put("uid", uid);
+													docData.put("accountId", accountId);
+													docData.put("createdAt", System.currentTimeMillis() / 1000);
+													docData.put("updatedAt", System.currentTimeMillis() / 1000);
+													ApiFuture<WriteResult> addLessonLast = db.collection("LessonMember")
+															.document(docLessonMemberLast).set(docData);
+													
+													// add lesson next
 													loggerApp.info("No such document LessonMember!");
+													loggerApp.info("add lesson next.");
 													Map<String, Object> data = new HashMap<>();
 													lesson = lesson + 1;
 													data.put("lesson", lesson);
