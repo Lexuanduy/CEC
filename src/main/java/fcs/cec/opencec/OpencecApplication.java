@@ -222,6 +222,24 @@ public class OpencecApplication {
 											}
 											if (journeyName.contentEquals("3") && day.equals("3")) {
 												loggerApp.info("3/3");
+												loggerApp.info("add day 3/3");
+												String docJourneyDayLast = "3days3" + accountId;
+												Map<String, Object> dataLast = new HashMap<>();
+												dataLast.put("day", 3);
+												dataLast.put("journey", "3days");
+												dataLast.put("memberId", posterId);
+												dataLast.put("memberName", "");
+												dataLast.put("postId", "");
+												dataLast.put("status", 1);
+												dataLast.put("url", "");
+												dataLast.put("uid", uid);
+												dataLast.put("accountId", accountId);
+												dataLast.put("createdAt", System.currentTimeMillis() / 1000);
+												dataLast.put("updatedAt", System.currentTimeMillis() / 1000);
+												ApiFuture<WriteResult> addedDocLast = db.collection("JourneyDay")
+														.document(docJourneyDayLast).set(dataLast);
+
+												loggerApp.info("create 5days day 1.");
 												docJourneyDay = "5days1" + accountId;
 												loggerApp.info("docJourneyDay: " + docJourneyDay);
 												// create new day in journey day
@@ -235,6 +253,7 @@ public class OpencecApplication {
 													loggerApp.info("No such document JourneyDay!");
 													Map<String, Object> data = new HashMap<>();
 													data.put("day", 1);
+													data.put("journey", "5days");
 													data.put("memberId", posterId);
 													data.put("memberName", "");
 													data.put("postId", "");
@@ -254,6 +273,24 @@ public class OpencecApplication {
 											}
 											if (journeyName.contentEquals("5") && day.equals("5")) {
 												loggerApp.info("5/5");
+												loggerApp.info("add doc 5days day 5.");
+												String docJourneyDayLast = "5days5" + accountId;
+												Map<String, Object> dataLast = new HashMap<>();
+												dataLast.put("day", 5);
+												dataLast.put("journey", "5days");
+												dataLast.put("memberId", posterId);
+												dataLast.put("memberName", "");
+												dataLast.put("postId", "");
+												dataLast.put("status", 1);
+												dataLast.put("url", "");
+												dataLast.put("uid", uid);
+												dataLast.put("accountId", accountId);
+												dataLast.put("createdAt", System.currentTimeMillis() / 1000);
+												dataLast.put("updatedAt", System.currentTimeMillis() / 1000);
+												ApiFuture<WriteResult> addedDocLast = db.collection("JourneyDay")
+														.document(docJourneyDayLast).set(dataLast);
+
+												loggerApp.info("check 7days day 1.");
 												docJourneyDay = "7days1" + accountId;
 												loggerApp.info("docJourneyDay: " + docJourneyDay);
 												// create new day in journey day
@@ -264,9 +301,10 @@ public class OpencecApplication {
 												if (document.exists()) {
 													loggerApp.info("Document JourneyDay exist!");
 												} else {
-													loggerApp.info("No such document JourneyDay!");
+													loggerApp.info("No such document 7days day 1!");
 													Map<String, Object> data = new HashMap<>();
 													data.put("day", 1);
+													data.put("journey", "7days");
 													data.put("memberId", posterId);
 													data.put("memberName", "");
 													data.put("postId", "");
@@ -286,6 +324,24 @@ public class OpencecApplication {
 											}
 											if (journeyName.contentEquals("7") && day.equals("7")) {
 												loggerApp.info("7/7");
+												loggerApp.info("add doc 7days day 7.");
+												String docJourneyDayLast = "7days7" + accountId;
+												Map<String, Object> dataLast = new HashMap<>();
+												dataLast.put("day", 7);
+												dataLast.put("journey", "7days");
+												dataLast.put("memberId", posterId);
+												dataLast.put("memberName", "");
+												dataLast.put("postId", "");
+												dataLast.put("status", 1);
+												dataLast.put("url", "");
+												dataLast.put("uid", uid);
+												dataLast.put("accountId", accountId);
+												dataLast.put("createdAt", System.currentTimeMillis() / 1000);
+												dataLast.put("updatedAt", System.currentTimeMillis() / 1000);
+												ApiFuture<WriteResult> addedDocLast = db.collection("JourneyDay")
+														.document(docJourneyDayLast).set(dataLast);
+
+												loggerApp.info("check doc 10days day 1.");
 												docJourneyDay = "10days1" + accountId;
 												loggerApp.info("docJourneyDay: " + docJourneyDay);
 												// create new day in journey day
@@ -294,11 +350,12 @@ public class OpencecApplication {
 												ApiFuture<DocumentSnapshot> futureJourneyDay = docRef.get();
 												DocumentSnapshot document = futureJourneyDay.get();
 												if (document.exists()) {
-													loggerApp.info("Document JourneyDay exist!");
-												} else {
-													loggerApp.info("No such document JourneyDay!");
+													loggerApp.info("Document 10days day 1 exist!");
+												} else { 
+													loggerApp.info("No such document 10days day 1!");
 													Map<String, Object> data = new HashMap<>();
 													data.put("day", 1);
+													data.put("journey", "10days");
 													data.put("memberId", posterId);
 													data.put("memberName", "");
 													data.put("postId", "");
@@ -318,6 +375,24 @@ public class OpencecApplication {
 											}
 											if (journeyName.contentEquals("10") && day.equals("10")) {
 												loggerApp.info("10/10");
+												loggerApp.info("add doc 10days day 10.");
+												String docJourneyDayLast = "10days10" + accountId;
+												Map<String, Object> dataLast = new HashMap<>();
+												dataLast.put("day", 10);
+												dataLast.put("journey", "10days");
+												dataLast.put("memberId", posterId);
+												dataLast.put("memberName", "");
+												dataLast.put("postId", "");
+												dataLast.put("status", 1);
+												dataLast.put("url", "");
+												dataLast.put("uid", uid);
+												dataLast.put("accountId", accountId);
+												dataLast.put("createdAt", System.currentTimeMillis() / 1000);
+												dataLast.put("updatedAt", System.currentTimeMillis() / 1000);
+												ApiFuture<WriteResult> addedDocLast = db.collection("JourneyDay")
+														.document(docJourneyDayLast).set(dataLast);
+
+												loggerApp.info("check doc 21days day 1"); 
 												docJourneyDay = "21days1" + accountId;
 												loggerApp.info("docJourneyDay: " + docJourneyDay);
 												// create new day in journey day
@@ -326,11 +401,12 @@ public class OpencecApplication {
 												ApiFuture<DocumentSnapshot> futureJourneyDay = docRef.get();
 												DocumentSnapshot document = futureJourneyDay.get();
 												if (document.exists()) {
-													loggerApp.info("Document JourneyDay exist!");
+													loggerApp.info("Document 21days day 1 exist!");
 												} else {
-													loggerApp.info("No such document JourneyDay!");
+													loggerApp.info("No such document 21days day 1!");
 													Map<String, Object> data = new HashMap<>();
 													data.put("day", 1);
+													data.put("journey", "21days");
 													data.put("memberId", posterId);
 													data.put("memberName", "");
 													data.put("postId", "");
@@ -350,6 +426,25 @@ public class OpencecApplication {
 											}
 											if (journeyName.contentEquals("21") && day.equals("21")) {
 												loggerApp.info("21/21");
+												loggerApp.info("add doc 21days day 21.");
+												String docJourneyDayLast = "21days21" + accountId;
+												Map<String, Object> dataLast = new HashMap<>();
+												dataLast.put("day", 21);
+												dataLast.put("journey", "21days");
+												dataLast.put("memberId", posterId);
+												dataLast.put("memberName", "");
+												dataLast.put("postId", "");
+												dataLast.put("status", 1);
+												dataLast.put("url", "");
+												dataLast.put("uid", uid);
+												dataLast.put("accountId", accountId);
+												dataLast.put("createdAt", System.currentTimeMillis() / 1000);
+												dataLast.put("updatedAt", System.currentTimeMillis() / 1000);
+												ApiFuture<WriteResult> addedDocLast = db.collection("JourneyDay")
+														.document(docJourneyDayLast).set(dataLast);
+												
+												
+												loggerApp.info("check 45days day 1.");
 												String journeyNew = "45days1";
 												docJourneyDay = journeyNew + accountId;
 												loggerApp.info("docJourneyDay: " + docJourneyDay);
@@ -359,11 +454,12 @@ public class OpencecApplication {
 												ApiFuture<DocumentSnapshot> futureJourneyDay = docRef.get();
 												DocumentSnapshot document = futureJourneyDay.get();
 												if (document.exists()) {
-													loggerApp.info("Document JourneyDay exist!");
+													loggerApp.info("Document 45days day 1 exist!");
 												} else {
-													loggerApp.info("No such document JourneyDay!");
+													loggerApp.info("No such document 45days day 1!");
 													Map<String, Object> data = new HashMap<>();
 													data.put("day", 1);
+													data.put("journey", "45days");
 													data.put("memberId", posterId);
 													data.put("memberName", "");
 													data.put("postId", "");
@@ -383,6 +479,25 @@ public class OpencecApplication {
 											}
 											if (journeyName.contentEquals("45") && day.equals("45")) {
 												loggerApp.info("45/45");
+												loggerApp.info("add doc 45days day 45.");
+												String docJourneyDayLast = "45days45" + accountId;
+												Map<String, Object> dataLast = new HashMap<>();
+												dataLast.put("day", 45);
+												dataLast.put("journey", "45days");
+												dataLast.put("memberId", posterId);
+												dataLast.put("memberName", "");
+												dataLast.put("postId", "");
+												dataLast.put("status", 1);
+												dataLast.put("url", "");
+												dataLast.put("uid", uid);
+												dataLast.put("accountId", accountId);
+												dataLast.put("createdAt", System.currentTimeMillis() / 1000);
+												dataLast.put("updatedAt", System.currentTimeMillis() / 1000);
+												ApiFuture<WriteResult> addedDocLast = db.collection("JourneyDay")
+														.document(docJourneyDayLast).set(dataLast);
+												
+												
+												loggerApp.info("check doc 90days day 1..");
 												docJourneyDay = "90days1" + accountId;
 												loggerApp.info("docJourneyDay: " + docJourneyDay);
 												// create new day in journey day
@@ -391,11 +506,12 @@ public class OpencecApplication {
 												ApiFuture<DocumentSnapshot> futureJourneyDay = docRef.get();
 												DocumentSnapshot document = futureJourneyDay.get();
 												if (document.exists()) {
-													loggerApp.info("Document JourneyDay exist!");
+													loggerApp.info("Document 90days day 1 exist!");
 												} else {
-													loggerApp.info("No such document JourneyDay!");
+													loggerApp.info("No such document 90days day 1!");
 													Map<String, Object> data = new HashMap<>();
 													data.put("day", 1);
+													data.put("journey", "90days");
 													data.put("memberId", posterId);
 													data.put("memberName", "");
 													data.put("postId", "");
@@ -421,10 +537,28 @@ public class OpencecApplication {
 													|| (journeyName.equals("21") && Integer.parseInt(day) < 21)
 													|| (journeyName.equals("45") && Integer.parseInt(day) < 45)
 													|| (journeyName.equals("90") && Integer.parseInt(day) < 90))) {
+												String docJourneyDayLast = journeyName + "days" + day + accountId;
+												Map<String, Object> dataLast = new HashMap<>();
+												dataLast.put("day", Integer.parseInt(day));
+												String journey = journeyName + "days";
+												dataLast.put("journey", journey);
+												dataLast.put("memberId", posterId);
+												dataLast.put("memberName", "");
+												dataLast.put("postId", "");
+												dataLast.put("status", 1);
+												dataLast.put("url", "");
+												dataLast.put("uid", uid);
+												dataLast.put("accountId", accountId);
+												dataLast.put("createdAt", System.currentTimeMillis() / 1000);
+												dataLast.put("updatedAt", System.currentTimeMillis() / 1000);
+												ApiFuture<WriteResult> addedDocLast = db.collection("JourneyDay")
+														.document(docJourneyDayLast).set(dataLast);
+												
+												
 												int dayNumber = Integer.parseInt(day) + 1;
-												day = String.valueOf(dayNumber);
+												String dayNext = String.valueOf(dayNumber);
 												// set docJourneyDay
-												docJourneyDay = journeyName + "days" + day + accountId;
+												docJourneyDay = journeyName + "days" + dayNext + accountId;
 												loggerApp.info("docJourneyDay: " + docJourneyDay);
 												// create new day in journey day
 												DocumentReference docRef = db.collection("JourneyDay")
@@ -436,7 +570,8 @@ public class OpencecApplication {
 												} else {
 													loggerApp.info("No such document JourneyDay!");
 													Map<String, Object> data = new HashMap<>();
-													data.put("day", 1);
+													data.put("day", dayNumber);
+													data.put("journey", journey);
 													data.put("memberId", posterId);
 													data.put("memberName", "");
 													data.put("postId", "");
@@ -450,7 +585,7 @@ public class OpencecApplication {
 															.document(docJourneyDay).set(data);
 												}
 												contentSend = "Chào bạn, đây là link bài ngày hành trình tiếp theo: https://cec.net.vn/journey/"
-														+ journeyName + "days/" + day;
+														+ journeyName + "days/" + dayNumber;
 												loggerApp.info("contentSend: " + contentSend);
 											}
 											if (Integer.parseInt(day) >= 1 && ((journeyName.equals("3")
@@ -498,7 +633,7 @@ public class OpencecApplication {
 													docData.put("updatedAt", System.currentTimeMillis() / 1000);
 													ApiFuture<WriteResult> addLessonLast = db.collection("LessonMember")
 															.document(docLessonMemberLast).set(docData);
-													
+
 													// add lesson next
 													loggerApp.info("No such document LessonMember!");
 													loggerApp.info("add lesson next.");
