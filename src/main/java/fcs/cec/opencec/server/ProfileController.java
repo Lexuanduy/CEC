@@ -65,9 +65,8 @@ public class ProfileController {
 			LOGGER.info("connected");
 			LOGGER.info("doc: " + doc);
 			String object = doc.select("body").text();
-			ObjectMapper mapper = new ObjectMapper();
-			Map<String, Object> map = mapper.readValue(object, Map.class);
-			String name = (String) map.get("name");
+			JSONObject jsonObj = new JSONObject(object);
+			String name = (String) jsonObj.get("name");
 			LOGGER.info(name);
 			member.setAvatar("");
 			member.setId(id);

@@ -71,7 +71,24 @@ public class Main {
 //		System.out.println("day: " + day);
 //		String journey = _day.substring((_day.indexOf("/") + 1), lenght);
 //		System.out.println("journey: " + journey);
-
+		String id = "100006621253138";
+		Document doc = null;
+		String url = "https://graph.facebook.com/" + id
+				+ "?access_token=1326545090735920|EaDaF1Rk_p41xfQaCqp--qHpNJg";
+		try {
+			doc = Jsoup.connect(url).ignoreContentType(true).timeout(30000).get();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		System.out.println("connected");
+		System.out.println("doc: " + doc);
+		String object = doc.select("body").text();
+		JSONObject jsonObj = new JSONObject(object);
+		System.out.println("name: " + (String) jsonObj.get("name"));
+//		ObjectMapper mapper = new ObjectMapper();
+//		Map<String, Object> map = mapper.readValue(object, Map.class);
+//		String name = (String) map.get("name");
+//		System.out.println(name);
 		// DK test
 //		Pattern p = Pattern.compile("(\\d+)(/|\\.)(\\d+)");
 //		Matcher m = p.matcher(_journeyDay.toLowerCase());
@@ -89,19 +106,19 @@ public class Main {
 		// end test
 		Firestore db = FirestoreOptions.getDefaultInstance().getService();
 		// asynchronously retrieve multiple documents
-		ApiFuture<QuerySnapshot> future = db.collection("Account").whereEqualTo("id", "457294174840160")
-				.get();
-		List<QueryDocumentSnapshot> documents = future.get().getDocuments();
-		for (DocumentSnapshot document : documents) {
-			System.out.println(document.getId());
-			System.out.println(document.get("displayName"));
-//			System.out.println(document.get("email"));
-//			System.out.println(document.get("memberId"));
-//			System.out.println(document.get("uid"));
-//			ApiFuture<WriteResult> writeResult = db.collection("Account").document(document.getId()).delete();
-//			ApiFuture<WriteResult> writeResult2 = db.collection("LessonMember").document("1457294174840160").delete();
-
-		}
+//		ApiFuture<QuerySnapshot> future = db.collection("Account").whereEqualTo("id", "457294174840160")
+//				.get();
+//		List<QueryDocumentSnapshot> documents = future.get().getDocuments();
+//		for (DocumentSnapshot document : documents) {
+//			System.out.println(document.getId());
+//			System.out.println(document.get("displayName"));
+////			System.out.println(document.get("email"));
+////			System.out.println(document.get("memberId"));
+////			System.out.println(document.get("uid"));
+////			ApiFuture<WriteResult> writeResult = db.collection("Account").document(document.getId()).delete();
+////			ApiFuture<WriteResult> writeResult2 = db.collection("LessonMember").document("1457294174840160").delete();
+//
+//		}
 //		ApiFuture<QuerySnapshot> future = db.collection("JourneyDay").whereEqualTo("accountId", "457294174840160")
 //				.get();
 //		List<QueryDocumentSnapshot> documents = future.get().getDocuments();
