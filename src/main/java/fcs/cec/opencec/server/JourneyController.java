@@ -47,6 +47,7 @@ import com.google.firebase.cloud.FirestoreClient;
 import fcs.cec.opencec.entity.Account;
 import fcs.cec.opencec.entity.Journey;
 import fcs.cec.opencec.entity.JourneyDay;
+import fcs.cec.opencec.entity.Lesson;
 
 @Controller
 public class JourneyController {
@@ -1613,7 +1614,7 @@ public class JourneyController {
 					}
 
 					HashMap<String, String> hashMapNext = new HashMap();
-					String nameDayNext = "Day " + String.valueOf(numDays + 1); 
+					String nameDayNext = "Day " + String.valueOf(numDays + 1);
 					hashMapNext.put("nameDay", nameDayNext);
 					hashMapNext.put("keyDay", String.valueOf(numDays + 1));
 					LOGGER.info("nameDay: " + nameDayNext);
@@ -1684,7 +1685,7 @@ public class JourneyController {
 				}
 			}
 		}
-		LOGGER.info("idToken: " + idToken); 
+		LOGGER.info("idToken: " + idToken);
 		List<HashMap<String, String>> listJourneyActive = new ArrayList<>();
 		List<HashMap<String, String>> listDayLock = new ArrayList<>();
 		if (idToken == null) {
@@ -1887,7 +1888,7 @@ public class JourneyController {
 				}
 			}
 		}
-		LOGGER.info("idToken: " + idToken); 
+		LOGGER.info("idToken: " + idToken);
 		List<HashMap<String, String>> listJourneyActive = new ArrayList<>();
 		List<HashMap<String, String>> listDayLock = new ArrayList<>();
 		if (idToken == null) {
@@ -2289,7 +2290,7 @@ public class JourneyController {
 	public String evt45days(Model model, HttpServletRequest request)
 			throws FirebaseAuthException, InterruptedException, ExecutionException, UnsupportedEncodingException {
 		Cookie[] cookies = request.getCookies();
-		String idToken = null; 
+		String idToken = null;
 		if (cookies != null) {
 			for (Cookie cookie : cookies) {
 				if (cookie.getName().equals("idToken")) {
@@ -2502,7 +2503,7 @@ public class JourneyController {
 				}
 			}
 		}
-		LOGGER.info("idToken: " + idToken); 
+		LOGGER.info("idToken: " + idToken);
 		List<HashMap<String, String>> listJourneyActive = new ArrayList<>();
 		List<HashMap<String, String>> listDayLock = new ArrayList<>();
 		if (idToken == null) {
@@ -2601,8 +2602,7 @@ public class JourneyController {
 						}
 					}
 				}
-			}
-			else {
+			} else {
 				for (DocumentSnapshot document : journeyDocuments) {
 					journeyDay = document.toObject(JourneyDay.class);
 					HashMap<String, String> hashMap = new HashMap();
@@ -2868,9 +2868,25 @@ public class JourneyController {
 			}
 		}
 	}
-	
+
 	@RequestMapping(value = "/journey", method = RequestMethod.GET)
-	public String evtJourneys() {
+	public String evtJourneys(HttpServletRequest request) throws UnsupportedEncodingException {
+		Cookie[] cookies = request.getCookies();
+		String idToken = null;
+		if (cookies != null) {
+			for (Cookie cookie : cookies) {
+
+				if (cookie.getName().equals("idToken")) {
+					// do something
+//					idToken = cookie.getValue();
+					idToken = URLDecoder.decode(cookie.getValue(), "ASCII");
+				}
+			}
+		}
+
+		if (idToken == null) {
+			LOGGER.info("idToken null.");
+		}
 		return "journeys/journey-all";
 	}
 }
