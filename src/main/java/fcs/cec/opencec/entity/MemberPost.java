@@ -61,6 +61,14 @@ public class MemberPost {
 	public void setDateCreate(String dateCreate) {
 		this.dateCreate = dateCreate;
 	}
+	
+	public boolean isProcessed() {
+		return processed;
+	}
+	public void setProcessed(boolean processed) {
+		this.processed = processed;
+	}
+
 	private String id;
 	private String posterId;
 	private String attachments;
@@ -71,4 +79,5 @@ public class MemberPost {
 	private String picture;
 	private String type;
 	private String dateCreate;
+	private boolean processed;
 }
