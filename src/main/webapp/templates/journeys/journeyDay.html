@@ -4,6 +4,29 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>CEC Journeys</title>
+<style>
+.ul-jd {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+	background-color: #333333;
+	padding-left:70px;
+}
+
+.li-jd {
+	float: left;
+	display: inline-block;
+}
+
+.li-jd a {
+	display: inline-block;;
+	color: white;
+	text-align: center;
+	padding: 16px;
+	text-decoration: none;
+}
+</style>
 </head>
 <body>
 	<div layout:fragment="content">
@@ -58,17 +81,19 @@
 								#hanhtrinhchienbinh90ngay dayX/Y( X là số ngày của hành trình, Y
 								là tên hành trình. VD: day 1/3, day 2/3,…) ( nếu không có
 								hashtag bài của bạn sẽ không được đăng lên nhóm)</p>
-							<h5 style="color: green;">Chúc bạn học tập hiệu quả trên CEC.</h5>
+							<h5 style="color: green;">Chúc bạn học tập hiệu quả trên
+								CEC.</h5>
 						</div>
 					</div>
 					<hr class="mb-5 mt-5">
 					<div class="row" style="text-align: center;">
 						<!-- <embed th:src="@{${journey.pdfUrl}}" width="650" height="400"
 							style="margin: 0 auto;">
-						</embed> --> 
-						<iframe th:src="@{${journey.pdfUrl}}" width="650" height="400" style="margin: 0 auto;" frameborder="0"></iframe>
+						</embed> -->
+						<iframe th:src="@{${journey.pdfUrl}}" width="650" height="400"
+							style="margin: 0 auto;" frameborder="0"></iframe>
 					</div>
-					
+
 					<div class="row">
 						<div class="col-md-6 offset-md-3">
 							<div class="btn-group" style="float: right; margin-top: 35px;">
@@ -88,6 +113,30 @@
 									style="display: none;">Gửi lên CEC</button>
 							</div>
 						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-1"></div>
+						<div class="col-md-10">
+							<ul class="ul-jd">
+								<li class="li-jd"><a class="nav-link"
+									href="/journey/3days/1">Journey 3days</a></li>
+								<li class="li-jd"><a class="nav-link"
+									href="/journey/5days/1">Journey 5days</a></li>
+								<li class="li-jd"><a class="nav-link"
+									href="/journey/7days/1">Journey 7days</a></li>
+								<li class="li-jd"><a class="nav-link"
+									href="/journey/10days/1">Journey 10days</a></li>
+								<li class="li-jd"><a class="nav-link"
+									href="/journey/21days/1">Journey 21days</a></li>
+								<li class="li-jd"><a class="nav-link"
+									href="/journey/45days/1">Journey 45days</a></li>
+								<li class="li-jd"><a class="nav-link"
+									href="/journey/90days/1">Journey 90days</a></li>
+							</ul>
+
+						</div>
+						<div class="col-md-1"></div>
+
 					</div>
 				</div>
 			</section>
