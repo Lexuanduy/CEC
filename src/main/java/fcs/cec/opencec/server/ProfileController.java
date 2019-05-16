@@ -45,6 +45,7 @@ public class ProfileController {
 	public String profile(Model model, @PathVariable("id") String id)
 			throws InterruptedException, ExecutionException, JsonParseException, JsonMappingException, IOException {
 		Firestore db = FirestoreClient.getFirestore();
+		LOGGER.info("id member: " + id);
 		// get Member by document member id
 		DocumentReference docRef = db.collection("Member").document(id);
 		ApiFuture<DocumentSnapshot> future = docRef.get();
@@ -64,6 +65,9 @@ public class ProfileController {
 			}
 			LOGGER.info("connected");
 			LOGGER.info("doc: " + doc);
+			if(doc == null) {
+				return "";
+			}
 			String object = doc.select("body").text();
 			JSONObject jsonObj = new JSONObject(object);
 			String name = (String) jsonObj.get("name");
