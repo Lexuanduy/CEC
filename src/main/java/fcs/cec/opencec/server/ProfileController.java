@@ -66,7 +66,7 @@ public class ProfileController {
 			LOGGER.info("connected");
 			LOGGER.info("doc: " + doc);
 			if(doc == null) {
-				return "";
+				return "error/404";
 			}
 			String object = doc.select("body").text();
 			JSONObject jsonObj = new JSONObject(object);
