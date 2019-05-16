@@ -1308,6 +1308,7 @@ public class JourneyController {
 		String idToken = null;
 		if (cookies != null) {
 			for (Cookie cookie : cookies) {
+				LOGGER.info("cookie: " + cookie);
 				if (cookie.getName().equals("idToken")) {
 					// do something
 //					idToken = cookie.getValue();
@@ -1476,6 +1477,7 @@ public class JourneyController {
 		String idToken = null;
 		if (cookies != null) {
 			for (Cookie cookie : cookies) {
+				LOGGER.info("cookie: " + cookie); 
 				if (cookie.getName().equals("idToken")) {
 					// do something
 //					idToken = cookie.getValue();
@@ -1678,6 +1680,7 @@ public class JourneyController {
 		String idToken = null;
 		if (cookies != null) {
 			for (Cookie cookie : cookies) {
+				LOGGER.info("cookie: " + cookie); 
 				if (cookie.getName().equals("idToken")) {
 					// do something
 //					idToken = cookie.getValue();
@@ -1881,6 +1884,7 @@ public class JourneyController {
 		String idToken = null;
 		if (cookies != null) {
 			for (Cookie cookie : cookies) {
+				LOGGER.info("cookie: " + cookie); 
 				if (cookie.getName().equals("idToken")) {
 					// do something
 //					idToken = cookie.getValue();
@@ -2088,6 +2092,7 @@ public class JourneyController {
 		String idToken = null;
 		if (cookies != null) {
 			for (Cookie cookie : cookies) {
+				LOGGER.info("cookie: " + cookie);
 				if (cookie.getName().equals("idToken")) {
 					// do something
 //					idToken = cookie.getValue();
@@ -2293,6 +2298,7 @@ public class JourneyController {
 		String idToken = null;
 		if (cookies != null) {
 			for (Cookie cookie : cookies) {
+				LOGGER.info("cookie: " + cookie); 
 				if (cookie.getName().equals("idToken")) {
 					// do something
 //					idToken = cookie.getValue();
@@ -2496,6 +2502,7 @@ public class JourneyController {
 		String idToken = null;
 		if (cookies != null) {
 			for (Cookie cookie : cookies) {
+				LOGGER.info("cookie: " + cookie);
 				if (cookie.getName().equals("idToken")) {
 					// do something
 //					idToken = cookie.getValue();
@@ -2875,7 +2882,7 @@ public class JourneyController {
 		String idToken = null;
 		if (cookies != null) {
 			for (Cookie cookie : cookies) {
-
+				LOGGER.info("cookie: " + cookie);
 				if (cookie.getName().equals("idToken")) {
 					// do something
 //					idToken = cookie.getValue();
