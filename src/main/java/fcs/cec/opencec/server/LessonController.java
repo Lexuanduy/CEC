@@ -353,16 +353,16 @@ public class LessonController {
 				 LOGGER.info("cookie: " + cookie);
 				if (cookie.getName().equals("idToken")) {
 					// do something
-					idToken = cookie.getValue();
-//					idToken = URLDecoder.decode(cookie.getValue(), "ASCII");
+//					idToken = cookie.getValue();
+					idToken = URLDecoder.decode(cookie.getValue(), "ASCII");
 				}
 			}
 		}
 		
-		LOGGER.info("idToken first: " + idToken);
-		String name = "cookieIdToken"; 
-		Cookie cookie = new Cookie(name, URLEncoder.encode(idToken, "ASCII"));
-		idToken = URLDecoder.decode(cookie.getValue(), "ASCII");
+//		LOGGER.info("idToken first: " + idToken);
+//		String name = "cookieIdToken"; 
+//		Cookie cookie = new Cookie(name, URLEncoder.encode(idToken, "ASCII"));
+//		idToken = URLDecoder.decode(cookie.getValue(), "ASCII");
 		
 		
 		LOGGER.info("idToken last: " + idToken);
