@@ -3,6 +3,7 @@ package fcs.cec.opencec.server;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -1311,12 +1312,17 @@ public class JourneyController {
 				LOGGER.info("cookie: " + cookie);
 				if (cookie.getName().equals("idToken")) {
 					// do something
-//					idToken = cookie.getValue();
-					idToken = URLDecoder.decode(cookie.getValue(), "ASCII");
+					idToken = cookie.getValue();
+//					idToken = URLDecoder.decode(cookie.getValue(), "ASCII");
 				}
 			}
 		}
-		LOGGER.info("idToken: " + idToken);
+		LOGGER.info("idToken first: " + idToken);
+		String name = "cookieIdToken"; 
+		Cookie cookie = new Cookie(name, URLEncoder.encode(idToken, "ASCII"));
+		idToken = URLDecoder.decode(cookie.getValue(), "ASCII");
+		
+		LOGGER.info("idToken last: " + idToken);
 		List<HashMap<String, String>> listJourneyActive = new ArrayList<>();
 		List<HashMap<String, String>> listDayLock = new ArrayList<>();
 		if (idToken == null) {
@@ -1480,12 +1486,16 @@ public class JourneyController {
 				LOGGER.info("cookie: " + cookie); 
 				if (cookie.getName().equals("idToken")) {
 					// do something
-//					idToken = cookie.getValue();
-					idToken = URLDecoder.decode(cookie.getValue(), "ASCII");
+					idToken = cookie.getValue();
+//					idToken = URLDecoder.decode(cookie.getValue(), "ASCII");
 				}
 			}
 		}
-		LOGGER.info("idToken: " + idToken);
+		LOGGER.info("idToken first: " + idToken);
+		String name = "cookieIdToken"; 
+		Cookie cookie = new Cookie(name, URLEncoder.encode(idToken, "ASCII"));
+		idToken = URLDecoder.decode(cookie.getValue(), "ASCII");
+		LOGGER.info("idToken last: " + idToken);
 		List<HashMap<String, String>> listJourneyActive = new ArrayList<>();
 		List<HashMap<String, String>> listDayLock = new ArrayList<>();
 		if (idToken == null) {
@@ -1683,12 +1693,17 @@ public class JourneyController {
 				LOGGER.info("cookie: " + cookie); 
 				if (cookie.getName().equals("idToken")) {
 					// do something
-//					idToken = cookie.getValue();
-					idToken = URLDecoder.decode(cookie.getValue(), "ASCII");
+					idToken = cookie.getValue();
+//					idToken = URLDecoder.decode(cookie.getValue(), "ASCII");
 				}
 			}
 		}
-		LOGGER.info("idToken: " + idToken);
+		
+		LOGGER.info("idToken first: " + idToken);
+		String name = "cookieIdToken"; 
+		Cookie cookie = new Cookie(name, URLEncoder.encode(idToken, "ASCII"));
+		idToken = URLDecoder.decode(cookie.getValue(), "ASCII");
+		LOGGER.info("idToken last: " + idToken);
 		List<HashMap<String, String>> listJourneyActive = new ArrayList<>();
 		List<HashMap<String, String>> listDayLock = new ArrayList<>();
 		if (idToken == null) {
@@ -1887,12 +1902,16 @@ public class JourneyController {
 				LOGGER.info("cookie: " + cookie); 
 				if (cookie.getName().equals("idToken")) {
 					// do something
-//					idToken = cookie.getValue();
-					idToken = URLDecoder.decode(cookie.getValue(), "ASCII");
+					idToken = cookie.getValue();
+//					idToken = URLDecoder.decode(cookie.getValue(), "ASCII");
 				}
 			}
 		}
-		LOGGER.info("idToken: " + idToken);
+		LOGGER.info("idToken first: " + idToken);
+		String name = "cookieIdToken"; 
+		Cookie cookie = new Cookie(name, URLEncoder.encode(idToken, "ASCII"));
+		idToken = URLDecoder.decode(cookie.getValue(), "ASCII");
+		LOGGER.info("idToken last: " + idToken);
 		List<HashMap<String, String>> listJourneyActive = new ArrayList<>();
 		List<HashMap<String, String>> listDayLock = new ArrayList<>();
 		if (idToken == null) {
@@ -2095,12 +2114,16 @@ public class JourneyController {
 				LOGGER.info("cookie: " + cookie);
 				if (cookie.getName().equals("idToken")) {
 					// do something
-//					idToken = cookie.getValue();
-					idToken = URLDecoder.decode(cookie.getValue(), "ASCII");
+					idToken = cookie.getValue();
+//					idToken = URLDecoder.decode(cookie.getValue(), "ASCII");
 				}
 			}
 		}
-		LOGGER.info("idToken: " + idToken);
+		LOGGER.info("idToken first: " + idToken);
+		String name = "cookieIdToken"; 
+		Cookie cookie = new Cookie(name, URLEncoder.encode(idToken, "ASCII"));
+		idToken = URLDecoder.decode(cookie.getValue(), "ASCII");
+		LOGGER.info("idToken last: " + idToken);
 		List<HashMap<String, String>> listJourneyActive = new ArrayList<>();
 		List<HashMap<String, String>> listDayLock = new ArrayList<>();
 		if (idToken == null) {
@@ -2301,12 +2324,16 @@ public class JourneyController {
 				LOGGER.info("cookie: " + cookie); 
 				if (cookie.getName().equals("idToken")) {
 					// do something
-//					idToken = cookie.getValue();
-					idToken = URLDecoder.decode(cookie.getValue(), "ASCII");
+					idToken = cookie.getValue();
+//					idToken = URLDecoder.decode(cookie.getValue(), "ASCII");
 				}
 			}
 		}
-		LOGGER.info("idToken: " + idToken);
+		LOGGER.info("idToken first: " + idToken);
+		String name = "cookieIdToken"; 
+		Cookie cookie = new Cookie(name, URLEncoder.encode(idToken, "ASCII"));
+		idToken = URLDecoder.decode(cookie.getValue(), "ASCII"); 
+		LOGGER.info("idToken last: " + idToken);
 		List<HashMap<String, String>> listJourneyActive = new ArrayList<>();
 		List<HashMap<String, String>> listDayLock = new ArrayList<>();
 		if (idToken == null) {
@@ -2505,12 +2532,16 @@ public class JourneyController {
 				LOGGER.info("cookie: " + cookie);
 				if (cookie.getName().equals("idToken")) {
 					// do something
-//					idToken = cookie.getValue();
-					idToken = URLDecoder.decode(cookie.getValue(), "ASCII");
+					idToken = cookie.getValue();
+//					idToken = URLDecoder.decode(cookie.getValue(), "ASCII");
 				}
 			}
 		}
-		LOGGER.info("idToken: " + idToken);
+		LOGGER.info("idToken first: " + idToken);
+		String name = "cookieIdToken"; 
+		Cookie cookie = new Cookie(name, URLEncoder.encode(idToken, "ASCII"));
+		idToken = URLDecoder.decode(cookie.getValue(), "ASCII");
+		LOGGER.info("idToken last: " + idToken);
 		List<HashMap<String, String>> listJourneyActive = new ArrayList<>();
 		List<HashMap<String, String>> listDayLock = new ArrayList<>();
 		if (idToken == null) {
@@ -2885,12 +2916,16 @@ public class JourneyController {
 				LOGGER.info("cookie: " + cookie);
 				if (cookie.getName().equals("idToken")) {
 					// do something
-//					idToken = cookie.getValue();
-					idToken = URLDecoder.decode(cookie.getValue(), "ASCII");
+					idToken = cookie.getValue();
+//					idToken = URLDecoder.decode(cookie.getValue(), "ASCII");
 				}
 			}
 		}
-
+		LOGGER.info("idToken first: " + idToken);
+		String name = "cookieIdToken"; 
+		Cookie cookie = new Cookie(name, URLEncoder.encode(idToken, "ASCII"));
+		idToken = URLDecoder.decode(cookie.getValue(), "ASCII");
+		LOGGER.info("idToken last: " + idToken);
 		if (idToken == null) {
 			LOGGER.info("idToken null.");
 		}
