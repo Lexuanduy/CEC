@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
@@ -13,7 +14,7 @@ public class HomeController {
 	private static final Logger LOGGER = LoggerFactory.getLogger(HomeController.class);
 
 	@GetMapping(value = "/")
-	public String welcome(Model model) throws InterruptedException, ExecutionException {
+	public String welcome(Model model, @CookieValue(value = "idToken", required = false) String idToken) throws InterruptedException, ExecutionException {
 		return "views/dashboard";
 	}
 
