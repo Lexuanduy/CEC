@@ -14,7 +14,7 @@ public class HomeController {
 	private static final Logger LOGGER = LoggerFactory.getLogger(HomeController.class);
 
 	@GetMapping(value = "/")
-	public String welcome(Model model, @CookieValue(value = "idToken", required = false) String idToken) throws InterruptedException, ExecutionException {
+	public String welcome(Model model) throws InterruptedException, ExecutionException {
 		return "views/dashboard";
 	}
 
