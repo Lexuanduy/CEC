@@ -148,7 +148,7 @@ $('#nextLesson')
 				            	console.log("status: " + doc.data().status);
 				            	numLesson = numLesson + 1;
 				            	var nextVideoUrl = "/lesson/" + numLesson;
-				            	window.location.href = nextVideoUrl;
+				            	window.location = nextVideoUrl;
 				            }else {
 								$('#sendVideo').show();
 								$('#urlLesson').show();
@@ -265,7 +265,7 @@ $('#nextLesson')
 				        											type : 'POST',
 				        											success : function(data) {
 				        												console.log('data: ' + data);
-				        												window.location.href = data;
+				        												window.location = data;
 				        											},
 				        											error : function(jqXHR, textStatus, errorThrown) {
 				        												if (jqXHR.status == 404) {
@@ -363,32 +363,32 @@ $('#nextDay')
 						            	numDay = numDay + 1;
 						            	console.log("numday: " + numDay);
 						            	var nextJourneyDayUrl = "/journey/" + journey + "/" + numDay;
-						            	window.location.href = nextJourneyDayUrl;
+						            	window.location = nextJourneyDayUrl;
 						        	}
 					            	if ((day >= 3 || day >= 5 || day >= 7 || day >= 10 || day >= 21 || day >= 45 || day >=90)) {
 					            		if(journey == "3days" && day == 3){
 							        		console.log("uri: " + "3days/3");
-							        		window.location.href = "/journey/5days/1";
+							        		window.location = "/journey/5days/1";
 							        	}
 							        	if(journey == "5days" && day == 5){
 							        		console.log("uri: " + "5days/5");
-							        		window.location.href = "/journey/7days/1";
+							        		window.location = "/journey/7days/1";
 							        	}
 							        	if(journey == "7days" && day == 7){
 							        		console.log("uri: " + "7days/7");
-							        		window.location.href = "/journey/10days/1";
+							        		window.location = "/journey/10days/1";
 							        	}
 							        	if(journey == "10days" && day == 10){
 							        		console.log("uri: " + "10days/10");
-							        		window.location.href = "/journey/21days/1";
+							        		window.location = "/journey/21days/1";
 							        	}
 							        	if(journey == "21days" && day == 21){
 							        		console.log("uri: " + "21days/21");
-							        		window.location.href = "/journey/45days/1";
+							        		window.location = "/journey/45days/1";
 							        	}
 							        	if(journey == "45days" && day == 45){
 							        		console.log("uri: " + "45days/45");
-							        		window.location.href = "/journey/90days/1";
+							        		window.location = "/journey/90days/1";
 							        	}
 							        	if(journey == "90days" && day == 90){
 							        		console.log("uri: " + "90days/90");
@@ -513,7 +513,7 @@ $('#nextDay')
 													type : 'POST',
 													success : function(data) {
 														console.log('data: ' + data);
-														window.location.href = data;
+														window.location = data;
 													},
 													error : function(jqXHR, textStatus, errorThrown) {
 														if (jqXHR.status == 404) {
