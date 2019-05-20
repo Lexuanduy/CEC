@@ -1,5 +1,697 @@
 <!DOCTYPE html>
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta property="fb:app_id" content="1326545090735920" />
+<title>Check idToken</title>
+<meta property="og:type" content="website" />
+<!-- <meta property="og:url" content="https://cec.net.vn" /> -->
+<meta property="og:description" content="Learn English with CEC" />
+<meta
+	content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
+	name="viewport">
+<!-- <link rel="stylesheet" href="../../css/materialdesignicons.min.css"> -->
+<!-- <link rel="stylesheet"
+	href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
+	integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr"
+	crossorigin="anonymous"> -->
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/MaterialDesign-Webfont/3.5.95/css/materialdesignicons.min.css">
+<link rel="stylesheet" href="../../css/jquery.fancybox.min.css">
+<link rel="stylesheet" href="../../css/bootstrap.min.css">
+<link rel="stylesheet" href="../../css/style.css">
+<style type="text/css">
+.fb_hidden {
+	position: absolute;
+	top: -10000px;
+	z-index: 10001
+}
+
+.fb_reposition {
+	overflow: hidden;
+	position: relative
+}
+
+.fb_invisible {
+	display: none
+}
+
+.fb_reset {
+	background: none;
+	border: 0;
+	border-spacing: 0;
+	color: #000;
+	cursor: auto;
+	direction: ltr;
+	font-family: "lucida grande", tahoma, verdana, arial, sans-serif;
+	font-size: 11px;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: normal;
+	letter-spacing: normal;
+	line-height: 1;
+	margin: 0;
+	overflow: visible;
+	padding: 0;
+	text-align: left;
+	text-decoration: none;
+	text-indent: 0;
+	text-shadow: none;
+	text-transform: none;
+	visibility: visible;
+	white-space: normal;
+	word-spacing: normal
+}
+
+.fb_reset>div {
+	overflow: hidden
+}
+
+@
+keyframes fb_transform {
+	from {opacity: 0;
+	transform: scale(.95)
+}
+
+to {
+	opacity: 1;
+	transform: scale(1)
+}
+
+}
+.fb_animate {
+	animation: fb_transform .3s forwards
+}
+
+.fb_dialog {
+	background: rgba(82, 82, 82, .7);
+	position: absolute;
+	top: -10000px;
+	z-index: 10001
+}
+
+.fb_dialog_advanced {
+	border-radius: 8px;
+	padding: 10px
+}
+
+.fb_dialog_content {
+	background: #fff;
+	color: #373737
+}
+
+.fb_dialog_close_icon {
+	background:
+		url(https://static.xx.fbcdn.net/rsrc.php/v3/yq/r/IE9JII6Z1Ys.png)
+		no-repeat scroll 0 0 transparent;
+	cursor: pointer;
+	display: block;
+	height: 15px;
+	position: absolute;
+	right: 18px;
+	top: 17px;
+	width: 15px
+}
+
+.fb_dialog_mobile .fb_dialog_close_icon {
+	left: 5px;
+	right: auto;
+	top: 5px
+}
+
+.fb_dialog_padding {
+	background-color: transparent;
+	position: absolute;
+	width: 1px;
+	z-index: -1
+}
+
+.fb_dialog_close_icon:hover {
+	background:
+		url(https://static.xx.fbcdn.net/rsrc.php/v3/yq/r/IE9JII6Z1Ys.png)
+		no-repeat scroll 0 -15px transparent
+}
+
+.fb_dialog_close_icon:active {
+	background:
+		url(https://static.xx.fbcdn.net/rsrc.php/v3/yq/r/IE9JII6Z1Ys.png)
+		no-repeat scroll 0 -30px transparent
+}
+
+.fb_dialog_iframe {
+	line-height: 0
+}
+
+.fb_dialog_content .dialog_title {
+	background: #6d84b4;
+	border: 1px solid #365899;
+	color: #fff;
+	font-size: 14px;
+	font-weight: bold;
+	margin: 0
+}
+
+.fb_dialog_content .dialog_title>span {
+	background:
+		url(https://static.xx.fbcdn.net/rsrc.php/v3/yd/r/Cou7n-nqK52.gif)
+		no-repeat 5px 50%;
+	float: left;
+	padding: 5px 0 7px 26px
+}
+
+body.fb_hidden {
+	height: 100%;
+	left: 0;
+	margin: 0;
+	overflow: visible;
+	position: absolute;
+	top: -10000px;
+	transform: none;
+	width: 100%
+}
+
+.fb_dialog.fb_dialog_mobile.loading {
+	background:
+		url(https://static.xx.fbcdn.net/rsrc.php/v3/ya/r/3rhSv5V8j3o.gif)
+		white no-repeat 50% 50%;
+	min-height: 100%;
+	min-width: 100%;
+	overflow: hidden;
+	position: absolute;
+	top: 0;
+	z-index: 10001
+}
+
+.fb_dialog.fb_dialog_mobile.loading.centered {
+	background: none;
+	height: auto;
+	min-height: initial;
+	min-width: initial;
+	width: auto
+}
+
+.fb_dialog.fb_dialog_mobile.loading.centered #fb_dialog_loader_spinner {
+	width: 100%
+}
+
+.fb_dialog.fb_dialog_mobile.loading.centered .fb_dialog_content {
+	background: none
+}
+
+.loading.centered #fb_dialog_loader_close {
+	clear: both;
+	color: #fff;
+	display: block;
+	font-size: 18px;
+	padding-top: 20px
+}
+
+#fb-root #fb_dialog_ipad_overlay {
+	background: rgba(0, 0, 0, .4);
+	bottom: 0;
+	left: 0;
+	min-height: 100%;
+	position: absolute;
+	right: 0;
+	top: 0;
+	width: 100%;
+	z-index: 10000
+}
+
+#fb-root #fb_dialog_ipad_overlay.hidden {
+	display: none
+}
+
+.fb_dialog.fb_dialog_mobile.loading iframe {
+	visibility: hidden
+}
+
+.fb_dialog_mobile .fb_dialog_iframe {
+	position: sticky;
+	top: 0
+}
+
+.fb_dialog_content .dialog_header {
+	background: linear-gradient(from(#738aba), to(#2c4987));
+	border-bottom: 1px solid;
+	border-color: #1d3c78;
+	box-shadow: white 0 1px 1px -1px inset;
+	color: #fff;
+	font: bold 14px Helvetica, sans-serif;
+	text-overflow: ellipsis;
+	text-shadow: rgba(0, 30, 84, .296875) 0 -1px 0;
+	vertical-align: middle;
+	white-space: nowrap
+}
+
+.fb_dialog_content .dialog_header table {
+	height: 43px;
+	width: 100%
+}
+
+.fb_dialog_content .dialog_header td.header_left {
+	font-size: 12px;
+	padding-left: 5px;
+	vertical-align: middle;
+	width: 60px
+}
+
+.fb_dialog_content .dialog_header td.header_right {
+	font-size: 12px;
+	padding-right: 5px;
+	vertical-align: middle;
+	width: 60px
+}
+
+.fb_dialog_content .touchable_button {
+	background: linear-gradient(from(#4267B2), to(#2a4887));
+	background-clip: padding-box;
+	border: 1px solid #29487d;
+	border-radius: 3px;
+	display: inline-block;
+	line-height: 18px;
+	margin-top: 3px;
+	max-width: 85px;
+	padding: 4px 12px;
+	position: relative
+}
+
+.fb_dialog_content .dialog_header .touchable_button input {
+	background: none;
+	border: none;
+	color: #fff;
+	font: bold 12px Helvetica, sans-serif;
+	margin: 2px -12px;
+	padding: 2px 6px 3px 6px;
+	text-shadow: rgba(0, 30, 84, .296875) 0 -1px 0
+}
+
+.fb_dialog_content .dialog_header .header_center {
+	color: #fff;
+	font-size: 16px;
+	font-weight: bold;
+	line-height: 18px;
+	text-align: center;
+	vertical-align: middle
+}
+
+.fb_dialog_content .dialog_content {
+	background:
+		url(https://static.xx.fbcdn.net/rsrc.php/v3/y9/r/jKEcVPZFk-2.gif)
+		no-repeat 50% 50%;
+	border: 1px solid #4a4a4a;
+	border-bottom: 0;
+	border-top: 0;
+	height: 150px
+}
+
+.fb_dialog_content .dialog_footer {
+	background: #f5f6f7;
+	border: 1px solid #4a4a4a;
+	border-top-color: #ccc;
+	height: 40px
+}
+
+#fb_dialog_loader_close {
+	float: left
+}
+
+.fb_dialog.fb_dialog_mobile .fb_dialog_close_button {
+	text-shadow: rgba(0, 30, 84, .296875) 0 -1px 0
+}
+
+.fb_dialog.fb_dialog_mobile .fb_dialog_close_icon {
+	visibility: hidden
+}
+
+#fb_dialog_loader_spinner {
+	animation: rotateSpinner 1.2s linear infinite;
+	background-color: transparent;
+	background-image:
+		url(https://static.xx.fbcdn.net/rsrc.php/v3/yD/r/t-wz8gw1xG1.png);
+	background-position: 50% 50%;
+	background-repeat: no-repeat;
+	height: 24px;
+	width: 24px
+}
+
+@
+keyframes rotateSpinner { 0%{
+	transform: rotate(0deg)
+}
+
+100%{
+transform
+
+
+
+
+:rotate(360deg)
+
+
+
+
+}
+}
+.fb_iframe_widget {
+	display: inline-block;
+	position: relative
+}
+
+.fb_iframe_widget span {
+	display: inline-block;
+	position: relative;
+	text-align: justify
+}
+
+.fb_iframe_widget iframe {
+	position: absolute
+}
+
+.fb_iframe_widget_fluid_desktop, .fb_iframe_widget_fluid_desktop span,
+	.fb_iframe_widget_fluid_desktop iframe {
+	max-width: 100%
+}
+
+.fb_iframe_widget_fluid_desktop iframe {
+	min-width: 220px;
+	position: relative
+}
+
+.fb_iframe_widget_lift {
+	z-index: 1
+}
+
+.fb_iframe_widget_fluid {
+	display: inline
+}
+
+.fb_iframe_widget_fluid span {
+	width: 100%
+}
+
+<style>
+* {
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+body {
+	padding: 0;
+	margin: 0;
+}
+
+#notfound {
+	position: relative;
+	height: 100vh;
+}
+
+#notfound .notfound {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	-webkit-transform: translate(-50%, -50%);
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+}
+
+.notfound {
+	max-width: 767px;
+	width: 100%;
+	line-height: 1.4;
+	text-align: center;
+	padding: 15px;
+}
+
+.notfound .notfound-404 {
+	position: relative;
+	height: 220px;
+}
+
+.notfound .notfound-404 h1 {
+	font-family: 'Kanit', sans-serif;
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	-webkit-transform: translate(-50%, -50%);
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	font-size: 186px;
+	font-weight: 200;
+	margin: 0px;
+	background: linear-gradient(130deg, #ffa34f, #ff6f68);
+	color: transparent;
+	-webkit-background-clip: text;
+	background-clip: text;
+	text-transform: uppercase;
+}
+
+.notfound h2 {
+	font-family: 'Kanit', sans-serif;
+	font-size: 33px;
+	font-weight: 200;
+	text-transform: uppercase;
+	margin-top: 0px;
+	margin-bottom: 25px;
+	letter-spacing: 3px;
+}
+
+.notfound p {
+	font-family: 'Kanit', sans-serif;
+	font-size: 16px;
+	font-weight: 200;
+	margin-top: 0px;
+	margin-bottom: 25px;
+}
+
+.notfound a {
+	font-family: 'Kanit', sans-serif;
+	color: #ff6f68;
+	font-weight: 200;
+	text-decoration: none;
+	border-bottom: 1px dashed #ff6f68;
+	border-radius: 2px;
+}
+
+.notfound-social>a {
+	display: inline-block;
+	height: 40px;
+	line-height: 40px;
+	width: 40px;
+	font-size: 14px;
+	color: #ff6f68;
+	border: 1px solid #efefef;
+	border-radius: 50%;
+	margin: 3px;
+	-webkit-transition: 0.2s all;
+	transition: 0.2s all;
+}
+
+.notfound-social>a:hover {
+	color: #fff;
+	background-color: #ff6f68;
+	border-color: #ff6f68;
+}
+
+@media only screen and (max-width: 480px) {
+	.notfound .notfound-404 {
+		position: relative;
+		height: 168px;
+	}
+	.notfound .notfound-404 h1 {
+		font-size: 142px;
+	}
+	.notfound h2 {
+		font-size: 22px;
+	}
+}
+</style>
+</style>
+</head>
+<body>
+	<div class="bgBackdrop"></div>
+	<div id="fb-root"></div>
+	<script async defer
+		src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.2"></script>
+	<script async defer crossorigin="anonymous"
+		src="https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v3.2&appId=1326545090735920&autoLogAppEvents=1"></script>
+	<div class="bgBackdrop"></div>
+	<header>
+		<nav class="navbar navbar-expand-lg align-items-center" id="cecNavbar">
+			<a class="navbar-brand" href="/"> <img src="../../images/logo.png" alt="">
+			</a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse"
+				data-target="#navbarSupportedContent"
+				aria-controls="navbarSupportedContent" aria-expanded="false"
+				aria-label="Toggle navigation">
+				<i class="mdi mdi-menu"></i>
+			</button>
+			<div class="collapse navbar-collapse transition"
+				id="navbarSupportedContent">
+				<ul class="navbar-nav ml-auto align-items-center">
+					<li class="nav-item d-block d-xl-none d-lg-none"><a href="/">
+							<img class="logo" src="../../images/logo.png" alt="">
+					</a></li>
+					<li class="nav-item"><a class="nav-link" href="#">Intro <span
+							class="sr-only">(current)</span>
+					</a></li>
+					<li class="nav-item"><a class="nav-link" href="#events">Events</a>
+					</li>
+					<li class="nav-item"><a class="nav-link" href="#cecGames">Games</a>
+					</li>
+					<li class="nav-item"><a class="nav-link"
+						href="/members?page=1">Members</a></li>
+					<li class="nav-item"><a class="nav-link" href="#latestNews">News</a>
+					</li>
+					<li class="nav-item"><a class="nav-link" href="/gallery">Gallery</a>
+					</li>
+
+					<!-- <li class="nav-item"><a hidden id="sign-in"
+						class="btn btn-primary my-2 my-sm-0 ml-4 login">Join Now</a></li> -->
+					<li class="nav-item" hidden id="sign-out">
+						<div class="dropdown userDropdown">
+							<button class="dropdown-toggle" type="button"
+								data-toggle="dropdown" aria-haspopup="true"
+								aria-expanded="false">
+								<a href="/profile"><img id="photoURL" width="50"
+									class="avatar"></a> <span
+									class="d-inline d-xl-none d-lg-none" id="displayName"></span>
+							</button>
+							<div class="dropdown-menu dropdown-menu-right"
+								aria-labelledby="dropdownMenuButton">
+								<a class="dropdown-item" href="http://user.cec.net.vn">Thông
+									tin cá nhân</a> <a class="dropdown-item" href="#">Yêu cầu chữa
+									bài</a>
+								<div class="dropdown-divider"></div>
+								<a class="dropdown-item" id="logout">Logout</a>
+							</div>
+						</div>
+					</li>
+
+
+				</ul>
+			</div>
+		</nav>
+	</header>
+
+
+	<section class="content">
+		<div id="notfound">
+			<div class="notfound" th:each="obj : ${lesson}">
+				<div class="notfound-404">
+					<h1></h1>
+				</div>
+				<h2>Vui lòng đăng nhập trước khi vào bài học!</h2>
+				<p><a hidden id="sign-in"
+						class="btn btn-primary my-2 my-sm-0 ml-4 login">Join Now</a></p>
+				<!-- <p>
+					<a th:href="${obj.urlLesson}">Return to lesson</a>
+				</p> -->
+				<div class="notfound-social">
+					<a href="#"><i class="fa fa-facebook"></i></a> <a href="#"><i
+						class="fa fa-twitter"></i></a> <a href="#"><i
+						class="fa fa-pinterest"></i></a> <a href="#"><i
+						class="fa fa-google-plus"></i></a>
+				</div>
+			</div>
+		</div>
+	</section>
+	<section class="joinUs">
+		<div class="container text-center">
+			<h2 class="headingSecondary text-white text-center mb-5">
+				<span>71,000+</span> <br> Members in Crazy English Community.
+			</h2>
+			<a href="https://www.facebook.com/groups/cec.edu.vn/" target="_blank"
+				class="btn btn-primary btn-lg">Tham Gia</a>
+		</div>
+	</section>
+	<!-- footer -->
+	<footer id="footer">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-3">
+					<p>
+						<a href="/"><img class="logo" src="../../images/logo.png" alt=""
+							width="110"></a>
+					</p>
+				</div>
+				<div class="col-md-9">
+					<div class="row">
+						<div class="col-xl-3 col-lg-3 col-md-3 col-6">
+							<h4 class="title">Products</h4>
+							<ul class="footerMenu list-unstyled">
+								<li><a href="https://speech.cec.net.vn/" target="_blank">Speech</a></li>
+								<li><a href="https://media.cec.net.vn" target="_blank">Record</a></li>
+								<li><a href="https://talk.cec.net.vn" target="_blank">Talk</a></li>
+							</ul>
+						</div>
+						<div class="col-xl-3 col-lg-3 col-md-3 col-6">
+							<h4 class="title">CEC</h4>
+							<ul class="footerMenu list-unstyled">
+								<li><a href="/about">About CEC</a></li>
+								<li><a href="#">Contact Us</a></li>
+								<li><a href="href="/members?page=1"">Members</a></li>
+								<li><a href="/gallery/gallery-1">Gallery</a></li> 
+							</ul>
+						</div>
+						<div class="col-xl-3 col-lg-3 col-md-3 col-6">
+							<h4 class="title">Support</h4>
+							<ul class="footerMenu list-unstyled">
+								<li><a href="/volunteer">Volunteer at CEC</a></li>
+								<li><a href="/support">How to help us</a></li>
+							</ul>
+						</div>
+						<div class="col-xl-3 col-lg-3 col-md-3 col-6">
+							<h4 class="title">Follow Us</h4>
+							<ul class="footerMenu list-unstyled">
+								<li><a href="https://www.facebook.com/groups/cec.edu.vn/?ref=bookmarks">Facebook</a></li>
+								<li><a href="#">Youtube</a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</footer>
+	<script src="../../js/jquery-3.2.1.min.js"></script>
+	<script src="../../js/popper.min.js"></script>
+	<script src="../../js/bootstrap.min.js"></script>
+	<script src="../../js/parallaxed.js"></script>
+	<script src="../../js/masonry.pkgd.min.js"></script>
+	<script src="../../js/imagesloaded.pkgd.min.js"></script>
+	<script src="../../js/jquery.fancybox.min.js"></script>
+	<script src="../../js/timeago.min.js"></script>
+
+
+	<script src="https://www.gstatic.com/firebasejs/5.8.6/firebase-app.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/5.8.6/firebase-auth.js"></script>
+	<script
+		src="https://www.gstatic.com/firebasejs/5.8.6/firebase-firestore.js"></script>
+
+	<script src="../../js/cookie.js"></script>
+	<script>
+		$(".navbar-toggler, .bgBackdrop").click(function() {
+			$(".bgBackdrop").toggleClass("active");
+			$("body").toggleClass("overflow-hidden");
+		});
+		$(".bgBackdrop").click(function() {
+			$(".navbar-collapse").toggleClass("show");
+		});
+	</script>
+	<script
+		src="https://cdn.jsdelivr.net/npm/sweetalert2@7.33.1/dist/sweetalert2.all.min.js"></script>
+	<script src="../../js/main.js"></script>
+	<script>
+		/* document.getElementById("photoURL").src = getCookie('photoURL'); */
+	</script>
+</body>
+</html>
+
+
+<!-- <!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layout/home}" xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="ISO-8859-1">
@@ -123,23 +815,7 @@ body {
 </head>
 <body>
 	<div layout:fragment="content">
-		<div id="notfound">
-			<div class="notfound" th:each="obj : ${lesson}">
-				<div class="notfound-404">
-					<h1></h1>
-				</div>
-				<h2>Vui lòng đăng nhập trước khi vào bài học!</h2>
-				<p>
-					<a th:href="${obj.urlLesson}">Return to lesson</a>
-				</p>
-				<div class="notfound-social">
-					<a href="#"><i class="fa fa-facebook"></i></a> <a href="#"><i
-						class="fa fa-twitter"></i></a> <a href="#"><i
-						class="fa fa-pinterest"></i></a> <a href="#"><i
-						class="fa fa-google-plus"></i></a>
-				</div>
-			</div>
-		</div>
+		
 	</div>
 </body>
-</html>
+</html> -->
