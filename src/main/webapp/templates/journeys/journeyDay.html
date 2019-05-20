@@ -94,9 +94,9 @@
 							style="margin: 0 auto;" frameborder="0"></iframe>
 					</div>
 
-					<div class="row">
+					<div class="row" >
 						<div class="col-md-6 offset-md-3">
-							<div class="btn-group" style="float: right; margin-top: 35px;">
+							<div class="btn-group" id="featureNextDay" style="float: right; margin-top: 35px; display: none">
 								<button id="nextDay" class="btn btn-primary">Ngày tiếp
 									theo >></button>
 							</div>
@@ -113,6 +113,17 @@
 									style="display: none;">Gửi lên CEC</button>
 							</div>
 						</div>
+						<script>
+							console.log("url: " + window.location.href);
+							var currentUrl = window.location.href;
+							var url = new URL(currentUrl);
+							var v = url.searchParams.get("v");
+							console.log("v: " + v);
+							if (v == null) {
+								/* $("#featureNextLesson").show(); */
+								document.getElementById("featureNextDay").style.display = 'block';
+							}
+						</script>
 					</div>
 					<div class="row">
 						<div class="col-md-1"></div>
@@ -136,7 +147,8 @@
 
 						</div>
 						<div class="col-md-1"></div>
-
+						
+						
 					</div>
 				</div>
 			</section>
