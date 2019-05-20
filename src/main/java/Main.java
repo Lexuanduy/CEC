@@ -119,16 +119,21 @@ public class Main {
 ////			ApiFuture<WriteResult> writeResult2 = db.collection("LessonMember").document("1457294174840160").delete();
 //
 //		}
-		ApiFuture<QuerySnapshot> future = db.collection("JourneyDay").whereEqualTo("accountId", "1290476224418572")
+		ApiFuture<QuerySnapshot> future = db.collection("LessonMember").whereEqualTo("memberName", "Đặng Phương Nam")
 				.get();
 		List<QueryDocumentSnapshot> documents = future.get().getDocuments(); 
 		String docId;
 		for (DocumentSnapshot document : documents) {
-			System.out.println(document.getId());
-			docId = document.getId();
-			System.out.println("lesson: " + document.get("lesson"));
-			System.out.println("status: " + document.get("status"));
-			System.out.println("url: " + document.get("url"));
+			System.out.println(document.get("lesson"));
+//			docId = document.getId();
+//			if(document.get("journey").equals("3days")) {
+//				System.out.println(document.get("journey"));
+//			}
+//			else {
+//				System.out.println(document.get("delete"));
+//				System.out.println(document.get("journey"));
+//				ApiFuture<WriteResult> writeResult2 = db.collection("JourneyDay").document(docId).delete();
+//			}
 		}
 
 //		ApiFuture<WriteResult> writeResult2 = db.collection("JourneyDay").document(docId).delete();

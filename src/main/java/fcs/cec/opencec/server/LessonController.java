@@ -4,6 +4,9 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -66,8 +69,8 @@ public class LessonController {
 
 		GoogleCredentials credentials = null;
 		try {
-			credentials = GoogleCredentials.fromStream(new FileInputStream(
-					"/var/lib/tomcat8/opencec-firebase-adminsdk-ccqab-9f50c0997b.json"));
+			credentials = GoogleCredentials.fromStream(
+					new FileInputStream("/var/lib/tomcat8/opencec-firebase-adminsdk-ccqab-9f50c0997b.json"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -112,130 +115,171 @@ public class LessonController {
 	}
 
 	@RequestMapping(value = "lesson/{id}", method = RequestMethod.GET)
-	public String lesson(Model model, @PathVariable("id") String id,
-			@CookieValue(value = "idToken", required = false) String idToken, HttpServletResponse response)
-			throws InterruptedException, ExecutionException, IOException {
-		int idLesson = Integer.parseInt(id);
-		LOGGER.info("idLesson: " + idLesson);
-//		Firestore db = FirestoreOptions.getDefaultInstance().getService();
-		Firestore db = FirestoreClient.getFirestore();
-
-		if (idLesson < 1) {
-			LOGGER.info("lesson < 1");
-			return "error/error-lesson";
-		}
-		if (idLesson > 1 && idLesson < 24) {
-			int lessonOld = idLesson - 1;
-			LOGGER.info("idToken: " + idToken);
-			if (idToken == null) {
-				LOGGER.info("check idToken null.");
-				List<HashMap<String, String>> listMap = new ArrayList<>();
-				HashMap<String, String> hashMap = new HashMap();
-				String urlLesson = "/lesson/" + String.valueOf(idLesson);
-				hashMap.put("urlLesson", urlLesson);
-				listMap.add(hashMap);
-				model.addAttribute("lesson", listMap);
-				return "check-idToken/check-token";
-			}
-
-			FirebaseToken decodedToken = null;
-			try {
-				decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
-			} catch (FirebaseAuthException e) {
-				// TODO Auto-generated catch block
-				List<HashMap<String, String>> listMap = new ArrayList<>();
-				HashMap<String, String> hashMap = new HashMap();
-				String urlLesson = "/lesson/" + String.valueOf(idLesson);
-				hashMap.put("urlLesson", urlLesson);
-				listMap.add(hashMap);
-				model.addAttribute("lesson", listMap);
-				return "check-idToken/check-token";
-			}
-			String uid = decodedToken.getUid();
-			// get doc id account
-			ApiFuture<QuerySnapshot> futureAccount = db.collection("Account").whereEqualTo("uid", uid).get();
-			List<QueryDocumentSnapshot> accountDocuments = futureAccount.get().getDocuments();
-			String facebookId = null;
-			for (DocumentSnapshot document : accountDocuments) {
-				facebookId = document.getId();
-			}
-
-			String docLessonMember = lessonOld + facebookId;
-			DocumentReference docRefLessonMember = db.collection("LessonMember").document(docLessonMember);
-			ApiFuture<DocumentSnapshot> futureLessonMember = docRefLessonMember.get();
-			DocumentSnapshot documentLessonMember = futureLessonMember.get();
-			if (documentLessonMember.exists()) {
-				LOGGER.info("check status old lesson!");
-				LessonMember lessonMember = documentLessonMember.toObject(LessonMember.class);
-				if (lessonMember.getStatus() == 0) {
-					LOGGER.info("fail next lesson");
-					return "error/error-lesson-old";
-				}
-			} else {
-				LOGGER.info("check status old lesson but document not exist!");
-				return "error/error-lesson-old";
-			}
-			if (idLesson == 2) {
-				LOGGER.info("lesson 2.");
-				Map<String, Object> data = new HashMap<>();
-				idLesson = 2;
-				data.put("lesson", idLesson);
-				data.put("memberId", facebookId);
-				data.put("memberName", "");
-				data.put("postId", "");
-				data.put("status", 0);
-				data.put("url", "");
-				data.put("uid", uid);
-				data.put("accountId", facebookId);
-				data.put("createdAt", System.currentTimeMillis() / 1000);
-				data.put("updatedAt", System.currentTimeMillis() / 1000);
-				String docId = String.valueOf(idLesson) + facebookId;
-				DocumentReference docRefLesson = db.collection("LessonMember").document(docId);
-				ApiFuture<DocumentSnapshot> futureLesson = docRefLesson.get();
-				DocumentSnapshot documentLesson = futureLesson.get();
-				if (documentLesson.exists()) {
-					LOGGER.info("document LessonMember exist!");
-				} else {
-					LOGGER.info("create doccument lesson2!");
-					ApiFuture<WriteResult> addedDocRef = db.collection("LessonMember").document(docId).set(data);
-				}
-			}
-			// create new next lesson
-			Map<String, Object> data = new HashMap<>();
-			idLesson = idLesson + 1;
-			data.put("lesson", idLesson);
-			data.put("memberId", facebookId);
-			data.put("memberName", "");
-			data.put("postId", "");
-			data.put("status", 0);
-			data.put("url", "");
-			data.put("uid", uid);
-			data.put("accountId", facebookId);
-			data.put("createdAt", System.currentTimeMillis() / 1000);
-			data.put("updatedAt", System.currentTimeMillis() / 1000);
-			String docId = String.valueOf(idLesson) + facebookId;
-			DocumentReference docRefLesson = db.collection("LessonMember").document(docId);
-			ApiFuture<DocumentSnapshot> futureLesson = docRefLesson.get();
-			DocumentSnapshot documentLesson = futureLesson.get();
-			if (documentLesson.exists()) {
-				LOGGER.info("document LessonMember exist!");
-			} else {
-				ApiFuture<WriteResult> addedDocRef = db.collection("LessonMember").document(docId).set(data);
-			}
-		}
-		if (idLesson >= 25) {
-			LOGGER.info("lesson > 24");
-			return "error/error-lesson";
-		}
+	public String openLesson(Model model, @PathVariable("id") String id, @RequestParam String v,
+			@RequestParam String me) throws NoSuchAlgorithmException {
+		LOGGER.info("lesson: " + id);
+		LOGGER.info("v: " + v);
+		LOGGER.info("me: " + me);
+		
+		String str = id + me;
+		LOGGER.info("str: " + str);
+		
+		MessageDigest md = MessageDigest.getInstance("MD5");
+        byte[] hashInBytes = md.digest(str.getBytes(StandardCharsets.UTF_8));
+        StringBuilder sb = new StringBuilder();
+        for (byte b : hashInBytes) {
+            sb.append(String.format("%02x", b));
+        }
+        LOGGER.info("sb: " + sb); 
+        if(v.equals(sb.toString())) {
+        	
+        }
+        else {
+        	LOGGER.info("error lesson.");
+        }
 		// get lesson by lesson number
 		for (Lesson lesson : lessonList) {
 			if (lesson.getName().equals(id)) {
-				model.addAttribute("lesson", lesson);
+				model.addAttribute("lesson", lesson); 
 			}
 		}
-
 		return "lesson/lesson";
 	}
+
+//	@RequestMapping(value = "lesson/{id}", method = RequestMethod.GET)
+//	public String lesson(Model model, @PathVariable("id") String id,
+//			@CookieValue(value = "idToken", required = false) String idToken)
+//			throws InterruptedException, ExecutionException, IOException {
+//		int idLesson = Integer.parseInt(id);
+//		LOGGER.info("idLesson: " + idLesson);
+////		Firestore db = FirestoreOptions.getDefaultInstance().getService();
+//		Firestore db = FirestoreClient.getFirestore();
+//
+//		if (idLesson < 1) {
+//			LOGGER.info("lesson < 1");
+//			return "error/error-lesson";
+//		}
+//		if (idLesson > 1 && idLesson < 24) {
+//			int lessonOld = idLesson - 1;
+//			LOGGER.info("idToken: " + idToken);
+//			if (idToken == null) {
+//				LOGGER.info("check idToken null.");
+//				List<HashMap<String, String>> listMap = new ArrayList<>();
+//				HashMap<String, String> hashMap = new HashMap();
+//				String urlLesson = "/lesson/" + String.valueOf(idLesson);
+//				hashMap.put("urlLesson", urlLesson);
+//				listMap.add(hashMap);
+//				model.addAttribute("lesson", listMap);
+//				return "check-idToken/check-token";
+//			}
+//
+//			FirebaseToken decodedToken = null;
+//			try {
+//				decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
+//			} catch (FirebaseAuthException e) {
+//				// TODO Auto-generated catch block
+//				List<HashMap<String, String>> listMap = new ArrayList<>();
+//				HashMap<String, String> hashMap = new HashMap();
+//				String urlLesson = "/lesson/" + String.valueOf(idLesson);
+//				hashMap.put("urlLesson", urlLesson);
+//				listMap.add(hashMap);
+//				model.addAttribute("lesson", listMap);
+//				return "check-idToken/check-token";
+//			}
+//			String uid = decodedToken.getUid();
+//			// get doc id account
+//			ApiFuture<QuerySnapshot> futureAccount = db.collection("Account").whereEqualTo("uid", uid).get();
+//			List<QueryDocumentSnapshot> accountDocuments = futureAccount.get().getDocuments();
+//			String facebookId = null;
+//			for (DocumentSnapshot document : accountDocuments) {
+//				facebookId = document.getId();
+//			}
+//
+//			String docLessonMember = lessonOld + facebookId;
+//			DocumentReference docRefLessonMember = db.collection("LessonMember").document(docLessonMember);
+//			ApiFuture<DocumentSnapshot> futureLessonMember = docRefLessonMember.get();
+//			DocumentSnapshot documentLessonMember = futureLessonMember.get();
+//			if (documentLessonMember.exists()) {
+//				LOGGER.info("check status old lesson!");
+//				LessonMember lessonMember = documentLessonMember.toObject(LessonMember.class);
+//				if (lessonMember.getStatus() == 0) {
+//					LOGGER.info("fail next lesson");
+//					return "error/error-lesson-old";
+//				}
+//			} else {
+//				LOGGER.info("check status old lesson but document not exist!");
+//				return "error/error-lesson-old";
+//			}
+//			if (idLesson == 2) {
+//				LOGGER.info("lesson 2.");
+//				Map<String, Object> data = new HashMap<>();
+//				idLesson = 2;
+//				data.put("lesson", idLesson);
+//				data.put("memberId", facebookId);
+//				data.put("memberName", "");
+//				data.put("postId", "");
+//				data.put("status", 0);
+//				data.put("url", "");
+//				data.put("uid", uid);
+//				data.put("accountId", facebookId);
+//				data.put("createdAt", System.currentTimeMillis() / 1000);
+//				data.put("updatedAt", System.currentTimeMillis() / 1000);
+//				String docId = String.valueOf(idLesson) + facebookId;
+//				DocumentReference docRefLesson = db.collection("LessonMember").document(docId);
+//				ApiFuture<DocumentSnapshot> futureLesson = docRefLesson.get();
+//				DocumentSnapshot documentLesson = futureLesson.get();
+//				if (documentLesson.exists()) {
+//					LOGGER.info("document LessonMember exist!");
+//				} else {
+//					LOGGER.info("create doccument lesson2!");
+//					ApiFuture<WriteResult> addedDocRef = db.collection("LessonMember").document(docId).set(data);
+//				}
+//			}
+//			// create new next lesson
+//			Map<String, Object> data = new HashMap<>();
+//			idLesson = idLesson + 1;
+//			data.put("lesson", idLesson);
+//			data.put("memberId", facebookId);
+//			data.put("memberName", "");
+//			data.put("postId", "");
+//			data.put("status", 0);
+//			data.put("url", "");
+//			data.put("uid", uid);
+//			data.put("accountId", facebookId);
+//			data.put("createdAt", System.currentTimeMillis() / 1000);
+//			data.put("updatedAt", System.currentTimeMillis() / 1000);
+//			String docId = String.valueOf(idLesson) + facebookId;
+//			DocumentReference docRefLesson = db.collection("LessonMember").document(docId);
+//			ApiFuture<DocumentSnapshot> futureLesson = docRefLesson.get();
+//			DocumentSnapshot documentLesson = futureLesson.get();
+//			if (documentLesson.exists()) {
+//				LOGGER.info("document LessonMember exist!");
+//			} else {
+//				ApiFuture<WriteResult> addedDocRef = db.collection("LessonMember").document(docId).set(data);
+//			}
+//		}
+//		if (idLesson >= 25) {
+//			LOGGER.info("lesson > 24");
+//			return "error/error-lesson";
+//		}
+//		// get lesson by lesson number
+//		for (Lesson lesson : lessonList) {
+//			if (lesson.getName().equals(id)) {
+//				model.addAttribute("lesson", lesson);
+//			}
+//		}
+//
+//		return "lesson/lesson";
+//	}
+	
+//	@RequestMapping(value = "checkVideo", method = RequestMethod.POST)
+//	public void checkVideo(Model model, @RequestParam String url,
+//			@CookieValue(value = "uid", required = true) String uid, @RequestParam String numLesson,
+//			HttpServletResponse response){
+//		
+//		
+//	}
+
 
 	@RequestMapping(value = "checkVideo", method = RequestMethod.POST)
 	public void checkVideo(Model model, @RequestParam String url,
@@ -347,7 +391,7 @@ public class LessonController {
 		String idToken = null;
 		if (cookies != null) {
 			for (Cookie cookie : cookies) {
-				 LOGGER.info("cookie: " + cookie);
+				LOGGER.info("cookie: " + cookie);
 				if (cookie.getName().equals("idToken")) {
 					// do something
 //					idToken = cookie.getValue();
