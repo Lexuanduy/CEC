@@ -115,7 +115,7 @@ public class JourneyController {
 				sb.append(String.format("%02x", b));
 			}
 			LOGGER.info("sb: " + sb);
-			if (v.equals(sb.toString())) {
+			if (v.equalsIgnoreCase(sb.toString())) {
 
 			} else {
 				LOGGER.info("error journey day.");
