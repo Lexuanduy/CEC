@@ -119,12 +119,12 @@ public class Main {
 ////			ApiFuture<WriteResult> writeResult2 = db.collection("LessonMember").document("1457294174840160").delete();
 //
 //		}
-		ApiFuture<QuerySnapshot> future = db.collection("LessonMember").whereEqualTo("memberName", "Đặng Phương Nam")
-				.get();
-		List<QueryDocumentSnapshot> documents = future.get().getDocuments(); 
-		String docId;
-		for (DocumentSnapshot document : documents) {
-			System.out.println(document.get("lesson"));
+//		ApiFuture<QuerySnapshot> future = db.collection("LessonMember").whereEqualTo("memberName", "Đặng Phương Nam")
+//				.get();
+//		List<QueryDocumentSnapshot> documents = future.get().getDocuments(); 
+//		String docId;
+//		for (DocumentSnapshot document : documents) {
+//			System.out.println(document.get("lesson"));
 //			docId = document.getId();
 //			if(document.get("journey").equals("3days")) {
 //				System.out.println(document.get("journey"));
@@ -432,5 +432,5 @@ public class Main {
 //		  System.out.println(document.get("memberName"));
 //		  
 //		}
-	}
+//	}
 }
