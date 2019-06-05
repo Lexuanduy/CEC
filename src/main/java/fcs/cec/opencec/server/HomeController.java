@@ -27,4 +27,9 @@ public class HomeController {
 	public String volunteer(Model model) throws InterruptedException, ExecutionException {
 		return "volunteer/volunteer";
 	}
+	
+	@GetMapping(value = "/privacy")
+	public String privacy() throws InterruptedException, ExecutionException {
+		return "privacy/policy";
+	}
 }
