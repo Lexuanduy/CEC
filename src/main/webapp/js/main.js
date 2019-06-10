@@ -18,7 +18,31 @@ var provider = new firebase.auth.FacebookAuthProvider();
 firebase.auth().onAuthStateChanged(function (user) {
     if (user) {
         $('#sign-out')[0].hidden = false;
-        document.getElementById("photoURL").src = getCookie('photoURL');
+        photoURL = getCookie('photoURL');
+        console.log("photo Url: " + photoURL);
+        if(photoURL === 'undefined'){
+        	// logout
+        	console.log('log out!');
+        	firebase.auth().signOut().then(function () {
+   			 var cookies = document.cookie.split(";");
+
+   			    for (var i = 0; i < cookies.length; i++) {
+   			        var cookie = cookies[i];
+   			        var eqPos = cookie.indexOf("=");
+   			        var name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+   			        document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT"+'; path=/';
+   			    }
+   			    console.log("url href: " + window.location.href);
+   			    window.location = window.location.href;
+   		 $('#sign-out')[0].hidden = true;
+   		 }).catch(function (error) {
+   		 console.log("Đã có lỗi xảy ra trong quá trình logout. Xin thử lại");
+   		 });
+        }
+        else {
+        	console.log("set photo URL");
+        	document.getElementById("photoURL").src = getCookie('photoURL');
+        }
     } else {
         $('#sign-in')[0].hidden = false;
         $('#sign-in').on('click', () => {
@@ -66,7 +90,7 @@ firebase.auth().onAuthStateChanged(function (user) {
                 	'idToken=' + accessToken + 
                 	'; expires=' + now.toUTCString() + 
                 	'; path=/';
-//                window.location.href = window.location.pathname;
+// window.location.href = window.location.pathname;
                 window.location = window.location.href;
             }).catch(function (error) {
                 var errorCode = error.code;
@@ -90,16 +114,6 @@ function getCookie(key) {
 $('#sign-out').on('click',()=>{
 	$('#logout').on('click',()=>{
 		 firebase.auth().signOut().then(function () {
-			 // delete cookie when logout
-// console.log("log out");
-// document.cookie = 'idToken' + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-// console.log("log out idToken");
-// document.cookie = 'facebookId' + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-// document.cookie = 'uid' + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-// document.cookie = 'photoURL' + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-// document.cookie = 'displayName' + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-// document.cookie = 'numLesson' + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-// console.log("Logout thành công");
 			 var cookies = document.cookie.split(";");
 
 			    for (var i = 0; i < cookies.length; i++) {
@@ -108,7 +122,6 @@ $('#sign-out').on('click',()=>{
 			        var name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
 			        document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT"+'; path=/';
 			    }
-//			    window.location.href = window.location.href;
 			    console.log("url href: " + window.location.href);
 			    window.location = window.location.href;
 		 $('#sign-out')[0].hidden = true;
@@ -119,7 +132,7 @@ $('#sign-out').on('click',()=>{
 });
 
 // next lesson
-//http://cec.net.vn/p/2296069077332802/
+// http://cec.net.vn/p/2296069077332802/
 $('#nextLesson')
 		.click(
 				function() {
