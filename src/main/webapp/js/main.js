@@ -20,7 +20,7 @@ firebase.auth().onAuthStateChanged(function (user) {
         $('#sign-out')[0].hidden = false;
         photoURL = getCookie('photoURL');
         console.log("photo Url: " + photoURL);
-        if(photoURL === 'undefined'){
+        if(photoURL === undefined){
         	// logout
         	console.log('log out!');
         	firebase.auth().signOut().then(function () {
@@ -33,7 +33,7 @@ firebase.auth().onAuthStateChanged(function (user) {
    			        document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT"+'; path=/';
    			    }
    			    console.log("url href: " + window.location.href);
-   			    window.location = window.location.href;
+   			    /*window.location = window.location.href;*/
    		 $('#sign-out')[0].hidden = true;
    		 }).catch(function (error) {
    		 console.log("Đã có lỗi xảy ra trong quá trình logout. Xin thử lại");
