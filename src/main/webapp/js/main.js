@@ -33,7 +33,7 @@ firebase.auth().onAuthStateChanged(function (user) {
    			        document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT"+'; path=/';
    			    }
    			    console.log("url href: " + window.location.href);
-   			    /*window.location = window.location.href;*/
+   			    window.location = window.location.href;
    		 $('#sign-out')[0].hidden = true;
    		 }).catch(function (error) {
    		 console.log("Đã có lỗi xảy ra trong quá trình logout. Xin thử lại");
