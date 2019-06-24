@@ -33,7 +33,7 @@ firebase.auth().onAuthStateChanged(function (user) {
    			        document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT"+'; path=/';
    			    }
    			    console.log("url href: " + window.location.href);
-   			    //window.location = window.location.href;
+   			    window.location = window.location.href; 
    		 $('#sign-out')[0].hidden = true;
    		 }).catch(function (error) {
    		 console.log("Đã có lỗi xảy ra trong quá trình logout. Xin thử lại");
@@ -91,7 +91,7 @@ firebase.auth().onAuthStateChanged(function (user) {
                 	'; expires=' + now.toUTCString() + 
                 	'; path=/';
 // window.location.href = window.location.pathname;
-                //window.location = window.location.href;
+                window.location = window.location.href; 
             }).catch(function (error) {
                 var errorCode = error.code;
                 var errorMessage = error.message;
@@ -123,7 +123,7 @@ $('#sign-out').on('click',()=>{
 			        document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT"+'; path=/';
 			    }
 			    console.log("url href: " + window.location.href);
-			    //window.location = window.location.href;
+			    window.location = window.location.href; 
 		 $('#sign-out')[0].hidden = true;
 		 }).catch(function (error) {
 		 alert("Đã có lỗi xảy ra trong quá trình logout. Xin thử lại");
@@ -318,7 +318,7 @@ $('#nextLesson')
 				        														showConfirmButton : false,
 				        														timer : 3000,
 				        													});
-				        													setTimeout(window.location = "/verify-token", 22000);
+				        													setTimeout(window.location = "/verify-token", 25000);
 				        												}
 				        											}
 				        										});
@@ -565,7 +565,7 @@ $('#nextDay')
 																showConfirmButton : false,
 																timer : 3000,
 															});
-															setTimeout(window.location = "/verify-token", 22000);
+															setTimeout(window.location = "/verify-token", 25000);
 														}
 													}
 		        								});
