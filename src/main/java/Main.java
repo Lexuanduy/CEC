@@ -106,19 +106,26 @@ public class Main {
 		// end test
 		Firestore db = FirestoreOptions.getDefaultInstance().getService();
 		// asynchronously retrieve multiple documents
-//		ApiFuture<QuerySnapshot> future = db.collection("Account").whereEqualTo("id", "457294174840160")
+//		ApiFuture<QuerySnapshot> future = db.collection("JourneyDay").whereEqualTo("accountId", "488857841634271")
 //				.get();
 //		List<QueryDocumentSnapshot> documents = future.get().getDocuments();
 //		for (DocumentSnapshot document : documents) {
 //			System.out.println(document.getId());
-//			System.out.println(document.get("displayName"));
-////			System.out.println(document.get("email"));
-////			System.out.println(document.get("memberId"));
-////			System.out.println(document.get("uid"));
-////			ApiFuture<WriteResult> writeResult = db.collection("Account").document(document.getId()).delete();
-////			ApiFuture<WriteResult> writeResult2 = db.collection("LessonMember").document("1457294174840160").delete();
-//
 //		}
+		// asynchronously retrieve multiple documents
+		ApiFuture<QuerySnapshot> future = db.collection("Account").whereEqualTo("id", "488857841634271")
+				.get();
+		List<QueryDocumentSnapshot> documents = future.get().getDocuments();
+		for (DocumentSnapshot document : documents) {
+			System.out.println(document.getId());
+			System.out.println(document.get("displayName"));
+			System.out.println(document.get("email"));
+			System.out.println(document.get("memberId"));
+			System.out.println(document.get("uid"));
+//			ApiFuture<WriteResult> writeResult = db.collection("Account").document(document.getId()).delete();
+//			ApiFuture<WriteResult> writeResult2 = db.collection("LessonMember").document("1457294174840160").delete();
+
+		}
 //		ApiFuture<QuerySnapshot> future = db.collection("LessonMember").whereEqualTo("memberName", "Đặng Phương Nam")
 //				.get();
 //		List<QueryDocumentSnapshot> documents = future.get().getDocuments(); 
@@ -134,12 +141,10 @@ public class Main {
 //				System.out.println(document.get("journey"));
 //				ApiFuture<WriteResult> writeResult2 = db.collection("JourneyDay").document(docId).delete();
 //			}
-		}
+	}
 
 //		ApiFuture<WriteResult> writeResult2 = db.collection("JourneyDay").document(docId).delete();
-		
-		
-		
+
 //		String docId = null;
 //		
 //		String title = doc.select("title").text();
@@ -176,7 +181,7 @@ public class Main {
 //
 //		db.collection("Learned").document("test2").set(data).get().getUpdateTime();
 
-		// Update an existing document
+	// Update an existing document
 //		DocumentReference docRef = db.collection("accounts").document("VawkSF0bnmUmu7bMpC80sNn6Qft1");
 //		Map<String, Object> data = new HashMap<>();
 //		data.put("Lesson 1", "1");
@@ -271,7 +276,7 @@ public class Main {
 //			}
 //		}
 //		System.out.println("Find lesson number: " + lesson);
-		// test send mail
+	// test send mail
 
 //		Document doc = null;
 //		String url = "https://script.googleusercontent.com/macros/echo?user_content_key=dmTT0L5ltyjs6C0mzfB8Kf1FkNPCAqiExMVyEY7hPKS9QIrht-BvnAzuAZYIZvlrnSaC13gWKjpsPFnfMb3lT9L5wfimIUbgm5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnCT0QRJ7P_-LtV3tAd8_b_dUnbO1rEvbeLLB2eAoIGhp1hENMaacOI9TktsviLkDHJlUq1JAmpDs&lib=MmSKrXssQcdpiSXxZX7nm1QZVzjmXS3D2";
@@ -312,7 +317,7 @@ public class Main {
 ////				dayList.add(journey);
 //		}
 
-		// asynchronously retrieve multiple documents
+	// asynchronously retrieve multiple documents
 //		ApiFuture<QuerySnapshot> future = db.collection("JourneyDay").get();
 //		List<QueryDocumentSnapshot> documents = future.get().getDocuments();
 //		int i = 1;
@@ -344,7 +349,7 @@ public class Main {
 //				ApiFuture<WriteResult> futureUpdate = docRef.update("journey", "10days");
 //			}
 
-		// check journey day
+	// check journey day
 //		String url = "https://m.facebook.com/groups/1784461175160264?view=permalink&id=2288028821470161";
 //		String url = "https://m.facebook.com/groups/cec.edu.vn/permalink/2288022191470824/";
 //		Document doc = Jsoup.connect(url).get();
@@ -379,9 +384,9 @@ public class Main {
 //		System.out.println("day: " + day);
 //		System.out.println("dayJourney: " + journeyName);
 //		System.out.println("memberName: " + memberName);
-		// end check journey day
+	// end check journey day
 
-		// check lesson
+	// check lesson
 //		String url = "https://m.facebook.com/groups/1784461175160264?view=permalink&id=2287611658178544";
 //		String url = "https://m.facebook.com/groups/cec.edu.vn/permalink/2287611658178544/";
 //		Document doc = Jsoup.connect(url).get();

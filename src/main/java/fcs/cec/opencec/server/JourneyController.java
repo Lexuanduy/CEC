@@ -99,13 +99,14 @@ public class JourneyController {
 
 	@RequestMapping(value = "journey/{name}/{day}", method = RequestMethod.GET)
 	public String journeyDays(Model model, @PathVariable("name") String name, @PathVariable("day") String day,
-			@CookieValue(value = "idToken", required = false) String idToken, @RequestParam(value = "v", required = false) String v,
+			@CookieValue(value = "idToken", required = false) String idToken,
+			@RequestParam(value = "v", required = false) String v,
 			@RequestParam(value = "me", required = false) String me)
 			throws FirebaseAuthException, InterruptedException, ExecutionException, NoSuchAlgorithmException {
-		
+
 		LOGGER.info("v: " + v);
 		LOGGER.info("me: " + me);
-		if(v!=null) {
+		if (v != null) {
 			String str = name + day + me;
 			LOGGER.info("str: " + str);
 			MessageDigest md = MessageDigest.getInstance("MD5");
@@ -126,9 +127,8 @@ public class JourneyController {
 					model.addAttribute("journey", journey);
 				}
 			}
-		}
-		else {
-			
+		} else {
+
 //			Firestore db = FirestoreClient.getFirestore();
 			Firestore db = FirestoreClient.getFirestore();
 //			FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
@@ -154,7 +154,16 @@ public class JourneyController {
 						model.addAttribute("journeyDay", listMap);
 						return "check-idToken/check-token-journey";
 					}
-					FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
+
+					FirebaseToken decodedToken = null;
+					try {
+						decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
+					} catch (FirebaseAuthException e) {
+						// TODO Auto-generated catch block
+						LOGGER.info("catch, verify idToken!");
+						return "check-idToken/check-token";
+					}
+
 					String uid = decodedToken.getUid();
 					// get doc id account
 					ApiFuture<QuerySnapshot> futureAccount = db.collection("Account").whereEqualTo("uid", uid).get();
@@ -253,7 +262,8 @@ public class JourneyController {
 							if (documentJourneyDay.exists()) {
 								LOGGER.info("document JourneyDay eixst!");
 							} else {
-								ApiFuture<WriteResult> addedDocRef = db.collection("JourneyDay").document(docId).set(data);
+								ApiFuture<WriteResult> addedDocRef = db.collection("JourneyDay").document(docId)
+										.set(data);
 							}
 						}
 					} else {
@@ -357,7 +367,8 @@ public class JourneyController {
 							if (documentJourneyDay.exists()) {
 								LOGGER.info("document JourneyDay eixst!");
 							} else {
-								ApiFuture<WriteResult> addedDocRef = db.collection("JourneyDay").document(docId).set(data);
+								ApiFuture<WriteResult> addedDocRef = db.collection("JourneyDay").document(docId)
+										.set(data);
 							}
 						}
 					} else {
@@ -506,7 +517,8 @@ public class JourneyController {
 							if (documentJourneyDay.exists()) {
 								LOGGER.info("document JourneyDay eixst!");
 							} else {
-								ApiFuture<WriteResult> addedDocRef = db.collection("JourneyDay").document(docId).set(data);
+								ApiFuture<WriteResult> addedDocRef = db.collection("JourneyDay").document(docId)
+										.set(data);
 							}
 						}
 					} else {
@@ -654,7 +666,8 @@ public class JourneyController {
 							if (documentJourneyDay.exists()) {
 								LOGGER.info("document JourneyDay eixst!");
 							} else {
-								ApiFuture<WriteResult> addedDocRef = db.collection("JourneyDay").document(docId).set(data);
+								ApiFuture<WriteResult> addedDocRef = db.collection("JourneyDay").document(docId)
+										.set(data);
 							}
 						}
 					} else {
@@ -802,7 +815,8 @@ public class JourneyController {
 							if (documentJourneyDay.exists()) {
 								LOGGER.info("document JourneyDay exist!");
 							} else {
-								ApiFuture<WriteResult> addedDocRef = db.collection("JourneyDay").document(docId).set(data);
+								ApiFuture<WriteResult> addedDocRef = db.collection("JourneyDay").document(docId)
+										.set(data);
 							}
 						}
 					} else {
@@ -950,7 +964,8 @@ public class JourneyController {
 							if (documentJourneyDay.exists()) {
 								LOGGER.info("document JourneyDay exist!");
 							} else {
-								ApiFuture<WriteResult> addedDocRef = db.collection("JourneyDay").document(docId).set(data);
+								ApiFuture<WriteResult> addedDocRef = db.collection("JourneyDay").document(docId)
+										.set(data);
 							}
 						}
 					} else {
@@ -1075,7 +1090,8 @@ public class JourneyController {
 							if (documentJourneyDay.exists()) {
 								LOGGER.info("document JourneyDay exist!");
 							} else {
-								ApiFuture<WriteResult> addedDocRef = db.collection("JourneyDay").document(docId).set(data);
+								ApiFuture<WriteResult> addedDocRef = db.collection("JourneyDay").document(docId)
+										.set(data);
 							}
 						}
 					} else {
@@ -1146,11 +1162,35 @@ public class JourneyController {
 
 	@RequestMapping(value = "checkJourneyDay", method = RequestMethod.POST)
 	public void checkJourneyDay(Model model, @RequestParam String url,
-			@CookieValue(value = "idToken", required = true) String idToken, @RequestParam String journey,
-			@RequestParam String numDay, HttpServletResponse response)
+			@CookieValue(value = "idToken", defaultValue = "0", required = false) String idToken,
+			@RequestParam String journey, @RequestParam String numDay, HttpServletResponse response)
 			throws IOException, FirebaseAuthException, InterruptedException, ExecutionException {
 		LOGGER.info("url video check day: " + url);
-		FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
+		if (idToken.equals("0")) {
+			LOGGER.info("idToken is default value");
+			response.setStatus(401);
+			return;
+		}
+
+//		FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
+
+		LOGGER.info("idToken: " + idToken);
+		if (idToken == null) {
+			LOGGER.info("check idToken null.");
+			response.setStatus(401);
+			return;
+		}
+
+		FirebaseToken decodedToken = null;
+		try {
+			decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
+		} catch (FirebaseAuthException e) {
+			// TODO Auto-generated catch block
+			LOGGER.info("catch, verify idToken!");
+			response.setStatus(401);
+			return;
+		}
+
 		String uid = decodedToken.getUid();
 //		Firestore db = FirestoreClient.getFirestore();
 		Firestore db = FirestoreClient.getFirestore();
@@ -1353,7 +1393,7 @@ public class JourneyController {
 //		String name = "cookieIdToken"; 
 //		Cookie cookie = new Cookie(name, URLEncoder.encode(idToken, "ASCII"));
 //		idToken = URLDecoder.decode(cookie.getValue(), "ASCII");
-		
+
 		LOGGER.info("idToken last: " + idToken);
 		List<HashMap<String, String>> listJourneyActive = new ArrayList<>();
 		List<HashMap<String, String>> listDayLock = new ArrayList<>();
@@ -1515,7 +1555,7 @@ public class JourneyController {
 		String idToken = null;
 		if (cookies != null) {
 			for (Cookie cookie : cookies) {
-				LOGGER.info("cookie: " + cookie); 
+				LOGGER.info("cookie: " + cookie);
 				if (cookie.getName().equals("idToken")) {
 					// do something
 //					idToken = cookie.getValue();
@@ -1722,7 +1762,7 @@ public class JourneyController {
 		String idToken = null;
 		if (cookies != null) {
 			for (Cookie cookie : cookies) {
-				LOGGER.info("cookie: " + cookie); 
+				LOGGER.info("cookie: " + cookie);
 				if (cookie.getName().equals("idToken")) {
 					// do something
 //					idToken = cookie.getValue();
@@ -1730,7 +1770,7 @@ public class JourneyController {
 				}
 			}
 		}
-		
+
 //		LOGGER.info("idToken first: " + idToken);
 //		String name = "cookieIdToken"; 
 //		Cookie cookie = new Cookie(name, URLEncoder.encode(idToken, "ASCII"));
@@ -1931,7 +1971,7 @@ public class JourneyController {
 		String idToken = null;
 		if (cookies != null) {
 			for (Cookie cookie : cookies) {
-				LOGGER.info("cookie: " + cookie); 
+				LOGGER.info("cookie: " + cookie);
 				if (cookie.getName().equals("idToken")) {
 					// do something
 //					idToken = cookie.getValue();
@@ -2353,7 +2393,7 @@ public class JourneyController {
 		String idToken = null;
 		if (cookies != null) {
 			for (Cookie cookie : cookies) {
-				LOGGER.info("cookie: " + cookie); 
+				LOGGER.info("cookie: " + cookie);
 				if (cookie.getName().equals("idToken")) {
 					// do something
 //					idToken = cookie.getValue();
@@ -2744,7 +2784,23 @@ public class JourneyController {
 			@RequestParam String numDay, HttpServletResponse response) throws FirebaseAuthException, JsonParseException,
 			JsonMappingException, IOException, InterruptedException, ExecutionException {
 		LOGGER.info("urlvideo open day: " + url);
-		FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
+//		FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
+		LOGGER.info("idToken: " + idToken);
+		if (idToken == null) {
+			LOGGER.info("check idToken null.");
+			response.setStatus(401);
+			return;
+		}
+
+		FirebaseToken decodedToken = null;
+		try {
+			decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
+		} catch (FirebaseAuthException e) {
+			// TODO Auto-generated catch block
+			LOGGER.info("catch, verify idToken!");
+			response.setStatus(401);
+			return;
+		}
 		String uid = decodedToken.getUid();
 		Firestore db = FirestoreClient.getFirestore();
 		// get account by uid

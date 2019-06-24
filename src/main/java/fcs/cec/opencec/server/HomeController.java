@@ -6,7 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
@@ -27,9 +26,14 @@ public class HomeController {
 	public String volunteer(Model model) throws InterruptedException, ExecutionException {
 		return "volunteer/volunteer";
 	}
-	
+
 	@GetMapping(value = "/private-policy")
 	public String privacy() throws InterruptedException, ExecutionException {
 		return "privacy/policy";
+	}
+
+	@GetMapping(value = "/verify-token")
+	public String verifyToken() throws InterruptedException, ExecutionException {
+		return "check-idToken/check-token";
 	}
 }
