@@ -698,7 +698,16 @@ public class LessonController {
 				}
 			}
 		} else {
-			FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
+//			FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
+			FirebaseToken decodedToken = null;
+			try {
+				decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
+			} catch (FirebaseAuthException e) {
+				// TODO Auto-generated catch block
+				LOGGER.info("catch, verify idToken!"); 
+				return "check-idToken/check-token";
+			}
+			
 			String uid = decodedToken.getUid();
 //			Firestore db = FirestoreOptions.getDefaultInstance().getService();
 			Firestore db = FirestoreClient.getFirestore();
