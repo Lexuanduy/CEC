@@ -130,7 +130,7 @@ public class JourneyController {
 		} else {
 
 //			Firestore db = FirestoreClient.getFirestore();
-			Firestore db = FirestoreClient.getFirestore();
+			Firestore db = FirestoreClient.getFirestore(); 
 //			FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
 //			String uid = decodedToken.getUid();
 			int dayJourney = Integer.parseInt(day);
@@ -291,7 +291,14 @@ public class JourneyController {
 					model.addAttribute("journeyDay", listMap);
 					return "check-idToken/check-token-journey";
 				}
-				FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
+				FirebaseToken decodedToken = null;
+				try {
+					decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
+				} catch (FirebaseAuthException e) {
+					// TODO Auto-generated catch block
+					LOGGER.info("catch, verify idToken!");
+					return "check-idToken/check-token";
+				}
 				String uid = decodedToken.getUid();
 				// get doc id account
 				ApiFuture<QuerySnapshot> futureAccount = db.collection("Account").whereEqualTo("uid", uid).get();
@@ -441,7 +448,14 @@ public class JourneyController {
 					model.addAttribute("journeyDay", listMap);
 					return "check-idToken/check-token-journey";
 				}
-				FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
+				FirebaseToken decodedToken = null;
+				try {
+					decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
+				} catch (FirebaseAuthException e) {
+					// TODO Auto-generated catch block
+					LOGGER.info("catch, verify idToken!");
+					return "check-idToken/check-token";
+				}
 				String uid = decodedToken.getUid();
 				// get doc id account
 				ApiFuture<QuerySnapshot> futureAccount = db.collection("Account").whereEqualTo("uid", uid).get();
@@ -590,7 +604,14 @@ public class JourneyController {
 					return "check-idToken/check-token-journey";
 				}
 				// get facebookId, get uid
-				FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
+				FirebaseToken decodedToken = null;
+				try {
+					decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
+				} catch (FirebaseAuthException e) {
+					// TODO Auto-generated catch block
+					LOGGER.info("catch, verify idToken!");
+					return "check-idToken/check-token";
+				}
 				String uid = decodedToken.getUid();
 				// get doc id account
 				ApiFuture<QuerySnapshot> futureAccount = db.collection("Account").whereEqualTo("uid", uid).get();
@@ -739,7 +760,14 @@ public class JourneyController {
 					model.addAttribute("journeyDay", listMap);
 					return "check-idToken/check-token-journey";
 				}
-				FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
+				FirebaseToken decodedToken = null;
+				try {
+					decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
+				} catch (FirebaseAuthException e) {
+					// TODO Auto-generated catch block
+					LOGGER.info("catch, verify idToken!");
+					return "check-idToken/check-token";
+				}
 				String uid = decodedToken.getUid();
 				// get doc id account
 				ApiFuture<QuerySnapshot> futureAccount = db.collection("Account").whereEqualTo("uid", uid).get();
@@ -888,7 +916,14 @@ public class JourneyController {
 					model.addAttribute("journeyDay", listMap);
 					return "check-idToken/check-token-journey";
 				}
-				FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
+				FirebaseToken decodedToken = null;
+				try {
+					decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
+				} catch (FirebaseAuthException e) {
+					// TODO Auto-generated catch block
+					LOGGER.info("catch, verify idToken!");
+					return "check-idToken/check-token";
+				}
 				String uid = decodedToken.getUid();
 				// get doc id account
 				ApiFuture<QuerySnapshot> futureAccount = db.collection("Account").whereEqualTo("uid", uid).get();
@@ -1037,7 +1072,14 @@ public class JourneyController {
 					model.addAttribute("journeyDay", listMap);
 					return "check-idToken/check-token-journey";
 				}
-				FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
+				FirebaseToken decodedToken = null;
+				try {
+					decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
+				} catch (FirebaseAuthException e) {
+					// TODO Auto-generated catch block
+					LOGGER.info("catch, verify idToken!");
+					return "check-idToken/check-token";
+				}
 				String uid = decodedToken.getUid();
 				// get doc id account
 				ApiFuture<QuerySnapshot> futureAccount = db.collection("Account").whereEqualTo("uid", uid).get();
@@ -1420,7 +1462,14 @@ public class JourneyController {
 				}
 			}
 		} else {
-			FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
+			FirebaseToken decodedToken = null;
+			try {
+				decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
+			} catch (FirebaseAuthException e) {
+				// TODO Auto-generated catch block
+				LOGGER.info("catch, verify idToken!");
+				return "check-idToken/check-token";
+			}
 			String uid = decodedToken.getUid();
 //			Firestore db = FirestoreClient.getFirestore();
 			Firestore db = FirestoreClient.getFirestore();
@@ -1583,7 +1632,14 @@ public class JourneyController {
 				}
 			}
 		} else {
-			FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
+			FirebaseToken decodedToken = null;
+			try {
+				decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
+			} catch (FirebaseAuthException e) {
+				// TODO Auto-generated catch block
+				LOGGER.info("catch, verify idToken!");
+				return "check-idToken/check-token";
+			}
 			String uid = decodedToken.getUid();
 //			Firestore db = FirestoreClient.getFirestore();
 			Firestore db = FirestoreClient.getFirestore();
@@ -1795,7 +1851,14 @@ public class JourneyController {
 			}
 		} else {
 			LOGGER.info("idToken != null");
-			FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
+			FirebaseToken decodedToken = null;
+			try {
+				decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
+			} catch (FirebaseAuthException e) {
+				// TODO Auto-generated catch block
+				LOGGER.info("catch, verify idToken!");
+				return "check-idToken/check-token";
+			}
 			String uid = decodedToken.getUid();
 			Firestore db = FirestoreClient.getFirestore();
 			// get account id
@@ -2003,7 +2066,14 @@ public class JourneyController {
 			}
 		} else {
 			LOGGER.info("idToken != null");
-			FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
+			FirebaseToken decodedToken = null;
+			try {
+				decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
+			} catch (FirebaseAuthException e) {
+				// TODO Auto-generated catch block
+				LOGGER.info("catch, verify idToken!");
+				return "check-idToken/check-token";
+			}
 			String uid = decodedToken.getUid();
 			Firestore db = FirestoreClient.getFirestore();
 			// get account id
@@ -2215,7 +2285,14 @@ public class JourneyController {
 			}
 		} else {
 			LOGGER.info("idToken != null");
-			FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
+			FirebaseToken decodedToken = null;
+			try {
+				decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
+			} catch (FirebaseAuthException e) {
+				// TODO Auto-generated catch block
+				LOGGER.info("catch, verify idToken!");
+				return "check-idToken/check-token";
+			}
 			String uid = decodedToken.getUid();
 			Firestore db = FirestoreClient.getFirestore();
 			// get account id
@@ -2425,7 +2502,14 @@ public class JourneyController {
 			}
 		} else {
 			LOGGER.info("idToken != null");
-			FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
+			FirebaseToken decodedToken = null;
+			try {
+				decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
+			} catch (FirebaseAuthException e) {
+				// TODO Auto-generated catch block
+				LOGGER.info("catch, verify idToken!");
+				return "check-idToken/check-token"; 
+			}
 			String uid = decodedToken.getUid();
 			Firestore db = FirestoreClient.getFirestore();
 			// get account id
@@ -2633,7 +2717,14 @@ public class JourneyController {
 			}
 		} else {
 			LOGGER.info("idToken != null");
-			FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
+			FirebaseToken decodedToken = null;
+			try {
+				decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
+			} catch (FirebaseAuthException e) {
+				// TODO Auto-generated catch block
+				LOGGER.info("catch, verify idToken!");
+				return "check-idToken/check-token";
+			} 
 			String uid = decodedToken.getUid();
 			Firestore db = FirestoreClient.getFirestore();
 			// get account id
