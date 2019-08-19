@@ -313,6 +313,33 @@ public class JourneyController {
 					return "error/error-journey";
 				}
 				if ((Integer.parseInt(day) > 1) && (Integer.parseInt(day) < 6)) {
+					// create day 2 in journey day 5days
+					if (Integer.parseInt(day) == 2) {
+						LOGGER.info("3days day == 2");
+						// create new journey day
+						Map<String, Object> data = new HashMap<>();
+						int day2Journey = 2;
+						data.put("day", day2Journey);
+						data.put("journey", "5days");
+						data.put("memberId", facebookId);
+						data.put("memberName", "");
+						data.put("postId", "");
+						data.put("status", 0);
+						data.put("url", "");
+						data.put("uid", uid);
+						data.put("accountId", facebookId);
+						data.put("createdAt", System.currentTimeMillis() / 1000);
+						data.put("updatedAt", System.currentTimeMillis() / 1000);
+						String docId = name + String.valueOf(day2Journey) + facebookId;
+						DocumentReference docRefJourneyDay = db.collection("JourneyDay").document(docId);
+						ApiFuture<DocumentSnapshot> futureJourneyDay = docRefJourneyDay.get();
+						DocumentSnapshot documentJourneyDay = futureJourneyDay.get();
+						if (documentJourneyDay.exists()) {
+							LOGGER.info("document JourneyDay eixst!");
+						} else {
+							ApiFuture<WriteResult> addedDocRef = db.collection("JourneyDay").document(docId).set(data);
+						}
+					}
 
 					int dayJourneyOld = dayJourney - 1;
 					String docJourneyDay = name + dayJourneyOld + facebookId;
@@ -389,48 +416,76 @@ public class JourneyController {
 				}
 				if (Integer.parseInt(day) == 1) {
 					LOGGER.info("5days day == 1");
-					// check day 3 in journeyday 3days
-					String docJourneyDay = "3days3" + facebookId;
-					LOGGER.info("doc journey day: " + docJourneyDay);
-					DocumentReference docRef = db.collection("JourneyDay").document(docJourneyDay);
-					ApiFuture<DocumentSnapshot> future = docRef.get();
-					DocumentSnapshot document = future.get();
-					JourneyDay journeyDay = null;
-					if (document.exists()) {
-						journeyDay = document.toObject(JourneyDay.class);
-						int status = journeyDay.getStatus();
-						if (status == 0) {
-							LOGGER.info("status == 0");
-							return "error/error-journey-old";
-						}
-						// create new journey day
-						Map<String, Object> data = new HashMap<>();
-						dayJourney = Integer.parseInt(day) + 1;
-						data.put("day", dayJourney);
-						data.put("journey", "5days");
-						data.put("memberId", facebookId);
-						data.put("memberName", "");
-						data.put("postId", "");
-						data.put("status", 0);
-						data.put("url", "");
-						data.put("uid", uid);
-						data.put("accountId", facebookId);
-						data.put("createdAt", System.currentTimeMillis() / 1000);
-						data.put("updatedAt", System.currentTimeMillis() / 1000);
-						String docId = name + String.valueOf(dayJourney) + facebookId;
-						DocumentReference docRefJourneyDay = db.collection("JourneyDay").document(docId);
-						LOGGER.info("docId: " + docId);
-						ApiFuture<DocumentSnapshot> futureJourneyDay = docRefJourneyDay.get();
-						DocumentSnapshot documentJourneyDay = futureJourneyDay.get();
-						if (documentJourneyDay.exists()) {
-							LOGGER.info("document JourneyDay eixst!");
-						} else {
-							ApiFuture<WriteResult> addedDocRef = db.collection("JourneyDay").document(docId).set(data);
-						}
+					// add day 1 in journey day
+					// create new journey day
+					Map<String, Object> data = new HashMap<>();
+					data.put("day", Integer.parseInt(day));
+					data.put("journey", "5days");
+					data.put("memberId", facebookId);
+					data.put("memberName", "");
+					data.put("postId", "");
+					data.put("status", 0);
+					data.put("url", "");
+					data.put("uid", uid);
+					data.put("accountId", facebookId);
+					data.put("createdAt", System.currentTimeMillis() / 1000);
+					data.put("updatedAt", System.currentTimeMillis() / 1000);
+					String docId = name + String.valueOf(Integer.parseInt(day)) + facebookId;
+					DocumentReference docRefJourneyDay = db.collection("JourneyDay").document(docId);
+					ApiFuture<DocumentSnapshot> futureJourneyDay = docRefJourneyDay.get();
+					DocumentSnapshot documentJourneyDay = futureJourneyDay.get();
+					if (documentJourneyDay.exists()) {
+						LOGGER.info("document JourneyDay eixst!");
 					} else {
-						LOGGER.info("No such document JourneyDay!");
-						return "error/error-journey";
+						LOGGER.info("Add day 1 in journey5 days success!");
+						ApiFuture<WriteResult> addedDocRef = db.collection("JourneyDay").document(docId).set(data);
 					}
+					
+					
+					
+					
+					// check day 3 in journeyday 3days
+//					String docJourneyDay = "3days3" + facebookId;
+//					LOGGER.info("doc journey day: " + docJourneyDay);
+//					DocumentReference docRef = db.collection("JourneyDay").document(docJourneyDay);
+//					ApiFuture<DocumentSnapshot> future = docRef.get();
+//					DocumentSnapshot document = future.get();
+//					JourneyDay journeyDay = null;
+//					if (document.exists()) {
+//						journeyDay = document.toObject(JourneyDay.class);
+//						int status = journeyDay.getStatus();
+//						if (status == 0) {
+//							LOGGER.info("status == 0");
+//							return "error/error-journey-old";
+//						}
+//						// create new journey day
+//						Map<String, Object> data = new HashMap<>();
+//						dayJourney = Integer.parseInt(day) + 1;
+//						data.put("day", dayJourney);
+//						data.put("journey", "5days");
+//						data.put("memberId", facebookId);
+//						data.put("memberName", "");
+//						data.put("postId", "");
+//						data.put("status", 0);
+//						data.put("url", "");
+//						data.put("uid", uid);
+//						data.put("accountId", facebookId);
+//						data.put("createdAt", System.currentTimeMillis() / 1000);
+//						data.put("updatedAt", System.currentTimeMillis() / 1000);
+//						String docId = name + String.valueOf(dayJourney) + facebookId;
+//						DocumentReference docRefJourneyDay = db.collection("JourneyDay").document(docId);
+//						LOGGER.info("docId: " + docId);
+//						ApiFuture<DocumentSnapshot> futureJourneyDay = docRefJourneyDay.get();
+//						DocumentSnapshot documentJourneyDay = futureJourneyDay.get();
+//						if (documentJourneyDay.exists()) {
+//							LOGGER.info("document JourneyDay eixst!");
+//						} else {
+//							ApiFuture<WriteResult> addedDocRef = db.collection("JourneyDay").document(docId).set(data);
+//						}
+//					} else {
+//						LOGGER.info("No such document JourneyDay!");
+//						return "error/error-journey";
+//					}
 				}
 			}
 			// end journey day in 5days
