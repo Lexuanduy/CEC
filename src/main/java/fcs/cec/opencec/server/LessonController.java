@@ -116,19 +116,85 @@ public class LessonController {
 	}
 
 	@RequestMapping(value = "lesson/{id}", method = RequestMethod.GET)
-	public String openLesson(Model model, @CookieValue(value = "idToken", required = false) String idToken,
-			@PathVariable("id") String id, @RequestParam(value = "v", required = false) String v,
+	public String openLesson(HttpServletRequest request, Model model,
+			@CookieValue(value = "idToken", required = false) String idToken, @PathVariable("id") String id,
+			@RequestParam(value = "v", required = false) String v,
 			@RequestParam(value = "me", required = false) String me)
 			throws NoSuchAlgorithmException, InterruptedException, ExecutionException {
 		LOGGER.info("lesson: " + id);
 		LOGGER.info("v: " + v);
 		LOGGER.info("me: " + me);
+		Firestore db = FirestoreClient.getFirestore();
+		FirebaseToken decodedToken = null;
 
 		int idLesson = Integer.parseInt(id);
 		LOGGER.info("idLesson: " + idLesson);
 		if (idLesson < 1) {
 			LOGGER.info("lesson < 1");
 			return "error/error-lesson";
+		}
+		if (idLesson == 1) {
+			if (idToken != null) {
+				try {
+					decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
+					Cookie[] cookies = request.getCookies();
+					String facebookId = null;
+					String photoURL = null;
+					String uid = null;
+					String displayName = null;
+					String email = null;
+					if (cookies != null) {
+						for (Cookie cookie : cookies) {
+							if (cookie.getName().equals("facebookId")) {
+								facebookId = cookie.getValue();
+							}
+							if (cookie.getName().equals("photoURL")) {
+								photoURL = cookie.getValue();
+							}
+							if (cookie.getName().equals("uid")) {
+								uid = cookie.getValue();
+							}
+							if (cookie.getName().equals("displayName")) {
+								displayName = cookie.getValue();
+							}
+							if (cookie.getName().equals("email")) {
+								email = cookie.getValue();
+							}
+						}
+					}
+					LOGGER.info("get cookie: " + facebookId + " - " + photoURL + " - " + uid + " - " + displayName
+							+ " - " + email);
+					DocumentReference docRefAcccount = db.collection("Account").document(facebookId);
+					ApiFuture<DocumentSnapshot> future = docRefAcccount.get();
+					DocumentSnapshot document = future.get();
+					if (document.exists()) {
+						LOGGER.info("Document data account exist.");
+					} else {
+						LOGGER.info("No such document!");
+						if (facebookId != null) {
+							Account account = new Account();
+							account.setId(facebookId);
+							account.setDisplayName(displayName);
+							account.setEmail(email);
+							account.setMemberId(facebookId);
+							account.setRole("user");
+							account.setUid(uid);
+							ApiFuture<WriteResult> futureAddAccount = db.collection("Account").document(facebookId)
+									.set(account);
+						}
+					}
+				} catch (FirebaseAuthException e) {
+					// TODO Auto-generated catch block
+					LOGGER.info("catch decodedToken");
+					List<HashMap<String, String>> listMap = new ArrayList<>();
+					HashMap<String, String> hashMap = new HashMap();
+					String urlLesson = "/lesson/" + String.valueOf(idLesson);
+					hashMap.put("urlLesson", urlLesson);
+					listMap.add(hashMap);
+					model.addAttribute("lesson", listMap);
+					return "check-idToken/check-token";
+				}
+			}
 		}
 
 		if (v != null) {
@@ -155,7 +221,6 @@ public class LessonController {
 				}
 			}
 		} else {
-			Firestore db = FirestoreClient.getFirestore();
 			if (idLesson > 1 && idLesson < 24) {
 				int lessonOld = idLesson - 1;
 				LOGGER.info("idToken: " + idToken);
@@ -170,7 +235,6 @@ public class LessonController {
 					return "check-idToken/check-token";
 				}
 
-				FirebaseToken decodedToken = null;
 				try {
 					decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
 				} catch (FirebaseAuthException e) {
@@ -704,10 +768,10 @@ public class LessonController {
 				decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
 			} catch (FirebaseAuthException e) {
 				// TODO Auto-generated catch block
-				LOGGER.info("catch, verify idToken!"); 
+				LOGGER.info("catch, verify idToken!");
 				return "check-idToken/check-token";
 			}
-			
+
 			String uid = decodedToken.getUid();
 //			Firestore db = FirestoreOptions.getDefaultInstance().getService();
 			Firestore db = FirestoreClient.getFirestore();

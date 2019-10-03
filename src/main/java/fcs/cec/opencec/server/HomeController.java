@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import com.google.api.core.ApiFuture;
+import com.google.cloud.firestore.DocumentReference;
 import com.google.cloud.firestore.DocumentSnapshot;
 import com.google.cloud.firestore.Firestore;
 import com.google.cloud.firestore.QueryDocumentSnapshot;
@@ -23,29 +24,13 @@ public class HomeController {
 
 	@GetMapping(value = "/")
 	public String welcome(Model model) throws InterruptedException, ExecutionException {
-//		Firestore db = FirestoreClient.getFirestore();
-//		// detele account 488857841634271
-//		ApiFuture<WriteResult> writeResult = db.collection("Account").document("488857841634271").delete();
-//		LOGGER.info("DELETE ACCOUNT DONE");
-//		// end delete
-//		ApiFuture<QuerySnapshot> future = db.collection("LessonMember").whereEqualTo("accountId", "488857841634271")
+		Firestore db = FirestoreClient.getFirestore();
+//		ApiFuture<QuerySnapshot> future = db.collection("Account").whereEqualTo("memberId", "771235367070640")
 //				.get();
 //		// future.get() blocks on response
 //		List<QueryDocumentSnapshot> documents = future.get().getDocuments();
 //		for (DocumentSnapshot document : documents) {
-//			System.out.println(document.getId());
-//			ApiFuture<WriteResult> writeResultLessonMember = db.collection("LessonMember").document(document.getId())
-//					.delete();
-//			LOGGER.info("DELETE LESSONMEMBER DONE");
-//		}
-//		ApiFuture<QuerySnapshot> future2 = db.collection("JourneyDay").whereEqualTo("accountId", "488857841634271")
-//				.get();
-//		// future.get() blocks on response
-//		List<QueryDocumentSnapshot> document2s = future2.get().getDocuments();
-//		for (DocumentSnapshot document : document2s) {
-//			ApiFuture<WriteResult> writeResultLessonMember = db.collection("JourneyDay").document(document.getId())
-//					.delete();
-//			LOGGER.info("DELETE JourneyDay DONE");
+//			LOGGER.info("data: " + document.getData());
 //		}
 		return "views/dashboard";
 	}

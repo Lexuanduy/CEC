@@ -13,6 +13,7 @@ var uid;
 var displayName;
 var photoURL;
 var accessToken;
+var email;
 // facebook auth
 var provider = new firebase.auth.FacebookAuthProvider();
 firebase.auth().onAuthStateChanged(function (user) {
@@ -64,6 +65,7 @@ firebase.auth().onAuthStateChanged(function (user) {
 				facebookId = obj.additionalUserInfo.profile.id;
 				uid = obj.user.uid;
 				displayName = obj.user.displayName;
+				email = obj.user.email;
 				photoURL = obj.user.photoURL;
 				accessToken = obj.user.stsTokenManager.accessToken;
 				
@@ -84,6 +86,10 @@ firebase.auth().onAuthStateChanged(function (user) {
                 	'; path=/';
                 document.cookie = 
                 	'displayName=' + displayName + 
+                	'; expires=' + now.toUTCString() + 
+                	'; path=/';
+                document.cookie = 
+                	'email=' + email + 
                 	'; expires=' + now.toUTCString() + 
                 	'; path=/';
                 document.cookie = 
