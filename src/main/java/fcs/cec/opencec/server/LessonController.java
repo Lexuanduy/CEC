@@ -53,6 +53,7 @@ import com.google.firebase.auth.FirebaseToken;
 import com.google.firebase.cloud.FirestoreClient;
 
 import fcs.cec.opencec.entity.Account;
+import fcs.cec.opencec.entity.JourneyDay;
 import fcs.cec.opencec.entity.Lesson;
 import fcs.cec.opencec.entity.LessonMember;
 
@@ -134,6 +135,7 @@ public class LessonController {
 			return "error/error-lesson";
 		}
 		if (idLesson == 1) {
+			LOGGER.info("CHECK ID TOKEN: " + idToken);
 			if (idToken != null) {
 				try {
 					decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
@@ -164,25 +166,79 @@ public class LessonController {
 					}
 					LOGGER.info("get cookie: " + facebookId + " - " + photoURL + " - " + uid + " - " + displayName
 							+ " - " + email);
-					DocumentReference docRefAcccount = db.collection("Account").document(facebookId);
-					ApiFuture<DocumentSnapshot> future = docRefAcccount.get();
-					DocumentSnapshot document = future.get();
-					if (document.exists()) {
-						LOGGER.info("Document data account exist.");
-					} else {
-						LOGGER.info("No such document!");
-						if (facebookId != null) {
-							Account account = new Account();
-							account.setId(facebookId);
-							account.setDisplayName(displayName);
-							account.setEmail(email);
-							account.setMemberId(facebookId);
-							account.setRole("user");
-							account.setUid(uid);
-							ApiFuture<WriteResult> futureAddAccount = db.collection("Account").document(facebookId)
-									.set(account);
+					if (facebookId != null) {
+						DocumentReference docRefAcccount = db.collection("Account").document(facebookId);
+						ApiFuture<DocumentSnapshot> future = docRefAcccount.get();
+						DocumentSnapshot document = future.get();
+						if (document.exists()) {
+							LOGGER.info("Document data account exist.");
+						} else {
+							LOGGER.info("No such document account!");
+							if (facebookId != null) {
+								Account account = new Account();
+								account.setId(facebookId);
+								account.setDisplayName(displayName);
+								account.setEmail(email);
+								account.setMemberId(facebookId);
+								account.setRole("user");
+								account.setUid(uid);
+								ApiFuture<WriteResult> futureAddAccount = db.collection("Account").document(facebookId)
+										.set(account);
+							}
+						}
+
+						LOGGER.info("check lesson1.");
+						String docLs1Id = "1" + facebookId;
+						LOGGER.info("doc ls1: " + docLs1Id);
+						DocumentReference docRefLs1 = db.collection("LessonMember").document(docLs1Id);
+						ApiFuture<DocumentSnapshot> futureLs1 = docRefLs1.get();
+						DocumentSnapshot documentLs1 = futureLs1.get();
+						if (documentLs1.exists()) {
+							LOGGER.info("Document data lesson 1 exist.");
+						} else {
+							LOGGER.info("No such document account lesson1!");
+							LessonMember ls1 = new LessonMember();
+							ls1.setLesson(1);
+							ls1.setMemberId(facebookId);
+							ls1.setMemberName(displayName);
+							ls1.setPostId("");
+							ls1.setStatus(0);
+							ls1.setUrl("");
+							ls1.setAccountId(facebookId);
+							ls1.setUid(uid);
+							ls1.setCreatedAt(System.currentTimeMillis());
+							ls1.setCreatedAt(System.currentTimeMillis());
+							ApiFuture<WriteResult> futureAddLs = db.collection("LessonMember").document(docLs1Id)
+									.set(ls1);
+						}
+
+						LOGGER.info("check journey 3days1");
+						String docJourneyDayFirst = "3days1" + facebookId;
+						LOGGER.info("doc jd first id: " + docJourneyDayFirst);
+						DocumentReference docRefJd1 = db.collection("JourneyDay").document(docJourneyDayFirst);
+						ApiFuture<DocumentSnapshot> futureJd1 = docRefJd1.get();
+						DocumentSnapshot documentJd1 = futureJd1.get();
+						if (documentJd1.exists()) {
+							LOGGER.info("Document data journey 3days1 exist.");
+						} else {
+							LOGGER.info("No such document data journey 3days1 exist.");
+							JourneyDay jd = new JourneyDay();
+							jd.setDay(1);
+							jd.setJourney("3days");
+							jd.setMemberId(facebookId);
+							jd.setMemberName(displayName);
+							jd.setPostId("");
+							jd.setStatus(0);
+							jd.setUrl("");
+							jd.setAccountId(facebookId);
+							jd.setUid(uid);
+							jd.setCreatedAt(System.currentTimeMillis());
+							jd.setUpdatedAt(System.currentTimeMillis());
+							ApiFuture<WriteResult> futureAddJd = db.collection("JourneyDay")
+									.document(docJourneyDayFirst).set(jd);
 						}
 					}
+					// end check
 				} catch (FirebaseAuthException e) {
 					// TODO Auto-generated catch block
 					LOGGER.info("catch decodedToken");
