@@ -18,6 +18,7 @@ import com.google.cloud.firestore.QuerySnapshot;
 import com.google.cloud.firestore.WriteResult;
 import com.google.firebase.cloud.FirestoreClient;
 
+import fcs.cec.opencec.entity.Account;
 import fcs.cec.opencec.entity.MemberPost;
 
 @Controller
@@ -26,8 +27,8 @@ public class HomeController {
 
 	@GetMapping(value = "/")
 	public String welcome(Model model) throws InterruptedException, ExecutionException {
-//		Firestore db = FirestoreClient.getFirestore();
-//		String memberId = "771517479977371";
+		Firestore db = FirestoreClient.getFirestore();
+//		String memberId = "2426737954263951";
 //		DocumentReference docRefmp = db.collection("MemberPost").document("1784461175160264_2389589267980782");
 //		ApiFuture<DocumentSnapshot> futuremp = docRefmp.get();
 //		DocumentSnapshot documentmp = futuremp.get();
@@ -38,25 +39,29 @@ public class HomeController {
 //		} else {
 //			System.out.println("No such document!");
 //		}
-//		LOGGER.info("member id: " + memberId);
-//
-//		ApiFuture<QuerySnapshot> future = db.collection("Account").whereEqualTo("memberId", memberId).get();
-//		// future.get() blocks on response
-//		List<QueryDocumentSnapshot> documents = future.get().getDocuments();
-//		for (DocumentSnapshot document : documents) {
-//			LOGGER.info("account: " + document.getData());
+//		DocumentReference docRefAcccount = db.collection("Account").document(memberId);
+//		ApiFuture<DocumentSnapshot> future = docRefAcccount.get();
+//		DocumentSnapshot document = future.get();
+//		if (document.exists()) {
+//			LOGGER.info("Document data account exist.");
+//		} else {
+//			LOGGER.info("No such document account!");
 //		}
-//		ApiFuture<QuerySnapshot> futureLM = db.collection("LessonMember").whereEqualTo("memberId", memberId).get();
-//		// future.get() blocks on response
-//		List<QueryDocumentSnapshot> doc1s = futureLM.get().getDocuments();
-//		for (DocumentSnapshot document : doc1s) {
-//			LOGGER.info("lesson member: " + document.getData());
+//		DocumentReference docRefLs1 = db.collection("LessonMember").document("12426737954263951");
+//		ApiFuture<DocumentSnapshot> futureLs1 = docRefLs1.get();
+//		DocumentSnapshot documentLs1 = futureLs1.get();
+//		if (documentLs1.exists()) {
+//			LOGGER.info("Document data ls1 exist.");
+//		} else {
+//			LOGGER.info("No such document ls1!");
 //		}
-//		ApiFuture<QuerySnapshot> futureJD = db.collection("JourneyDay").whereEqualTo("memberId", memberId).get();
-//		// future.get() blocks on response
-//		List<QueryDocumentSnapshot> doc2s = futureJD.get().getDocuments();
-//		for (DocumentSnapshot document : doc2s) {
-//			LOGGER.info("journey day: " + document.getData());
+//		DocumentReference docRefJd1 = db.collection("JourneyDay").document("3days12426737954263951");
+//		ApiFuture<DocumentSnapshot> futureJd1 = docRefJd1.get();
+//		DocumentSnapshot documentJd1 = futureJd1.get();
+//		if (documentJd1.exists()) {
+//			LOGGER.info("Document data j3ds1 exist.");
+//		} else {
+//			LOGGER.info("No such document j3ds1!");
 //		}
 		return "views/dashboard";
 	}
