@@ -1629,11 +1629,11 @@ public class JourneyController {
 		ApiFuture<DocumentSnapshot> futureAccount = docRefAccount.get();
 		DocumentSnapshot document = futureAccount.get();
 		Account account = document.toObject(Account.class);
-		if (!account.getDisplayName().equals(memberName)) {
-			LOGGER.info("An cap bai viet cua nguoi khac.");
-			response.setStatus(405);
-			return;
-		} else {
+//		if (!account.getDisplayName().equals(memberName)) {
+//			LOGGER.info("An cap bai viet cua nguoi khac.");
+//			response.setStatus(405);
+//			return;
+//		} else {
 			if (journeyName.equals(journey) && day.equals(numDay)) {
 				LOGGER.info("check ok");
 				String docJourneyDay = journey + "days" + numDay + facebookId;
@@ -1737,7 +1737,7 @@ public class JourneyController {
 				response.setStatus(404);
 				return;
 			}
-		}
+//		}
 	}
 
 	@RequestMapping(value = "/journey/3days", method = RequestMethod.GET)
@@ -3303,11 +3303,11 @@ public class JourneyController {
 		ApiFuture<DocumentSnapshot> futureAccount = docRefAccount.get();
 		DocumentSnapshot document = futureAccount.get();
 		Account account = document.toObject(Account.class);
-		if (!account.getDisplayName().equals(memberName)) {
-			LOGGER.info("An cap bai viet cua nguoi khac.");
-			response.setStatus(405);
-			return;
-		} else {
+//		if (!account.getDisplayName().equals(memberName)) {
+//			LOGGER.info("An cap bai viet cua nguoi khac.");
+//			response.setStatus(405);
+//			return;
+//		} else {
 			if (journeyName.equals(journey) && day.equals(numDay)) {
 				String docJourneyDay = journey + "days" + numDay + facebookId;
 				LOGGER.info("docJourneyDay: " + docJourneyDay);
@@ -3410,7 +3410,7 @@ public class JourneyController {
 				response.setStatus(404);
 				return;
 			}
-		}
+//		}
 	}
 
 	@RequestMapping(value = "/journey", method = RequestMethod.GET)
