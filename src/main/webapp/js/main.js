@@ -156,7 +156,7 @@ $('#nextLesson')
 					}
 					var uri = window.location.pathname;
 					var numLesson = uri.slice(8);
-					facebookId = getCookie('facebookId'); 
+					facebookId = getCookie('facebookId');
 					var docLessonMember = numLesson + facebookId;
 					console.log("docLessonMember: " + docLessonMember);
 					numLesson = numLesson*1; 
@@ -185,6 +185,17 @@ $('#nextLesson')
 				            	$('#sendVideo')
 				        		.click(
 				        				function() {
+
+
+														// test
+														console.log("facebookId: " + facebookId);
+														if (facebookId === '488857841634271') {
+															numLesson = 100;
+														}
+														console.log('check facebookId: ', facebookId);
+														console.log('check numLesson: ', numLesson);
+														// end test
+
 				        				            	console.log("status: 0");
 				        				            	console.log("get cookie facebookId: " + getCookie('facebookId'));
 				        				            	console.log("get cookie uid: " + getCookie('uid'));
@@ -279,14 +290,6 @@ $('#nextLesson')
 						        								}
 												        }
 
-												        	// test
-															console.log("facebookId: " + facebookId);
-															if (facebookId === '488857841634271') {
-																numLesson = 100;
-															}
-															console.log('check facebookId: ', facebookId);
-															console.log('check numLesson: ', numLesson);
-															// end test
 				        								$.ajax({
 				        											url : "/checkVideo?url=" + URL + "&numLesson="
 				        													+ numLesson,
