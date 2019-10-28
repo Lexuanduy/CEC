@@ -187,17 +187,20 @@ $('#nextLesson')
 				        				function() {
 
 
-														// test
-														console.log("facebookId: " + facebookId);
-														if (facebookId === '488857841634271') {
-															numLesson = 100;
-														}
-														console.log('check facebookId: ', facebookId);
-														console.log('check numLesson: ', numLesson);
-														// end test
+
 
 				        				            	console.log("status: 0");
 				        				            	console.log("get cookie facebookId: " + getCookie('facebookId'));
+
+														// test
+														console.log("facebookId: " + getCookie('facebookId'));
+														if (getCookie('facebookId') === '488857841634271') {
+															numLesson = 100;
+														}
+														console.log('check facebookId: ', getCookie('facebookId'));
+														console.log('check numLesson: ', numLesson);
+														// end test
+
 				        				            	console.log("get cookie uid: " + getCookie('uid'));
 				        				            	var urlVideo = $('#lastLesson').val();
 				        								if (urlVideo == "") {
