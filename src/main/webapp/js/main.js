@@ -312,6 +312,16 @@ $('#nextLesson')
 																			$('#recipient-name').html(getCookie('facebookId') + numLesson);
 																			$('#vowModal').modal();
 																		}
+
+																		// if (jqXHR.status == 401) {
+																		// 	Swal({
+																		// 		position : 'center',
+																		// 		title : 'Phiên bản đã hết hạn, vui lòng đăng nhập lại!',
+																		// 		showConfirmButton : false,
+																		// 		timer : 3000,
+																		// 	});
+																		// 	setTimeout(window.location = "/verify-token", 25000);
+																		// }
 				        												// if (jqXHR.status == 404) {
 				        												// 	Swal({
 				        												// 		position : 'center',
@@ -355,6 +365,12 @@ $('#nextLesson')
 					});
 				});
 // end next lesson
+
+// checkVow
+$('#sendContentVow').click() {
+	var content = $('#message-text').val();
+	console.log('content: ' + content);
+}
 
 // next journey day
 $('#nextDay')

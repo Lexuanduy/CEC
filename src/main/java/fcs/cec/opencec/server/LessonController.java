@@ -784,9 +784,9 @@ public class LessonController {
 	}
 
 	@RequestMapping(value = "checkVow", method = RequestMethod.POST)
-	public void checkVow(Model model, @RequestParam String url, @CookieValue(value = "idToken", required = true) String idToken, @RequestParam String numLesson,
-						   HttpServletResponse response){
-		LOGGER.info("url video check lesson: " + url);
+	public void checkVow(Model model, @CookieValue(value = "idToken", required = true) String idToken, @RequestParam String docIdLesson,
+						   HttpServletResponse response) throws ExecutionException, InterruptedException, IOException {
+	    LOGGER.info("start checkVow: " + docIdLesson);
 		LOGGER.info("idToken: " + idToken);
 		if (idToken == null) {
 			LOGGER.info("check idToken null.");
@@ -804,7 +804,80 @@ public class LessonController {
 		}
 		String uid = decodedToken.getUid();
 		LOGGER.info("checkVow uid: " + uid);
+        // get account by uid
+        Firestore db = FirestoreClient.getFirestore();
+        ApiFuture<QuerySnapshot> futureAcc = db.collection("Account").whereEqualTo("uid", uid).get();
+        List<QueryDocumentSnapshot> accDocuments = futureAcc.get().getDocuments();
+        String facebookId = null;
+        for (DocumentSnapshot document : accDocuments) {
+            facebookId = document.getId();
+        }
+        LOGGER.info("checkVideo facebookId: " + facebookId);
+        if (facebookId == null) {
+            LOGGER.info("facebookId null");
+            response.setStatus(404);
+            return;
+        }
+        String docAccount = facebookId;
+        DocumentReference docRefAccount = db.collection("Account").document(docAccount);
+        ApiFuture<DocumentSnapshot> futureAccount = docRefAccount.get();
+        DocumentSnapshot document = futureAccount.get();
+        Account account = document.toObject(Account.class);
 
+        DocumentReference docRefLessonMember = db.collection("LessonMember").document(docIdLesson);
+        ApiFuture<DocumentSnapshot> future = docRefLessonMember.get();
+        DocumentSnapshot documentLm = future.get();
+        if (document.exists()) {
+            System.out.println("Document data exist.");
+            Map<String, Object> updatesLesson = new HashMap<>();
+            updatesLesson.put("memberId", account.getMemberId());
+            updatesLesson.put("memberName", account.getDisplayName());
+            updatesLesson.put("postId", account.getId());
+            updatesLesson.put("status", 1);
+            updatesLesson.put("url", "");
+            updatesLesson.put("updatedAt", System.currentTimeMillis() / 1000);
+            ApiFuture<WriteResult> futureLessonMember = docRefLessonMember.update(updatesLesson);
+        } else {
+            System.out.println("No such document, add new set status 1.");
+            Map<String, Object> newLesson = new HashMap<>();
+            newLesson.put("memberId", account.getMemberId());
+            newLesson.put("memberName", account.getDisplayName());
+            newLesson.put("postId", account.getId());
+            newLesson.put("status", 1);
+            newLesson.put("url", "");
+            newLesson.put("updatedAt", System.currentTimeMillis() / 1000);
+            ApiFuture<WriteResult> futureLessonMember = docRefLessonMember.set(newLesson);
+        }
+
+
+        // create new next lesson
+        Map<String, Object> data = new HashMap<>();
+        int idLesson = Integer.parseInt(docIdLesson.substring(0, docIdLesson.indexOf(facebookId)));
+        LOGGER.info("idLesson: " + idLesson);
+        idLesson = idLesson + 1;
+        data.put("lesson", idLesson);
+        data.put("memberId", facebookId);
+        data.put("memberName", "");
+        data.put("postId", "");
+        data.put("status", 0);
+        data.put("url", "");
+        data.put("uid", uid);
+        data.put("accountId", facebookId);
+        data.put("createdAt", System.currentTimeMillis() / 1000);
+        data.put("updatedAt", System.currentTimeMillis() / 1000);
+        String docId = String.valueOf(idLesson) + facebookId;
+        DocumentReference docRefLesson = db.collection("LessonMember").document(docId);
+        ApiFuture<DocumentSnapshot> futureLesson = docRefLesson.get();
+        DocumentSnapshot documentLesson = futureLesson.get();
+        if (documentLesson.exists()) {
+            LOGGER.info("document LessonMember exist!");
+        } else {
+            ApiFuture<WriteResult> addedDocRef = db.collection("LessonMember").document(docId).set(data);
+        }
+
+        response.getWriter().print(idLesson);
+        response.setStatus(200);
+        return;
 	}
 
 	@RequestMapping(value = "/events/altp", method = RequestMethod.GET)
