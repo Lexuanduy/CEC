@@ -152,6 +152,7 @@ $('#nextLesson')
 							timer : 2000,
 						});
 						return;
+
 					}
 					var uri = window.location.pathname;
 					var numLesson = uri.slice(8);
@@ -277,7 +278,15 @@ $('#nextLesson')
 							        								}
 						        								}
 												        }
-												        
+
+												        	// test
+															console.log("facebookId: " + facebookId);
+															if (facebookId === '488857841634271') {
+																numLesson = 100;
+															}
+															console.log('check facebookId: ', facebookId);
+															console.log('check numLesson: ', numLesson);
+															// end test
 				        								$.ajax({
 				        											url : "/checkVideo?url=" + URL + "&numLesson="
 				        													+ numLesson,
@@ -287,45 +296,49 @@ $('#nextLesson')
 				        												window.location = data;
 				        											},
 				        											error : function(jqXHR, textStatus, errorThrown) {
-				        												if (jqXHR.status == 404) {
-				        													Swal({
-				        														position : 'center',
-				        														type : 'error',
-				        														title : 'Link video không đúng .Vui lòng nhập lại link video bài học của bạn!',
-				        														showConfirmButton : false,
-				        														timer : 2000,
-				        													});
-				        												}
-				        												if (jqXHR.status == 400) {
-				        													Swal({
-				        														position : 'center',
-				        														type : 'error',
-				        														title : 'Link video đã tồn tại .Vui lòng nhập lại link video bài học của bạn!',
-				        														showConfirmButton : false,
-				        														timer : 2000,
-				        													});
-				        												}
-				        												if (jqXHR.status == 403) {
-				        													alert("error 403");
-				        												}
-				        												if (jqXHR.status == 405) {
-				        													Swal({
-				        														position : 'center',
-				        														type : 'error',
-				        														title : 'Đây không phải video của bạn .Vui lòng nhập lại link video bài học của bạn!',
-				        														showConfirmButton : false,
-				        														timer : 3000,
-				        													});
-				        												}
-				        												if (jqXHR.status == 401) {
-				        													Swal({
-				        														position : 'center',
-				        														title : 'Phiên bản đã hết hạn, vui lòng đăng nhập lại!',
-				        														showConfirmButton : false,
-				        														timer : 3000,
-				        													});
-				        													setTimeout(window.location = "/verify-token", 25000);
-				        												}
+				        												console.log('textStatus: ' + textStatus);
+																		console.log('jqXHR: ' + jqXHR);
+																		if (jqXHR.status == 401) {
+																			Swal({
+																				position : 'center',
+																				title : 'Phiên bản đã hết hạn, vui lòng đăng nhập lại!',
+																				showConfirmButton : false,
+																				timer : 3000,
+																			});
+																			setTimeout(window.location = "/verify-token", 25000);
+																		} else {
+																			$('#vowModal').modal();
+																		}
+				        												// if (jqXHR.status == 404) {
+				        												// 	Swal({
+				        												// 		position : 'center',
+				        												// 		type : 'error',
+				        												// 		title : 'Link video không đúng .Vui lòng nhập lại link video bài học của bạn!',
+				        												// 		showConfirmButton : false,
+				        												// 		timer : 2000,
+				        												// 	});
+				        												// }
+				        												// if (jqXHR.status == 400) {
+				        												// 	Swal({
+				        												// 		position : 'center',
+				        												// 		type : 'error',
+				        												// 		title : 'Link video đã tồn tại .Vui lòng nhập lại link video bài học của bạn!',
+				        												// 		showConfirmButton : false,
+				        												// 		timer : 2000,
+				        												// 	});
+				        												// }
+				        												// if (jqXHR.status == 403) {
+				        												// 	alert("error 403");
+				        												// }
+				        												// if (jqXHR.status == 405) {
+				        												// 	Swal({
+				        												// 		position : 'center',
+				        												// 		type : 'error',
+				        												// 		title : 'Đây không phải video của bạn .Vui lòng nhập lại link video bài học của bạn!',
+				        												// 		showConfirmButton : false,
+				        												// 		timer : 3000,
+				        												// 	});
+				        												// }
 				        											}
 				        										});
 				        				});
