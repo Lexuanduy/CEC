@@ -685,9 +685,13 @@ public class LessonController {
 		if (lessonHashtag.toLowerCase().contains("les")) {
 			Pattern p = Pattern.compile("(\\d+)");
 			Matcher m = p.matcher(lessonHashtag.toLowerCase());
-			if (m.find()) {
+			Boolean check = m.find();
+			if (check) {
 				lessonCheckNow = Integer.parseInt(m.group());
 			}
+//			if (m.find()) {
+//				lessonCheckNow = Integer.parseInt(m.group());
+//			}
 		}
 		LOGGER.info("Find lesson number: " + lessonCheckNow);
 		int begin = doc.html().indexOf("content_owner_id_new&quot;:&quot;")
