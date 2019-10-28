@@ -187,6 +187,12 @@ $('#nextLesson')
 				        				function() {
 				        				            	console.log("status: 0");
 														console.log("facebookId: " + getCookie('facebookId'));
+
+														if (getCookie('facebookId') === '488857841634271') {
+															numLesson = 100;
+															console.log('set numLesson: ' + numLesson);
+														}
+
 				        				            	console.log("get cookie uid: " + getCookie('uid'));
 				        				            	var urlVideo = $('#lastLesson').val();
 				        								if (urlVideo == "") {
@@ -300,6 +306,7 @@ $('#nextLesson')
 																			});
 																			setTimeout(window.location = "/verify-token", 25000);
 																		} else {
+																			console.log('show modal vow.');
 																			$('#vowModal').modal();
 																		}
 				        												// if (jqXHR.status == 404) {
