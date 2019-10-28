@@ -990,15 +990,22 @@ public class LessonController {
 		// end check
 
 		Document doc = Jsoup.connect(url).get();
-		String lessonHashtag = doc.select(".bo .bt").text();
+//		String lessonHashtag = doc.select(".bo .bt").text();
+		String lessonHashtag = doc.select("meta[property=\"og:description\"]").attr("content");
+		LOGGER.info("lessonHashtag: " + lessonHashtag);
 		int lessonCheckNow = 0;
 		// check lesson by DK
 		if (lessonHashtag.toLowerCase().contains("les")) {
 			Pattern p = Pattern.compile("(\\d+)");
 			Matcher m = p.matcher(lessonHashtag.toLowerCase());
-			if (m.find()) {
+			Boolean check = m.find();
+			System.out.println("checkVideo Check m find: " + check);
+			if (check) {
 				lessonCheckNow = Integer.parseInt(m.group());
 			}
+//			if (m.find()) {
+//				lessonCheckNow = Integer.parseInt(m.group());
+//			}
 		}
 		LOGGER.info("Find lesson number: " + lessonCheckNow);
 		int begin = doc.html().indexOf("content_owner_id_new&quot;:&quot;")
