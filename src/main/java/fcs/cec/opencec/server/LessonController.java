@@ -69,19 +69,19 @@ public class LessonController {
 //				.build();
 //		FirebaseApp.initializeApp(options);
 
-		GoogleCredentials credentials = null;
-		try {
-			credentials = GoogleCredentials.fromStream(
-					new FileInputStream("/var/lib/tomcat8/opencec-firebase-adminsdk-ccqab-9f50c0997b.json"));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		FirebaseOptions options = new FirebaseOptions.Builder().setCredentials(credentials).setProjectId("opencec")
-				.build();
-		FirebaseApp.initializeApp(options);
+//		GoogleCredentials credentials = null;
+//		try {
+//			credentials = GoogleCredentials.fromStream(
+//					new FileInputStream("/var/lib/tomcat8/opencec-firebase-adminsdk-ccqab-9f50c0997b.json"));
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		FirebaseOptions options = new FirebaseOptions.Builder().setCredentials(credentials).setProjectId("opencec")
+//				.build();
+//		FirebaseApp.initializeApp(options);
 
-//		FirebaseApp.initializeApp();
+		FirebaseApp.initializeApp();
 		Document doc = null;
 		String url = "https://script.googleusercontent.com/macros/echo?user_content_key=dmTT0L5ltyjs6C0mzfB8Kf1FkNPCAqiExMVyEY7hPKS9QIrht-BvnAzuAZYIZvlrnSaC13gWKjpsPFnfMb3lT9L5wfimIUbgm5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnCT0QRJ7P_-LtV3tAd8_b_dUnbO1rEvbeLLB2eAoIGhp1hENMaacOI9TktsviLkDHJlUq1JAmpDs&lib=MmSKrXssQcdpiSXxZX7nm1QZVzjmXS3D2";
 		try {
@@ -679,7 +679,9 @@ public class LessonController {
 //		Firestore db = FirestoreOptions.getDefaultInstance().getService();
 		Firestore db = FirestoreClient.getFirestore();
 		Document doc = Jsoup.connect(url).get();
-		String lessonHashtag = doc.select(".bo .bt").text();
+//		String lessonHashtag = doc.select(".bo .bt").text();
+		String lessonHashtag = doc.select("meta[property=\"og:description\"]").attr("content");
+		System.out.println("lessonHashtag: " + lessonHashtag);
 		int lessonCheckNow = 0;
 		// check lesson by DK
 		if (lessonHashtag.toLowerCase().contains("les")) {

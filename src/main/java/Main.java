@@ -48,41 +48,67 @@ public class Main {
 
 	public static void main(String[] args)
 			throws IOException, InterruptedException, ExecutionException, FirebaseAuthException {
-		String url = "https://www.facebook.com/groups/cec.edu.vn/permalink/2357752474497795";
+		String url = "https://www.facebook.com/groups/cec.edu.vn/permalink/2411085029164539/";
 		Document doc = Jsoup.connect(url).get();
-		int begin = doc.html().indexOf("content_owner_id_new&quot;:&quot;")
-				+ "content_owner_id_new&quot;:&quot;".length();
-		int end = doc.html().indexOf("&quot;", begin);
-		String urlContent = doc.select("meta[property=\"og:url\"]").attr("content");
-		int last = urlContent.lastIndexOf("=");
-		String postId = urlContent.substring(last + 1);
-		String memberId = doc.html().substring(begin, end);
-		System.out.println("postId: " + postId);
-		System.out.println("memberId: " + memberId);
-		String memberName = doc.select("meta[property=\"og:title\"]").attr("content");
-		String _journeyDay = doc.select("meta[property=\"og:description\"]").attr("content");
-		System.out.println("Check memberName: " + memberName);
-		System.out.println("Check _journeyDay: " + _journeyDay);
-		Pattern p = Pattern.compile("(\\d+)(/|\\.)(\\d+)");
-		Matcher m = p.matcher(_journeyDay.toLowerCase());
-		String journeyDay = null;
-		String journeyName = null;
-		String day = null;
-		Boolean check = m.find();
-		System.out.println("Check m find: " + check);
-		if (check) {
-			System.out.println("m find");
-			String spliter[] = m.group().split("/|\\.");
-			int current = Integer.parseInt(spliter[0]);
-			int total = Integer.parseInt(spliter[1]);
-
-			journeyDay = current + "/" + total;
-			int lenght = journeyDay.length();
-			day = journeyDay.substring(0, journeyDay.indexOf("/"));
-			journeyName = journeyDay.substring((journeyDay.indexOf("/") + 1), lenght);
-			System.out.println("m find day: " + day);
-			System.out.println("m find journeyName: " + journeyName);
+		System.out.println("doc html: " + doc.html());
+		String lessonHashtag = doc.select("meta[property=\"og:description\"]").attr("content");
+//		String lessonHashtag = doc.select(".bo .bt").text();
+		System.out.println("lessonHashtag: " + lessonHashtag);
+		int lessonCheckNow = 0;
+		// check lesson by DK
+		if (lessonHashtag.toLowerCase().contains("les")) {
+			Pattern p = Pattern.compile("(\\d+)");
+			Matcher m = p.matcher(lessonHashtag.toLowerCase());
+			Boolean check = m.find();
+			System.out.println("checkVideo Check m find: " + check);
+			if (check) {
+				lessonCheckNow = Integer.parseInt(m.group());
+			}
+//			if (m.find()) {
+//				lessonCheckNow = Integer.parseInt(m.group());
+//			}
 		}
+		System.out.println("Find lesson number: " + lessonCheckNow);
+
+
+
+//		int begin = doc.html().indexOf("content_owner_id_new&quot;:&quot;")
+//				+ "content_owner_id_new&quot;:&quot;".length();
+//		int end = doc.html().indexOf("&quot;", begin);
+//		String urlContent = doc.select("meta[property=\"og:url\"]").attr("content");
+//		int last = urlContent.lastIndexOf("=");
+//		String postId = urlContent.substring(last + 1);
+//		String memberId = doc.html().substring(begin, end);
+//		System.out.println("postId: " + postId);
+//		System.out.println("memberId: " + memberId);
+//		String memberName = doc.select("meta[property=\"og:title\"]").attr("content");
+//		String _journeyDay = doc.select("meta[property=\"og:description\"]").attr("content");
+//		System.out.println("Check memberName: " + memberName);
+//		System.out.println("Check _journeyDay: " + _journeyDay);
+//		Pattern p = Pattern.compile("(\\d+)(/|\\.)(\\d+)");
+//		Matcher m = p.matcher(_journeyDay.toLowerCase());
+//		String journeyDay = null;
+//		String journeyName = null;
+//		String day = null;
+//		Boolean check = m.find();
+//		System.out.println("Check m find: " + check);
+//		if (check) {
+//			System.out.println("m find");
+//			String spliter[] = m.group().split("/|\\.");
+//			int current = Integer.parseInt(spliter[0]);
+//			int total = Integer.parseInt(spliter[1]);
+//
+//			journeyDay = current + "/" + total;
+//			int lenght = journeyDay.length();
+//			day = journeyDay.substring(0, journeyDay.indexOf("/"));
+//			journeyName = journeyDay.substring((journeyDay.indexOf("/") + 1), lenght);
+//			System.out.println("m find day: " + day);
+//			System.out.println("m find journeyName: " + journeyName);
+//		}
+
+
+
+
 		// story_body_container
 //		https://www.facebook.com/hashtag/lesson8cec?source=feed_text&epa=HASHTAG
 //		https://m.facebook.com/groups/cec.edu.vn/permalink/2259370051002705/
