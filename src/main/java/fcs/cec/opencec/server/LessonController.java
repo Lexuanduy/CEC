@@ -686,6 +686,7 @@ public class LessonController {
 			Pattern p = Pattern.compile("(\\d+)");
 			Matcher m = p.matcher(lessonHashtag.toLowerCase());
 			Boolean check = m.find();
+			LOGGER.info("checkVideo Check m find: " + check);
 			if (check) {
 				lessonCheckNow = Integer.parseInt(m.group());
 			}
@@ -730,6 +731,7 @@ public class LessonController {
 //			return;
 //		} else {
 		LOGGER.info("lessonNumber :" + numLesson);
+		LOGGER.info("parse lessonNumber :" + numLesson);
 		if (Integer.parseInt(numLesson) == lessonCheckNow) {
 			String docLessonMember = numLesson + facebookId;
 			DocumentReference docRefLessonMember = db.collection("LessonMember").document(docLessonMember);
