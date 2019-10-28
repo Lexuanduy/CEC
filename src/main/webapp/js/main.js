@@ -190,7 +190,6 @@ $('#nextLesson')
 
 
 				        				            	console.log("status: 0");
-				        				            	console.log("get cookie facebookId: " + getCookie('facebookId'));
 
 														// test
 														console.log("facebookId: " + getCookie('facebookId'));
@@ -200,6 +199,7 @@ $('#nextLesson')
 														console.log('check facebookId: ', getCookie('facebookId'));
 														console.log('check numLesson: ', numLesson);
 														// end test
+
 
 				        				            	console.log("get cookie uid: " + getCookie('uid'));
 				        				            	var urlVideo = $('#lastLesson').val();
