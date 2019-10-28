@@ -185,22 +185,8 @@ $('#nextLesson')
 				            	$('#sendVideo')
 				        		.click(
 				        				function() {
-
-
-
-
 				        				            	console.log("status: 0");
-
-														// test
 														console.log("facebookId: " + getCookie('facebookId'));
-														if (getCookie('facebookId') === '488857841634271') {
-															numLesson = 100;
-														}
-														console.log('check facebookId: ', getCookie('facebookId'));
-														console.log('check numLesson: ', numLesson);
-														// end test
-
-
 				        				            	console.log("get cookie uid: " + getCookie('uid'));
 				        				            	var urlVideo = $('#lastLesson').val();
 				        								if (urlVideo == "") {
@@ -299,7 +285,8 @@ $('#nextLesson')
 				        											type : 'POST',
 				        											success : function(data) {
 				        												console.log('data: ' + data);
-				        												window.location = data;
+
+				        												// window.location = data;
 				        											},
 				        											error : function(jqXHR, textStatus, errorThrown) {
 				        												console.log('textStatus: ' + textStatus);

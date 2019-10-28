@@ -745,6 +745,7 @@ public class LessonController {
 			List<QueryDocumentSnapshot> documents = futureLesson.get().getDocuments();
 			if (!documents.isEmpty()) {
 				LOGGER.info("url lesson exits, break.");
+                response.getWriter().println(facebookId);
 				response.setStatus(400);
 				return;
 			}
@@ -773,8 +774,8 @@ public class LessonController {
 			response.setStatus(200);
 			return;
 		} else {
+            response.getWriter().println(facebookId);
 			response.setStatus(404);
-			response.getWriter().println(facebookId);
 			return;
 		}
 //		}
