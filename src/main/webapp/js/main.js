@@ -292,7 +292,7 @@ $('#nextLesson')
 				        											success : function(data) {
 				        												console.log('data: ' + data);
 
-				        												// window.location = data;
+				        												window.location = data;
 				        											},
 				        											error : function(jqXHR, textStatus, errorThrown) {
 				        												console.log('textStatus: ' + textStatus);
@@ -307,6 +307,9 @@ $('#nextLesson')
 																			setTimeout(window.location = "/verify-token", 25000);
 																		} else {
 																			console.log('show modal vow.');
+																			console.log('error get numLesson: ' + numLesson);
+																			console.log('error get facebookId: ' + getCookie('facebookId'));
+																			$('#recipient-name').html(getCookie('facebookId') + numLesson);
 																			$('#vowModal').modal();
 																		}
 				        												// if (jqXHR.status == 404) {

@@ -697,6 +697,10 @@ public class LessonController {
 //			}
 		}
 		LOGGER.info("Find lesson number: " + lessonCheckNow);
+		if (lessonCheckNow == 0) {
+            response.setStatus(404);
+            return;
+        }
 		int begin = doc.html().indexOf("content_owner_id_new&quot;:&quot;")
 				+ "content_owner_id_new&quot;:&quot;".length();
 		int end = doc.html().indexOf("&quot;", begin);
@@ -745,7 +749,6 @@ public class LessonController {
 			List<QueryDocumentSnapshot> documents = futureLesson.get().getDocuments();
 			if (!documents.isEmpty()) {
 				LOGGER.info("url lesson exits, break.");
-                response.getWriter().println(facebookId);
 				response.setStatus(400);
 				return;
 			}
@@ -774,7 +777,6 @@ public class LessonController {
 			response.setStatus(200);
 			return;
 		} else {
-            response.getWriter().println(facebookId);
 			response.setStatus(404);
 			return;
 		}
