@@ -777,10 +777,21 @@ public class LessonController {
 //		}
 	}
 
-	@RequestMapping(value = "checkVow", method = RequestMethod.POST)
-	public void checkVow(Model model, @CookieValue(value = "idToken", required = true) String idToken, @RequestParam String docIdLesson,
+	@RequestMapping(value = "checkVow", method = RequestMethod.GET)
+	public void checkVow(Model model, @CookieValue(value = "idToken", required = true) String idToken, @RequestParam String lesson, @RequestParam String contentVow,
 						   HttpServletResponse response) throws ExecutionException, InterruptedException, IOException {
-	    LOGGER.info("start checkVow: " + docIdLesson);
+//	public void checkVow(Model model, @RequestParam String uid , @RequestParam String lesson, @RequestParam String contentVow,
+//						 HttpServletResponse response) throws ExecutionException, InterruptedException, IOException {
+	    LOGGER.info("start checkVow lesson: " + lesson);
+		LOGGER.info("start checkVow contentVow: " + contentVow);
+		if(!contentVow.equals("Tôi xin thề tôi đã làm bài trước rồi. Nếu sai tôi là chó")) {
+			LOGGER.info("error contentVow.");
+			return;
+		}
+		if (Integer.parseInt(lesson) < 0 || Integer.parseInt(lesson) > 23) {
+			LOGGER.info("error lesson number.");
+			return;
+		}
 		LOGGER.info("idToken: " + idToken);
 		if (idToken == null) {
 			LOGGER.info("check idToken null.");
@@ -802,11 +813,12 @@ public class LessonController {
         Firestore db = FirestoreClient.getFirestore();
         ApiFuture<QuerySnapshot> futureAcc = db.collection("Account").whereEqualTo("uid", uid).get();
         List<QueryDocumentSnapshot> accDocuments = futureAcc.get().getDocuments();
+        LOGGER.info("size: " + accDocuments.size());
         String facebookId = null;
         for (DocumentSnapshot document : accDocuments) {
             facebookId = document.getId();
         }
-        LOGGER.info("checkVideo facebookId: " + facebookId);
+        LOGGER.info("checkVow facebookId: " + facebookId);
         if (facebookId == null) {
             LOGGER.info("facebookId null");
             response.setStatus(404);
@@ -817,6 +829,9 @@ public class LessonController {
         ApiFuture<DocumentSnapshot> futureAccount = docRefAccount.get();
         DocumentSnapshot document = futureAccount.get();
         Account account = document.toObject(Account.class);
+
+        String docIdLesson = lesson + facebookId;
+        LOGGER.info("docIdLesson: " + docIdLesson);
 
         DocumentReference docRefLessonMember = db.collection("LessonMember").document(docIdLesson);
         ApiFuture<DocumentSnapshot> future = docRefLessonMember.get();
@@ -845,10 +860,11 @@ public class LessonController {
 
 
         // create new next lesson
-        Map<String, Object> data = new HashMap<>();
-        int idLesson = Integer.parseInt(docIdLesson.substring(0, docIdLesson.indexOf(facebookId)));
-        LOGGER.info("idLesson: " + idLesson);
-        idLesson = idLesson + 1;
+
+        int idLesson = Integer.parseInt(lesson);
+		LOGGER.info("idLesson: " + idLesson);
+		idLesson = idLesson + 1;
+		Map<String, Object> data = new HashMap<>();
         data.put("lesson", idLesson);
         data.put("memberId", facebookId);
         data.put("memberName", "");

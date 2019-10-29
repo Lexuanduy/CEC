@@ -367,10 +367,10 @@ $('#nextLesson')
 // end next lesson
 
 // checkVow
-// $('#sendContentVow').click(function (){
-// 	var content = $('#message-text').val();
-// 	console.log('content: ' + content);
-// });
+$('#sendContentVow').click(function (){
+	var content = $('#message-text').val();
+	console.log('content: ' + content);
+});
 
 // next journey day
 $('#nextDay')
