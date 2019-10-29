@@ -63,12 +63,6 @@ public class LessonController {
 	static ArrayList<Lesson> lessonList = new ArrayList<Lesson>();
 
 	static {
-
-//		GoogleCredentials credentials = ComputeEngineCredentials.create();
-//		FirebaseOptions options = new FirebaseOptions.Builder().setCredentials(credentials).setProjectId("opencec")
-//				.build();
-//		FirebaseApp.initializeApp(options);
-
 		GoogleCredentials credentials = null;
 		try {
 			credentials = GoogleCredentials.fromStream(
