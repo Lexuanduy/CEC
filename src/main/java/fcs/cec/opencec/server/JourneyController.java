@@ -1737,8 +1737,7 @@ public class JourneyController {
 	}
 
 	@RequestMapping(value = "checkVowJourneyDay", method = RequestMethod.POST)
-	public void checkVowJourneyDay(Model model, @CookieValue(value = "idToken", defaultValue = "0", required = false) String idToken,
-								@RequestParam String journey, @RequestParam String numDay, HttpServletResponse response) {
+	public void checkVowJourneyDay(Model model, @CookieValue(value = "idToken", defaultValue = "0", required = false) String idToken, @RequestParam String journey, @RequestParam String numDay, HttpServletResponse response) {
 		LOGGER.info("checkVowJourneyDay.");
 		if (idToken.equals("0")) {
 			LOGGER.info("idToken is default value");
@@ -1763,6 +1762,8 @@ public class JourneyController {
 		}
 		String uid = decodedToken.getUid();
 		LOGGER.info("uid: " + uid);
+
+		return;
 	}
 
 	@RequestMapping(value = "/journey/3days", method = RequestMethod.GET)
