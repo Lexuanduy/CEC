@@ -661,7 +661,7 @@ $('#nextDay')
 
 
 // checkVowDay
-$('#sendContentVow').click(function (){
+$('#sendContentVowDay').click(function (){
 	var content = $('#message-text-day').val();
 	console.log('content: ' + content);
 	if (content == '' || content == null || content == undefined) {
@@ -676,23 +676,24 @@ $('#sendContentVow').click(function (){
 	}
 	$('#contentDayErr').hide();
 	$('#contentDayError').hide();
-	// var url =  $(location).attr('href').replace(/\/+$/,''), //rtrim `/`
-	// 	parts = url.split("/"),
-	// 	last_part = parts[parts.length-1];
-	// var lesson = last_part * 1;
-	// console.log('lesson: ' + lesson);
-	// $.ajax({
-	// 	url : "/checkVow?contentVow=" + content + "&lesson="
-	// 		+ lesson,
-	// 	type : 'POST',
-	// 	success : function(data) {
-	// 		console.log('data: ' + data);
-	// 		window.location = data;
-	// 	},
-	// 	error : function(jqXHR, textStatus, errorThrown) {
-	// 		console.log('jqXHR: ' + jqXHR.status);
-	// 	}
-	// });
+	var url = $(location).attr('href'),
+		parts = url.split("/"),
+		j = parts[parts.length-1],
+		d = parts[parts.length-2];
+		console.log("journey: " + j);
+		console.log("day: " + d);
+	$.ajax({
+		url : "/checkVowJourneyDay?contentVow=" + content + "&journey="
+			+ j + "&numDay=" + d,
+		type : 'POST',
+		success : function(data) {
+			console.log('data: ' + data);
+			// window.location = data;
+		},
+		error : function(jqXHR, textStatus, errorThrown) {
+			console.log('jqXHR: ' + jqXHR.status);
+		}
+	});
 
 });
 

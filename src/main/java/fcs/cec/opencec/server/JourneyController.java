@@ -1737,7 +1737,7 @@ public class JourneyController {
 	}
 
 	@RequestMapping(value = "checkVowJourneyDay", method = RequestMethod.POST)
-	public void checkVowJourneyDay(Model model, @CookieValue(value = "idToken", defaultValue = "0", required = false) String idToken, @RequestParam String journey, @RequestParam String numDay, HttpServletResponse response) {
+	public void checkVowJourneyDay(Model model, @CookieValue(value = "idToken", defaultValue = "0", required = false) String idToken, @RequestParam String journey, @RequestParam String numDay, HttpServletResponse response) throws ExecutionException, InterruptedException, IOException {
 		LOGGER.info("checkVowJourneyDay.");
 		if (idToken.equals("0")) {
 			LOGGER.info("idToken is default value");
@@ -1762,6 +1762,121 @@ public class JourneyController {
 		}
 		String uid = decodedToken.getUid();
 		LOGGER.info("uid: " + uid);
+		LOGGER.info("journey: " + journey);
+		LOGGER.info("day: " + numDay);
+
+		Firestore db = FirestoreClient.getFirestore();
+		ApiFuture<QuerySnapshot> futureAcc = db.collection("Account").whereEqualTo("uid", uid).get();
+		List<QueryDocumentSnapshot> accDocuments = futureAcc.get().getDocuments();
+		String facebookId = null;
+		for (DocumentSnapshot document : accDocuments) {
+			facebookId = document.getId();
+		}
+		if (facebookId == null) {
+			LOGGER.info("facebookId null");
+			return;
+		}
+		String docAccount = facebookId;
+		DocumentReference docRefAccount = db.collection("Account").document(docAccount);
+		ApiFuture<DocumentSnapshot> futureAccount = docRefAccount.get();
+		DocumentSnapshot document = futureAccount.get();
+		Account account = document.toObject(Account.class);
+		String docJourneyDay = journey + "days" + numDay + facebookId;
+		LOGGER.info("docJourneyDay: " + docJourneyDay);
+		DocumentReference docRefJourney = db.collection("JourneyDay").document(docJourneyDay);
+		ApiFuture<DocumentSnapshot> future = docRefJourney.get();
+		DocumentSnapshot documentJd = future.get();
+		if (documentJd.exists()) {
+			LOGGER.info("journey day exist, update set status 1.");
+//			Map<String, Object> updates = new HashMap<>();
+//			updates.put("memberId", account.getMemberId());
+//			updates.put("memberName", account.getDisplayName());
+//			updates.put("postId", account.getMemberId());
+//			updates.put("status", 1);
+//			updates.put("url", "");
+//			updates.put("updatedAt", System.currentTimeMillis() / 1000);
+//			ApiFuture<WriteResult> futureJourneyDay = docRefJourney.update(updates);
+			LOGGER.info("journey day exist, update set status 1 done");
+		} else {
+			LOGGER.info("journey day not exist, set new journey day with status 1.");
+//			Map<String, Object> newJd = new HashMap<>();
+//			newJd.put("memberId", account.getMemberId());
+//			newJd.put("memberName", account.getDisplayName());
+//			newJd.put("postId", account.getMemberId());
+//			newJd.put("status", 1);
+//			newJd.put("url", "");
+//			newJd.put("updatedAt", System.currentTimeMillis() / 1000);
+//			ApiFuture<WriteResult> futureJourneyDay = docRefJourney.set(newJd);
+			LOGGER.info("journey day not exist, set new journey day with status 1, done.");
+		}
+		String journeyName = journey.substring(0, journey.indexOf("days"));
+		LOGGER.info("journeyName");
+//		String uri = null;
+//		if (journeyName.equals("3") && numDay.equals("3")) {
+//			LOGGER.info("3days3");
+//			uri = "/journey/5days/1";
+//			response.getWriter().println(uri);
+//			response.setStatus(200);
+//			return;
+//		}
+//		if (journeyName.equals("5") && numDay.equals("5")) {
+//			LOGGER.info("5days5");
+//			uri = "/journey/7days/1";
+//			response.getWriter().println(uri);
+//			response.setStatus(200);
+//			return;
+//		}
+//		if (journeyName.equals("7") && numDay.equals("7")) {
+//			LOGGER.info("7days7");
+//			uri = "/journey/10days/1";
+//			response.getWriter().println(uri);
+//			response.setStatus(200);
+//			return;
+//		}
+//		if (journeyName.equals("10") && numDay.equals("10")) {
+//			LOGGER.info("10days10");
+//			uri = "/journey/21days/1";
+//			response.getWriter().println(uri);
+//			response.setStatus(200);
+//			return;
+//		}
+//		if (journeyName.equals("21") && numDay.equals("21")) {
+//			LOGGER.info("21days21");
+//			uri = "/journey/45days/1";
+//			response.getWriter().println(uri);
+//			response.setStatus(200);
+//			return;
+//		}
+//		if (journeyName.equals("45") && numDay.equals("45")) {
+//			LOGGER.info("45days45");
+//			uri = "/journey/90days/1";
+//			response.getWriter().println(uri);
+//			response.setStatus(200);
+//			return;
+//		}
+//		if (journeyName.equals("90") && numDay.equals("90")) {
+//			LOGGER.info("90days90");
+//			uri = "/journey/90days/90";
+//			response.getWriter().println(uri);
+//			response.setStatus(200);
+//			return;
+//		}
+//		if ((journeyName.equals("3") && (Integer.parseInt(numDay) < 3))
+//				|| (journeyName.equals("5") && (Integer.parseInt(numDay) < 5))
+//				|| (journeyName.equals("7") && (Integer.parseInt(numDay) < 7))
+//				|| (journeyName.equals("10") && (Integer.parseInt(numDay) < 10))
+//				|| (journeyName.equals("21") && (Integer.parseInt(numDay) < 21))
+//				|| (journeyName.equals("45") && (Integer.parseInt(numDay) < 45))
+//				|| (journeyName.equals("90") && (Integer.parseInt(numDay) < 90))) {
+//			LOGGER.info(journeyName + "days/" + numDay);
+//			int dayNumber = Integer.parseInt(numDay) + 1;
+//			String day = String.valueOf(dayNumber);
+//			uri = "/journey/" + journey + "days" + "/" + day;
+//			response.getWriter().println(uri);
+//			response.setStatus(200);
+//			return;
+//		}
+
 
 		return;
 	}
