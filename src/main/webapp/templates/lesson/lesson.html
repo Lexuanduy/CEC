@@ -77,7 +77,7 @@
 								<button id="nextLesson" class="btn btn-primary">Bài
 									tiếp theo >></button>
 
-								<button style="display: none" type="button" class="btn btn-primary" data-toggle="modal" data-target="#vowModal">Open modal for</button>
+								<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#vowModal">Open modal for</button>
 							</div>
 						</div>
 						<div class="col-md-6 offset-md-3">
@@ -112,7 +112,7 @@
 				<div class="modal-dialog" role="document">
 					<div class="modal-content">
 						<div class="modal-header">
-							<h5 class="modal-title" id="exampleModalLabel">New message</h5>
+							<h5 class="modal-title" id="exampleModalLabel">Lời thề CEC</h5>
 							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 								<span aria-hidden="true">&times;</span>
 							</button>
@@ -120,18 +120,24 @@
 						<div class="modal-body">
 							<div>
 								<div class="form-group">
-									<label for="recipient-name" class="col-form-label">Recipient:</label>
-									<p type="text" class="form-control" id="recipient-name"></p>
+									<label class="col-form-label">Vui lòng nhập lời thề: </label>
+									<p type="text">Tôi xin thề tôi đã làm bài này rồi. Nếu sai tôi là chó</p>
 								</div>
 								<div class="form-group">
-									<label for="message-text" class="col-form-label">Message:</label>
+									<label for="message-text" class="col-form-label">Nhập lời thề:</label>
 									<textarea class="form-control" id="message-text"></textarea>
+								</div>
+								<div id="contentErr" style="display: none" class="form-group">
+									<p class="text-danger" type="text">Vui lòng nhập lời thề CEC</p>
+								</div>
+								<div id="contentError" style="display: none" class="form-group">
+									<p class="text-danger" type="text">Nhập sai lời thề</p>
 								</div>
 							</div>
 						</div>
 						<div class="modal-footer">
-							<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-							<button id="sendContentVow" type="button" class="btn btn-primary">Send message</button>
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+							<button id="sendContentVow" type="button" class="btn btn-primary">Gửi</button>
 						</div>
 					</div>
 				</div>

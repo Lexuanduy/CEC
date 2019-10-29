@@ -838,24 +838,24 @@ public class LessonController {
         DocumentSnapshot documentLm = future.get();
         if (document.exists()) {
             System.out.println("Document data exist.");
-            Map<String, Object> updatesLesson = new HashMap<>();
-            updatesLesson.put("memberId", account.getMemberId());
-            updatesLesson.put("memberName", account.getDisplayName());
-            updatesLesson.put("postId", account.getId());
-            updatesLesson.put("status", 1);
-            updatesLesson.put("url", "");
-            updatesLesson.put("updatedAt", System.currentTimeMillis() / 1000);
-            ApiFuture<WriteResult> futureLessonMember = docRefLessonMember.update(updatesLesson);
+//            Map<String, Object> updatesLesson = new HashMap<>();
+//            updatesLesson.put("memberId", account.getMemberId());
+//            updatesLesson.put("memberName", account.getDisplayName());
+//            updatesLesson.put("postId", account.getId());
+//            updatesLesson.put("status", 1);
+//            updatesLesson.put("url", "");
+//            updatesLesson.put("updatedAt", System.currentTimeMillis() / 1000);
+//            ApiFuture<WriteResult> futureLessonMember = docRefLessonMember.update(updatesLesson);
         } else {
             System.out.println("No such document, add new set status 1.");
-            Map<String, Object> newLesson = new HashMap<>();
-            newLesson.put("memberId", account.getMemberId());
-            newLesson.put("memberName", account.getDisplayName());
-            newLesson.put("postId", account.getId());
-            newLesson.put("status", 1);
-            newLesson.put("url", "");
-            newLesson.put("updatedAt", System.currentTimeMillis() / 1000);
-            ApiFuture<WriteResult> futureLessonMember = docRefLessonMember.set(newLesson);
+//            Map<String, Object> newLesson = new HashMap<>();
+//            newLesson.put("memberId", account.getMemberId());
+//            newLesson.put("memberName", account.getDisplayName());
+//            newLesson.put("postId", account.getId());
+//            newLesson.put("status", 1);
+//            newLesson.put("url", "");
+//            newLesson.put("updatedAt", System.currentTimeMillis() / 1000);
+//            ApiFuture<WriteResult> futureLessonMember = docRefLessonMember.set(newLesson);
         }
 
 
@@ -864,26 +864,26 @@ public class LessonController {
         int idLesson = Integer.parseInt(lesson);
 		LOGGER.info("idLesson: " + idLesson);
 		idLesson = idLesson + 1;
-		Map<String, Object> data = new HashMap<>();
-        data.put("lesson", idLesson);
-        data.put("memberId", facebookId);
-        data.put("memberName", "");
-        data.put("postId", "");
-        data.put("status", 0);
-        data.put("url", "");
-        data.put("uid", uid);
-        data.put("accountId", facebookId);
-        data.put("createdAt", System.currentTimeMillis() / 1000);
-        data.put("updatedAt", System.currentTimeMillis() / 1000);
-        String docId = String.valueOf(idLesson) + facebookId;
-        DocumentReference docRefLesson = db.collection("LessonMember").document(docId);
-        ApiFuture<DocumentSnapshot> futureLesson = docRefLesson.get();
-        DocumentSnapshot documentLesson = futureLesson.get();
-        if (documentLesson.exists()) {
-            LOGGER.info("document LessonMember exist!");
-        } else {
-            ApiFuture<WriteResult> addedDocRef = db.collection("LessonMember").document(docId).set(data);
-        }
+//		Map<String, Object> data = new HashMap<>();
+//        data.put("lesson", idLesson);
+//        data.put("memberId", facebookId);
+//        data.put("memberName", "");
+//        data.put("postId", "");
+//        data.put("status", 0);
+//        data.put("url", "");
+//        data.put("uid", uid);
+//        data.put("accountId", facebookId);
+//        data.put("createdAt", System.currentTimeMillis() / 1000);
+//        data.put("updatedAt", System.currentTimeMillis() / 1000);
+//        String docId = String.valueOf(idLesson) + facebookId;
+//        DocumentReference docRefLesson = db.collection("LessonMember").document(docId);
+//        ApiFuture<DocumentSnapshot> futureLesson = docRefLesson.get();
+//        DocumentSnapshot documentLesson = futureLesson.get();
+//        if (documentLesson.exists()) {
+//            LOGGER.info("document LessonMember exist!");
+//        } else {
+//            ApiFuture<WriteResult> addedDocRef = db.collection("LessonMember").document(docId).set(data);
+//        }
 
         response.getWriter().print(idLesson);
         response.setStatus(200);

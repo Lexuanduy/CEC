@@ -308,8 +308,6 @@ $('#nextLesson')
 																		} else {
 																			console.log('show modal vow.');
 																			console.log('error get numLesson: ' + numLesson);
-																			console.log('error get facebookId: ' + getCookie('facebookId'));
-																			$('#recipient-name').html(getCookie('facebookId') + numLesson);
 																			$('#vowModal').modal();
 																		}
 
@@ -370,6 +368,35 @@ $('#nextLesson')
 $('#sendContentVow').click(function (){
 	var content = $('#message-text').val();
 	console.log('content: ' + content);
+	if (content == '' || content == null || content == undefined) {
+		console.log('error content.');
+		$('#contentErr').show();
+		return;
+	}
+	if (content !== 'Tôi xin thề tôi đã làm bài này rồi. Nếu sai tôi là chó') {
+		console.log('error content 2.');
+		$('#contentError').show();
+		return;
+	}
+	$('#contentErr').hide();
+	$('#contentError').hide();
+	var url =  $(location).attr('href').replace(/\/+$/,''), //rtrim `/`
+		parts = url.split("/"),
+		last_part = parts[parts.length-1];
+	var lesson = last_part * 1;
+	console.log('lesson: ' + lesson);
+	$.ajax({
+		url : "/checkVow?contentVow=" + content + "&lesson="
+			+ lesson,
+		type : 'POST',
+		success : function(data) {
+			console.log('data: ' + data);
+		},
+		error : function(jqXHR, textStatus, errorThrown) {
+			console.log('jqXHR: ' + jqXHR.status);
+		}
+	});
+
 });
 
 // next journey day
