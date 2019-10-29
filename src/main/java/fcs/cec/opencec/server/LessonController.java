@@ -846,6 +846,7 @@ public class LessonController {
             updatesLesson.put("url", "");
             updatesLesson.put("updatedAt", System.currentTimeMillis() / 1000);
             ApiFuture<WriteResult> futureLessonMember = docRefLessonMember.update(updatesLesson);
+            LOGGER.info("update lesson done");
         } else {
             System.out.println("No such document, add new set status 1.");
             Map<String, Object> newLesson = new HashMap<>();
@@ -856,6 +857,7 @@ public class LessonController {
             newLesson.put("url", "");
             newLesson.put("updatedAt", System.currentTimeMillis() / 1000);
             ApiFuture<WriteResult> futureLessonMember = docRefLessonMember.set(newLesson);
+            LOGGER.info("set new lesson status 1 done");
         }
 
 
