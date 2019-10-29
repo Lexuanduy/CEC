@@ -777,7 +777,7 @@ public class LessonController {
 //		}
 	}
 
-	@RequestMapping(value = "checkVow", method = RequestMethod.GET)
+	@RequestMapping(value = "checkVow", method = RequestMethod.POST)
 	public void checkVow(Model model, @CookieValue(value = "idToken", required = true) String idToken, @RequestParam String lesson, @RequestParam String contentVow,
 						   HttpServletResponse response) throws ExecutionException, InterruptedException, IOException {
 //	public void checkVow(Model model, @RequestParam String uid , @RequestParam String lesson, @RequestParam String contentVow,
