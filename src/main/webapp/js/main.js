@@ -596,34 +596,6 @@ $('#nextDay')
 														window.location = data;
 													},
 													error : function(jqXHR, textStatus, errorThrown) {
-														if (jqXHR.status == 404) {
-															Swal({
-																position : 'center',
-																type : 'error',
-																title : 'Link video không đúng .Vui lòng nhập lại link video ngày hành trình của bạn!',
-																showConfirmButton : false,
-																timer : 2000,
-															});
-														}
-														if (jqXHR.status == 403) {
-															alert("error 403");
-														}
-														if (jqXHR.status == 405) {
-															Swal({
-																position : 'center',
-																title : 'Link video không phải là của bạn .Vui lòng nhập lại link video ngày hành trình của bạn!',
-																showConfirmButton : false,
-																timer : 3500,
-															});
-														}
-														if (jqXHR.status == 400) {
-															Swal({
-																position : 'center',
-																title : 'Link video đã tồn tại. Vui lòng nhập lại link video ngày hành trình của bạn!',
-																showConfirmButton : false,
-																timer : 3000,
-															});
-														}
 														if (jqXHR.status == 401) {
 															Swal({
 																position : 'center',
@@ -632,7 +604,47 @@ $('#nextDay')
 																timer : 3000,
 															});
 															setTimeout(window.location = "/verify-token", 25000);
+														} else {
+															console.log('show modal vowModalDay.');
+															$('#vowModalDay').modal();
 														}
+														// if (jqXHR.status == 404) {
+														// 	Swal({
+														// 		position : 'center',
+														// 		type : 'error',
+														// 		title : 'Link video không đúng .Vui lòng nhập lại link video ngày hành trình của bạn!',
+														// 		showConfirmButton : false,
+														// 		timer : 2000,
+														// 	});
+														// }
+														// if (jqXHR.status == 403) {
+														// 	alert("error 403");
+														// }
+														// if (jqXHR.status == 405) {
+														// 	Swal({
+														// 		position : 'center',
+														// 		title : 'Link video không phải là của bạn .Vui lòng nhập lại link video ngày hành trình của bạn!',
+														// 		showConfirmButton : false,
+														// 		timer : 3500,
+														// 	});
+														// }
+														// if (jqXHR.status == 400) {
+														// 	Swal({
+														// 		position : 'center',
+														// 		title : 'Link video đã tồn tại. Vui lòng nhập lại link video ngày hành trình của bạn!',
+														// 		showConfirmButton : false,
+														// 		timer : 3000,
+														// 	});
+														// }
+														// if (jqXHR.status == 401) {
+														// 	Swal({
+														// 		position : 'center',
+														// 		title : 'Phiên bản đã hết hạn, vui lòng đăng nhập lại!',
+														// 		showConfirmButton : false,
+														// 		timer : 3000,
+														// 	});
+														// 	setTimeout(window.location = "/verify-token", 25000);
+														// }
 													}
 		        								});
 					        				});
@@ -646,6 +658,45 @@ $('#nextDay')
 						});
 				});
 // end next journey day
+
+
+// checkVowDay
+$('#sendContentVow').click(function (){
+	var content = $('#message-text-day').val();
+	console.log('content: ' + content);
+	if (content == '' || content == null || content == undefined) {
+		console.log('error content.');
+		$('#contentDayErr').show();
+		return;
+	}
+	if (content !== 'Tôi xin thề tôi đã hoàn thành ngày hành trình này rồi. Nếu sai tôi là chó') {
+		console.log('error content 2.');
+		$('#contentDayError').show();
+		return;
+	}
+	$('#contentDayErr').hide();
+	$('#contentDayError').hide();
+	// var url =  $(location).attr('href').replace(/\/+$/,''), //rtrim `/`
+	// 	parts = url.split("/"),
+	// 	last_part = parts[parts.length-1];
+	// var lesson = last_part * 1;
+	// console.log('lesson: ' + lesson);
+	// $.ajax({
+	// 	url : "/checkVow?contentVow=" + content + "&lesson="
+	// 		+ lesson,
+	// 	type : 'POST',
+	// 	success : function(data) {
+	// 		console.log('data: ' + data);
+	// 		window.location = data;
+	// 	},
+	// 	error : function(jqXHR, textStatus, errorThrown) {
+	// 		console.log('jqXHR: ' + jqXHR.status);
+	// 	}
+	// });
+
+});
+
+
 
 
 

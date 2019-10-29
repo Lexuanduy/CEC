@@ -1529,9 +1529,6 @@ public class JourneyController {
 			response.setStatus(401);
 			return;
 		}
-
-//		FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
-
 		LOGGER.info("idToken: " + idToken);
 		if (idToken == null) {
 			LOGGER.info("check idToken null.");
@@ -1550,7 +1547,6 @@ public class JourneyController {
 		}
 
 		String uid = decodedToken.getUid();
-//		Firestore db = FirestoreClient.getFirestore();
 		Firestore db = FirestoreClient.getFirestore();
 		Document doc = Jsoup.connect(url).get();
 		int begin = doc.html().indexOf("content_owner_id_new&quot;:&quot;")
@@ -1738,6 +1734,35 @@ public class JourneyController {
 				return;
 			}
 //		}
+	}
+
+	@RequestMapping(value = "checkVowJourneyDay", method = RequestMethod.POST)
+	public void checkVowJourneyDay(Model model, @CookieValue(value = "idToken", defaultValue = "0", required = false) String idToken,
+								@RequestParam String journey, @RequestParam String numDay, HttpServletResponse response) {
+		LOGGER.info("checkVowJourneyDay.");
+		if (idToken.equals("0")) {
+			LOGGER.info("idToken is default value");
+			response.setStatus(401);
+			return;
+		}
+		LOGGER.info("idToken: " + idToken);
+		if (idToken == null) {
+			LOGGER.info("check idToken null.");
+			response.setStatus(401);
+			return;
+		}
+
+		FirebaseToken decodedToken = null;
+		try {
+			decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
+		} catch (FirebaseAuthException e) {
+			// TODO Auto-generated catch block
+			LOGGER.info("catch, verify idToken!");
+			response.setStatus(401);
+			return;
+		}
+		String uid = decodedToken.getUid();
+		LOGGER.info("uid: " + uid);
 	}
 
 	@RequestMapping(value = "/journey/3days", method = RequestMethod.GET)
