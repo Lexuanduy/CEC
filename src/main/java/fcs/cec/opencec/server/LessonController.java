@@ -784,7 +784,7 @@ public class LessonController {
 //						 HttpServletResponse response) throws ExecutionException, InterruptedException, IOException {
 	    LOGGER.info("start checkVow lesson: " + lesson);
 		LOGGER.info("start checkVow contentVow: " + contentVow);
-		if(!contentVow.equals("Tôi xin thề tôi đã làm bài trước rồi. Nếu sai tôi là chó")) {
+		if(!contentVow.equals("Tôi xin thề tôi đã làm bài này rồi. Nếu sai tôi là chó")) {
 			LOGGER.info("error contentVow.");
 			return;
 		}
