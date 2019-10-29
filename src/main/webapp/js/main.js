@@ -391,6 +391,7 @@ $('#sendContentVow').click(function (){
 		type : 'POST',
 		success : function(data) {
 			console.log('data: ' + data);
+			window.location = data;
 		},
 		error : function(jqXHR, textStatus, errorThrown) {
 			console.log('jqXHR: ' + jqXHR.status);

@@ -838,24 +838,24 @@ public class LessonController {
         DocumentSnapshot documentLm = future.get();
         if (document.exists()) {
             System.out.println("Document data exist.");
-//            Map<String, Object> updatesLesson = new HashMap<>();
-//            updatesLesson.put("memberId", account.getMemberId());
-//            updatesLesson.put("memberName", account.getDisplayName());
-//            updatesLesson.put("postId", account.getId());
-//            updatesLesson.put("status", 1);
-//            updatesLesson.put("url", "");
-//            updatesLesson.put("updatedAt", System.currentTimeMillis() / 1000);
-//            ApiFuture<WriteResult> futureLessonMember = docRefLessonMember.update(updatesLesson);
+            Map<String, Object> updatesLesson = new HashMap<>();
+            updatesLesson.put("memberId", account.getMemberId());
+            updatesLesson.put("memberName", account.getDisplayName());
+            updatesLesson.put("postId", account.getId());
+            updatesLesson.put("status", 1);
+            updatesLesson.put("url", "");
+            updatesLesson.put("updatedAt", System.currentTimeMillis() / 1000);
+            ApiFuture<WriteResult> futureLessonMember = docRefLessonMember.update(updatesLesson);
         } else {
             System.out.println("No such document, add new set status 1.");
-//            Map<String, Object> newLesson = new HashMap<>();
-//            newLesson.put("memberId", account.getMemberId());
-//            newLesson.put("memberName", account.getDisplayName());
-//            newLesson.put("postId", account.getId());
-//            newLesson.put("status", 1);
-//            newLesson.put("url", "");
-//            newLesson.put("updatedAt", System.currentTimeMillis() / 1000);
-//            ApiFuture<WriteResult> futureLessonMember = docRefLessonMember.set(newLesson);
+            Map<String, Object> newLesson = new HashMap<>();
+            newLesson.put("memberId", account.getMemberId());
+            newLesson.put("memberName", account.getDisplayName());
+            newLesson.put("postId", account.getId());
+            newLesson.put("status", 1);
+            newLesson.put("url", "");
+            newLesson.put("updatedAt", System.currentTimeMillis() / 1000);
+            ApiFuture<WriteResult> futureLessonMember = docRefLessonMember.set(newLesson);
         }
 
 
