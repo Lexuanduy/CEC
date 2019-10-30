@@ -841,22 +841,28 @@ public class LessonController {
             Map<String, Object> updatesLesson = new HashMap<>();
             updatesLesson.put("memberId", account.getMemberId());
             updatesLesson.put("memberName", account.getDisplayName());
-            updatesLesson.put("postId", account.getId());
+            updatesLesson.put("postId", "");
             updatesLesson.put("status", 1);
             updatesLesson.put("url", "");
+			updatesLesson.put("uid", uid);
             updatesLesson.put("updatedAt", System.currentTimeMillis() / 1000);
             ApiFuture<WriteResult> futureLessonMember = docRefLessonMember.update(updatesLesson);
             LOGGER.info("update lesson done");
         } else {
             System.out.println("No such document, add new set status 1.");
             Map<String, Object> newLesson = new HashMap<>();
+			newLesson.put("accountId", account.getId());
+			newLesson.put("lesson", Integer.parseInt(lesson));
             newLesson.put("memberId", account.getMemberId());
             newLesson.put("memberName", account.getDisplayName());
-            newLesson.put("postId", account.getId());
+            newLesson.put("postId", "");
             newLesson.put("status", 1);
             newLesson.put("url", "");
+			newLesson.put("uid", uid);
+			newLesson.put("createdAt", System.currentTimeMillis() / 1000);
             newLesson.put("updatedAt", System.currentTimeMillis() / 1000);
-            ApiFuture<WriteResult> futureLessonMember = docRefLessonMember.set(newLesson);
+//            ApiFuture<WriteResult> futureLessonMember = docRefLessonMember.set(newLesson);
+			ApiFuture<WriteResult> addedDocRef = db.collection("LessonMember").document(docIdLesson).set(newLesson);
             LOGGER.info("set new lesson status 1 done");
         }
 
@@ -869,7 +875,7 @@ public class LessonController {
 //		Map<String, Object> data = new HashMap<>();
 //        data.put("lesson", idLesson);
 //        data.put("memberId", facebookId);
-//        data.put("memberName", "");
+//        data.put("memberName", account.getDisplayName());
 //        data.put("postId", "");
 //        data.put("status", 0);
 //        data.put("url", "");

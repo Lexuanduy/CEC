@@ -1791,7 +1791,7 @@ public class JourneyController {
 			Map<String, Object> updates = new HashMap<>();
 			updates.put("memberId", account.getMemberId());
 			updates.put("memberName", account.getDisplayName());
-			updates.put("postId", account.getMemberId());
+			updates.put("postId", "");
 			updates.put("status", 1);
 			updates.put("url", "");
 			updates.put("updatedAt", System.currentTimeMillis() / 1000);
@@ -1800,13 +1800,19 @@ public class JourneyController {
 		} else {
 			LOGGER.info("journey day not exist, set new journey day with status 1.");
 			Map<String, Object> newJd = new HashMap<>();
+			newJd.put("accountId", account.getId());
+			newJd.put("day", Integer.parseInt(numDay));
+			newJd.put("journey", journey);
 			newJd.put("memberId", account.getMemberId());
 			newJd.put("memberName", account.getDisplayName());
-			newJd.put("postId", account.getMemberId());
+			newJd.put("postId", "");
 			newJd.put("status", 1);
 			newJd.put("url", "");
+			newJd.put("uid", uid);
+			newJd.put("createdAt", System.currentTimeMillis() / 1000);
 			newJd.put("updatedAt", System.currentTimeMillis() / 1000);
-			ApiFuture<WriteResult> futureJourneyDay = docRefJourney.set(newJd);
+//			ApiFuture<WriteResult> futureJourneyDay = docRefJourney.set(newJd);
+			ApiFuture<WriteResult> addedDocRef = db.collection("JourneyDay").document(docJourneyDay).set(newJd);
 			LOGGER.info("journey day not exist, set new journey day with status 1, done.");
 		}
 		String journeyName = journey.substring(0, journey.indexOf("days"));
