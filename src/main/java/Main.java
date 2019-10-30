@@ -69,7 +69,7 @@ public class Main {
 
 //		FirebaseApp.initializeApp();
 		Firestore db = FirestoreOptions.getDefaultInstance().getService();
-		DocumentReference docRefmp = db.collection("JourneyDay").document("10days5488857841634271");
+		DocumentReference docRefmp = db.collection("LessonMember").document("14488857841634271");
 		ApiFuture<DocumentSnapshot> futuremp = docRefmp.get();
 		DocumentSnapshot documentmp = futuremp.get();
 		if (documentmp.exists()) {
@@ -78,7 +78,7 @@ public class Main {
 			System.out.println("No such document!");
 		}
 
-		DocumentReference docRefmp2 = db.collection("JourneyDay").document("10days6488857841634271");
+		DocumentReference docRefmp2 = db.collection("LessonMember").document("15488857841634271");
 		ApiFuture<DocumentSnapshot> futuremp2 = docRefmp2.get();
 		DocumentSnapshot documentmp2 = futuremp2.get();
 		if (documentmp2.exists()) {
