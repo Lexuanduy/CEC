@@ -683,8 +683,7 @@ $('#sendContentVowDay').click(function (){
 		console.log("day check: " + d);
 		console.log("journey check: " + j);
 	$.ajax({
-		url : "/checkVowJourneyDay?contentVow=" + content + "&journey="
-			+ j + "&numDay=" + d,
+		url : "/checkVowJourneyDay?contentVow=" + content + "&journey=" + j + "&numDay=" + d,
 		type : 'POST',
 		success : function(data) {
 			console.log('data: ' + data);
@@ -697,7 +696,7 @@ $('#sendContentVowDay').click(function (){
 					type : 'error',
 					title : errorThrown,
 					showConfirmButton : false,
-					timer : 2000,
+					timer : 2000
 				});
 		}
 	});

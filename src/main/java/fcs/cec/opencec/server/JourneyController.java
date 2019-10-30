@@ -1788,30 +1788,30 @@ public class JourneyController {
 		DocumentSnapshot documentJd = future.get();
 		if (documentJd.exists()) {
 			LOGGER.info("journey day exist, update set status 1.");
-//			Map<String, Object> updates = new HashMap<>();
-//			updates.put("memberId", account.getMemberId());
-//			updates.put("memberName", account.getDisplayName());
-//			updates.put("postId", account.getMemberId());
-//			updates.put("status", 1);
-//			updates.put("url", "");
-//			updates.put("updatedAt", System.currentTimeMillis() / 1000);
-//			ApiFuture<WriteResult> futureJourneyDay = docRefJourney.update(updates);
+			Map<String, Object> updates = new HashMap<>();
+			updates.put("memberId", account.getMemberId());
+			updates.put("memberName", account.getDisplayName());
+			updates.put("postId", account.getMemberId());
+			updates.put("status", 1);
+			updates.put("url", "");
+			updates.put("updatedAt", System.currentTimeMillis() / 1000);
+			ApiFuture<WriteResult> futureJourneyDay = docRefJourney.update(updates);
 			LOGGER.info("journey day exist, update set status 1 done");
 		} else {
 			LOGGER.info("journey day not exist, set new journey day with status 1.");
-//			Map<String, Object> newJd = new HashMap<>();
-//			newJd.put("memberId", account.getMemberId());
-//			newJd.put("memberName", account.getDisplayName());
-//			newJd.put("postId", account.getMemberId());
-//			newJd.put("status", 1);
-//			newJd.put("url", "");
-//			newJd.put("updatedAt", System.currentTimeMillis() / 1000);
-//			ApiFuture<WriteResult> futureJourneyDay = docRefJourney.set(newJd);
+			Map<String, Object> newJd = new HashMap<>();
+			newJd.put("memberId", account.getMemberId());
+			newJd.put("memberName", account.getDisplayName());
+			newJd.put("postId", account.getMemberId());
+			newJd.put("status", 1);
+			newJd.put("url", "");
+			newJd.put("updatedAt", System.currentTimeMillis() / 1000);
+			ApiFuture<WriteResult> futureJourneyDay = docRefJourney.set(newJd);
 			LOGGER.info("journey day not exist, set new journey day with status 1, done.");
 		}
 		String journeyName = journey.substring(0, journey.indexOf("days"));
-		LOGGER.info("journeyName");
-//		String uri = null;
+		LOGGER.info("journeyName: " + journeyName);
+		String uri = null;
 //		if (journeyName.equals("3") && numDay.equals("3")) {
 //			LOGGER.info("3days3");
 //			uri = "/journey/5days/1";
@@ -1876,8 +1876,6 @@ public class JourneyController {
 //			response.setStatus(200);
 //			return;
 //		}
-
-
 		return;
 	}
 
