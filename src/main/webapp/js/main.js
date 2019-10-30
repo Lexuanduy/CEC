@@ -680,8 +680,8 @@ $('#sendContentVowDay').click(function (){
 		parts = url.split("/"),
 		d = parts[parts.length-1],
 		j = parts[parts.length-2];
-		console.log("journey check: " + j);
 		console.log("day check: " + d);
+		console.log("journey check: " + j);
 	$.ajax({
 		url : "/checkVowJourneyDay?contentVow=" + content + "&journey="
 			+ j + "&numDay=" + d,
