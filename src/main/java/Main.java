@@ -9,6 +9,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.google.firebase.cloud.FirestoreClient;
 import org.apache.tomcat.util.json.JSONParser;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
@@ -48,27 +49,43 @@ public class Main {
 
 	public static void main(String[] args)
 			throws IOException, InterruptedException, ExecutionException, FirebaseAuthException {
-		String url = "https://www.facebook.com/groups/cec.edu.vn/permalink/2411085029164539/";
-		Document doc = Jsoup.connect(url).get();
-		System.out.println("doc html: " + doc.html());
-		String lessonHashtag = doc.select("meta[property=\"og:description\"]").attr("content");
-//		String lessonHashtag = doc.select(".bo .bt").text();
-		System.out.println("lessonHashtag: " + lessonHashtag);
-		int lessonCheckNow = 0;
-		// check lesson by DK
-		if (lessonHashtag.toLowerCase().contains("les")) {
-			Pattern p = Pattern.compile("(\\d+)");
-			Matcher m = p.matcher(lessonHashtag.toLowerCase());
-			Boolean check = m.find();
-			System.out.println("checkVideo Check m find: " + check);
-			if (check) {
-				lessonCheckNow = Integer.parseInt(m.group());
-			}
-//			if (m.find()) {
+//		String url = "https://www.facebook.com/groups/cec.edu.vn/permalink/2411085029164539/";
+//		Document doc = Jsoup.connect(url).get();
+//		System.out.println("doc html: " + doc.html());
+//		String lessonHashtag = doc.select("meta[property=\"og:description\"]").attr("content");
+//		System.out.println("lessonHashtag: " + lessonHashtag);
+//		int lessonCheckNow = 0;
+//		// check lesson by DK
+//		if (lessonHashtag.toLowerCase().contains("les")) {
+//			Pattern p = Pattern.compile("(\\d+)");
+//			Matcher m = p.matcher(lessonHashtag.toLowerCase());
+//			Boolean check = m.find();
+//			System.out.println("checkVideo Check m find: " + check);
+//			if (check) {
 //				lessonCheckNow = Integer.parseInt(m.group());
 //			}
+//		}
+//		System.out.println("Find lesson number: " + lessonCheckNow);
+
+//		FirebaseApp.initializeApp();
+		Firestore db = FirestoreOptions.getDefaultInstance().getService();
+		DocumentReference docRefmp = db.collection("JourneyDay").document("10days5488857841634271");
+		ApiFuture<DocumentSnapshot> futuremp = docRefmp.get();
+		DocumentSnapshot documentmp = futuremp.get();
+		if (documentmp.exists()) {
+			System.out.println("Document data: " + documentmp.getData());
+		} else {
+			System.out.println("No such document!");
 		}
-		System.out.println("Find lesson number: " + lessonCheckNow);
+
+		DocumentReference docRefmp2 = db.collection("JourneyDay").document("10days6488857841634271");
+		ApiFuture<DocumentSnapshot> futuremp2 = docRefmp2.get();
+		DocumentSnapshot documentmp2 = futuremp2.get();
+		if (documentmp2.exists()) {
+			System.out.println("Document data 2: " + documentmp2.getData());
+		} else {
+			System.out.println("No such document 2!");
+		}
 
 
 
@@ -165,7 +182,7 @@ public class Main {
 //			String journey = journeyDay.substring((journeyDay.indexOf("/") + 1), lenght);
 //		}
 		// end test
-		Firestore db = FirestoreOptions.getDefaultInstance().getService();
+
 		// asynchronously retrieve multiple documents
 //		ApiFuture<QuerySnapshot> future = db.collection("JourneyDay").whereEqualTo("accountId", "488857841634271")
 //				.get();

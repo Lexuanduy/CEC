@@ -1877,7 +1877,7 @@ public class JourneyController {
 			LOGGER.info(journeyName + "days/" + numDay);
 			int dayNumber = Integer.parseInt(numDay) + 1;
 			String day = String.valueOf(dayNumber);
-			uri = "/journey/" + journey + "days" + "/" + day;
+			uri = "/journey/" + journey + "/" + day;
 			response.getWriter().println(uri);
 			response.setStatus(200);
 			return;
