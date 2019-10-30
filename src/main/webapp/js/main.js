@@ -678,10 +678,10 @@ $('#sendContentVowDay').click(function (){
 	$('#contentDayError').hide();
 	var url = $(location).attr('href'),
 		parts = url.split("/"),
-		d = parts[parts.length-1],
-		j = parts[parts.length-2];
-		console.log("journey: " + j);
-		console.log("day: " + d);
+		j = parts[parts.length-1],
+		d = parts[parts.length-2];
+		console.log("journey check: " + j);
+		console.log("day check: " + d);
 	$.ajax({
 		url : "/checkVowJourneyDay?contentVow=" + content + "&journey="
 			+ j + "&numDay=" + d,

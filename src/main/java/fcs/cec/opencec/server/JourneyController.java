@@ -1781,7 +1781,7 @@ public class JourneyController {
 		ApiFuture<DocumentSnapshot> futureAccount = docRefAccount.get();
 		DocumentSnapshot document = futureAccount.get();
 		Account account = document.toObject(Account.class);
-		String docJourneyDay = journey + "days" + numDay + facebookId;
+		String docJourneyDay = journey + numDay + facebookId;
 		LOGGER.info("docJourneyDay: " + docJourneyDay);
 		DocumentReference docRefJourney = db.collection("JourneyDay").document(docJourneyDay);
 		ApiFuture<DocumentSnapshot> future = docRefJourney.get();
