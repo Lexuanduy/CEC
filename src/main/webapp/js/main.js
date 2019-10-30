@@ -692,6 +692,13 @@ $('#sendContentVowDay').click(function (){
 		},
 		error : function(jqXHR, textStatus, errorThrown) {
 			console.log('jqXHR: ' + jqXHR.status);
+				Swal({
+					position : 'center',
+					type : 'error',
+					title : errorThrown,
+					showConfirmButton : false,
+					timer : 2000,
+				});
 		}
 	});
 
