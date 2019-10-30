@@ -700,7 +700,6 @@ $('#sendContentVowDay').click(function (){
 				});
 		}
 	});
-
 });
 
 
