@@ -18,7 +18,6 @@
 
 	<properties>
 		<java.version>1.8</java.version>
-		<target.dir>target</target.dir>
 	</properties>
 
 	<dependencies>
