@@ -27,6 +27,8 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.io.DefaultResourceLoader;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
@@ -63,17 +65,28 @@ public class LessonController {
 	static ArrayList<Lesson> lessonList = new ArrayList<Lesson>();
 
 	static {
-		GoogleCredentials credentials = null;
+//		GoogleCredentials credentials = null;
+//		try {
+//			credentials = GoogleCredentials.fromStream(
+//					new FileInputStream("/var/lib/tomcat8/opencec-firebase-adminsdk-ccqab-9f50c0997b.json"));
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		FirebaseOptions options = new FirebaseOptions.Builder().setCredentials(credentials).setProjectId("opencec")
+//				.build();
+
+		Resource r = new DefaultResourceLoader().getResource("/key.json");
+		GoogleCredentials cred = null;
 		try {
-			credentials = GoogleCredentials.fromStream(
-					new FileInputStream("/var/lib/tomcat8/opencec-firebase-adminsdk-ccqab-9f50c0997b.json"));
+			cred = GoogleCredentials.fromStream(r.getInputStream());
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		FirebaseOptions options = new FirebaseOptions.Builder().setCredentials(credentials).setProjectId("opencec")
+		FirestoreOptions options = FirestoreOptions.newBuilder()
+				.setCredentials(cred)
 				.build();
-		FirebaseApp.initializeApp(options);
+		FirebaseApp.initializeApp(options.toString());
 
 //		FirebaseApp.initializeApp();
 
