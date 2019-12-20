@@ -16,8 +16,14 @@
 	<name>opencec</name>
 	<description>Demo project for Spring Boot</description>
 
+	<build>
+		<outputDirectory>${basedir}/${target.dir}/classes</outputDirectory>
+		<testOutputDirectory>${basedir}/${target.dir}/test-classes</testOutputDirectory>
+	</build>
+
 	<properties>
 		<java.version>1.8</java.version>
+		<target.dir>target</target.dir>
 	</properties>
 
 	<dependencies>
