@@ -65,28 +65,16 @@ public class LessonController {
 	static ArrayList<Lesson> lessonList = new ArrayList<Lesson>();
 
 	static {
-//		GoogleCredentials credentials = null;
-//		try {
-//			credentials = GoogleCredentials.fromStream(
-//					new FileInputStream("/var/lib/tomcat8/opencec-firebase-adminsdk-ccqab-9f50c0997b.json"));
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		FirebaseOptions options = new FirebaseOptions.Builder().setCredentials(credentials).setProjectId("opencec")
-//				.build();
-
-		Resource r = new DefaultResourceLoader().getResource("/key.json");
-		GoogleCredentials cred = null;
+		GoogleCredentials credentials = null;
 		try {
-			cred = GoogleCredentials.fromStream(r.getInputStream());
+			credentials = GoogleCredentials.fromStream(
+					new FileInputStream("/var/lib/tomcat8/opencec-firebase-adminsdk-ccqab-9f50c0997b.json"));
 		} catch (IOException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		FirestoreOptions options = FirestoreOptions.newBuilder()
-				.setCredentials(cred)
+		FirebaseOptions options = new FirebaseOptions.Builder().setCredentials(credentials).setProjectId("opencec")
 				.build();
-		FirebaseApp.initializeApp(options.toString());
 
 //		FirebaseApp.initializeApp();
 
